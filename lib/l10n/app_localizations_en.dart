@@ -1,0 +1,360 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for English (`en`).
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get appTitle => 'FoodScan';
+
+  @override
+  String get homeSubtitle => 'Scan products to discover nutritional info';
+
+  @override
+  String get searchHint => 'Search product or barcode...';
+
+  @override
+  String get recentScans => 'Recent Scans';
+
+  @override
+  String get noRecentScans => 'No recent scans yet';
+
+  @override
+  String get scanProduct => 'Scan Product';
+
+  @override
+  String get positionBarcode => 'Position barcode within the frame';
+
+  @override
+  String get enterBarcodeManually => 'Enter Barcode Manually';
+
+  @override
+  String get enterBarcode => 'Enter Barcode';
+
+  @override
+  String get barcodeNumber => 'Enter barcode number';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get searchProduct => 'Search Product';
+
+  @override
+  String get barcodeExample => 'e.g., 3017620422003';
+
+  @override
+  String get enterBarcodeInstructions =>
+      'Type in the barcode number to search for a product';
+
+  @override
+  String get demoScan => 'Demo Scan (Nutella)';
+
+  @override
+  String get overallRating => 'Overall Rating';
+
+  @override
+  String get moderate => 'Moderate';
+
+  @override
+  String get nutriScore => 'Nutri-Score';
+
+  @override
+  String get ecoScore => 'Eco-Score';
+
+  @override
+  String get additives => 'Additives';
+
+  @override
+  String get nutrition => 'Nutrition';
+
+  @override
+  String get nutritionalValues => 'Nutritional Values';
+
+  @override
+  String get energy => 'Energy';
+
+  @override
+  String get fat => 'Fat';
+
+  @override
+  String get saturatedFat => 'Saturated Fat';
+
+  @override
+  String get carbohydrates => 'Carbohydrates';
+
+  @override
+  String get sugars => 'Sugars';
+
+  @override
+  String get proteins => 'Proteins';
+
+  @override
+  String get salt => 'Salt';
+
+  @override
+  String get novaGroup => 'NOVA Group';
+
+  @override
+  String get moderateRisk => 'Moderate Risk';
+
+  @override
+  String get ultraProcessedFoods => 'Ultra-processed foods';
+
+  @override
+  String get group4 => 'Group 4';
+
+  @override
+  String get aboutNutriScore => 'About Nutri-Score';
+
+  @override
+  String get understandingNutritionalSystem =>
+      'Understanding the nutritional quality rating system';
+
+  @override
+  String get nutriScoreDescription =>
+      'Nutri-Score is a nutrition label that converts the nutritional value of products into a simple code consisting of 5 letters, each with its own color. Each product is awarded a score based on a scientific algorithm.';
+
+  @override
+  String get thisProductGradeE => 'This Product: Grade E';
+
+  @override
+  String get fruitsVegetablesNuts => 'Fruits, Vegetables, Nuts';
+
+  @override
+  String get varies => 'Varies';
+
+  @override
+  String get aboutEcoScore => 'About Eco-Score';
+
+  @override
+  String get understandingEnvironmentalSystem =>
+      'Understanding the environmental impact rating system';
+
+  @override
+  String get ecoScoreDescription =>
+      'Eco-Score evaluates the environmental impact of food products from A to E. It considers production methods, transportation, packaging, and the impact on biodiversity.';
+
+  @override
+  String get thisProductGradeUnknown => 'This Product: Grade UNKNOWN';
+
+  @override
+  String get impactFactors => 'Impact Factors';
+
+  @override
+  String get carbonFootprint =>
+      'Carbon Footprint: CO2 emissions from production and transportation';
+
+  @override
+  String get packagingInfo => 'Packaging: Materials used and recyclability';
+
+  @override
+  String get originInfo => 'Origin: Transportation distance and method';
+
+  @override
+  String get productionMethodInfo =>
+      'Production Method: Farming practices and certifications';
+
+  @override
+  String get gradeClassifications => 'Grade Classifications';
+
+  @override
+  String get excellent => 'Excellent';
+
+  @override
+  String get goodLabel => 'Good';
+
+  @override
+  String get fairLabel => 'Fair';
+
+  @override
+  String get scoreBreakdown => 'Score Breakdown';
+
+  @override
+  String get howWeCalculated =>
+      'How we calculated the overall rating for this product';
+
+  @override
+  String get totalScore => 'Total Score';
+
+  @override
+  String get baseScore => 'Base Score';
+
+  @override
+  String get startingPoint => 'Starting point for all products';
+
+  @override
+  String get ratingScale => 'Rating Scale';
+
+  @override
+  String get goodScore => 'Good: 70-100 points';
+
+  @override
+  String get moderateScore => 'Moderate: 40-69 points';
+
+  @override
+  String get poorScore => 'Poor: 0-39 points';
+
+  @override
+  String get nutriScoreEInfo => 'Grade E - Nutritional quality';
+
+  @override
+  String get ecoScoreUnknownInfo => 'Grade UNKNOWN - Environmental impact';
+
+  @override
+  String get additivesInfo => '0 high-risk, 2 moderate-risk additives';
+
+  @override
+  String get productNotFound => 'Product Not Found';
+
+  @override
+  String get notInDatabase =>
+      'This barcode is not yet in the Open Food Facts database.';
+
+  @override
+  String get barcode => 'Barcode';
+
+  @override
+  String get helpBuildDatabase => 'Help Build the Database';
+
+  @override
+  String get addProductDescription =>
+      'You can help millions of users by adding this product to Open Food Facts! It only takes a few minutes and makes the database more complete.';
+
+  @override
+  String get takePhotos =>
+      'Take photos of the product, ingredients, and nutrition facts';
+
+  @override
+  String get enterProductInfo => 'Enter the product information';
+
+  @override
+  String get contributionAvailable =>
+      'Your contribution will be immediately available to everyone';
+
+  @override
+  String get addProductButton => 'Add Product to Open Food Facts';
+
+  @override
+  String get whatYouCanDo => 'What else you can do:';
+
+  @override
+  String get scanAnother => 'Scan another product';
+
+  @override
+  String get tryDifferentBarcode => 'Try a different barcode';
+
+  @override
+  String get searchManually => 'Search manually';
+
+  @override
+  String get trySearchingByName => 'Try searching by product name';
+
+  @override
+  String get whyMissing => 'Why is this product missing?';
+
+  @override
+  String get whyMissingDescription =>
+      'Open Food Facts is built by volunteers. New products, regional items, or products from smaller brands might not be in the database yet. Your contribution helps make it more complete!';
+
+  @override
+  String get scanAnotherProduct => 'Scan Another Product';
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get aboutOpenFoodFacts => 'About Open Food Facts';
+
+  @override
+  String get aboutSubtitle =>
+      'A free, open, collaborative database of food products from around the world';
+
+  @override
+  String get whatIsOff => 'What is Open Food Facts?';
+
+  @override
+  String get offDescription =>
+      'Open Food Facts is a food products database made by everyone, for everyone. It\'s a non-profit project developed by thousands of volunteers from around the world.\n\nAnyone can add products to the database and use the data for any purpose - educational, commercial or personal - since the data is open and free.';
+
+  @override
+  String get collaborativeData => 'Collaborative Data';
+
+  @override
+  String get step1Title => 'Contributors Scan Products';
+
+  @override
+  String get step1Subtitle =>
+      'Volunteers scan barcodes and photograph product labels.';
+
+  @override
+  String get step2Title => 'Data is Extracted';
+
+  @override
+  String get step2Subtitle =>
+      'Ingredients, nutritional information, and labels are extracted from photos.';
+
+  @override
+  String get step3Title => 'Everyone Benefits';
+
+  @override
+  String get step3Subtitle =>
+      'The data is freely available to apps, researchers, and consumers.';
+
+  @override
+  String get informationAvailable => 'Information Available';
+
+  @override
+  String get ingredientsLabel => 'Ingredients';
+
+  @override
+  String get allergensLabel => 'Allergens';
+
+  @override
+  String get additivesLabel => 'Additives';
+
+  @override
+  String get nutritionFactsLabel => 'Nutrition Facts';
+
+  @override
+  String get labelsLabel => 'Labels';
+
+  @override
+  String get databaseCoverage => 'Database Coverage';
+
+  @override
+  String get productsLabel => 'Products';
+
+  @override
+  String get countriesLabel => 'Countries';
+
+  @override
+  String get howToContribute => 'How to Contribute';
+
+  @override
+  String get contributeDescription =>
+      'Help improve the database by adding missing products or completing existing product information!';
+
+  @override
+  String get contributeButton => 'Contribute to Open Food Facts';
+
+  @override
+  String get openDataLicense => 'Open Data License';
+
+  @override
+  String get licenseDescription =>
+      'All product data is published under the Open Database License (ODbL). Product images are under Creative Commons Attribution ShareAlike license.';
+
+  @override
+  String get visitWebsite => 'Visit Open Food Facts Website';
+
+  @override
+  String get exploreData => 'Explore the Data';
+}

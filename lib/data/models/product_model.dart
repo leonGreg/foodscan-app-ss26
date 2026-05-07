@@ -1,3 +1,5 @@
+import 'package:food_scan/core/models/product_model.dart';
+
 import 'nutriments_model.dart';
 
 class ProductModel {
@@ -22,6 +24,38 @@ class ProductModel {
   final List<String> allergensTags;
   final List<String> categoriesTags;
   final NutrimentsModel nutriments;
+
+  /// Convert to domain entity
+  Product toDomainEntity() {
+    return Product(
+      code: code,
+      productName: productName,
+      brands: brands,
+      imageFrontUrl: imageFrontUrl,
+      nutritionGrade: nutritionGrade,
+      ingredientsText: ingredientsText,
+      allergensTags: allergensTags,
+      categoriesTags: categoriesTags,
+      nutriments: nutriments.toDomainEntity(),
+    );
+  }
+
+  /// Create from domain entity
+  factory ProductModel.fromDomainEntity(Product product) {
+    return ProductModel(
+      code: product.code,
+      productName: product.productName,
+      brands: product.brands,
+      imageFrontUrl: product.imageFrontUrl,
+      nutritionGrade: product.nutritionGrade,
+      ingredientsText: product.ingredientsText,
+      allergensTags: product.allergensTags,
+      categoriesTags: product.categoriesTags,
+      nutriments: product.nutriments != null
+          ? NutrimentsModel.fromDomainEntity(product.nutriments!)
+          : const NutrimentsModel(),
+    );
+  }
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
