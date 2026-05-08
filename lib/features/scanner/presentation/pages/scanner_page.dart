@@ -17,11 +17,8 @@ class ScannerPage extends StatefulWidget {
 }
 
 class _ScannerPageState extends State<ScannerPage> {
-  bool hasScanned = false;
-
   void _onScan(Code result) {
-    if (!hasScanned && mounted && result.isValid && result.text != null) {
-      hasScanned = true;
+    if (result.text != null) {
       context.read<ScannerBloc>().add(BarcodeDetectedEvent(result.text!));
     }
   }
@@ -44,7 +41,6 @@ class _ScannerPageState extends State<ScannerPage> {
           ManualBarcodeInputDialog(localizations: localizations),
     ).then((result) {
       if (result != null && result is String && mounted) {
-        hasScanned = true;
         bloc.add(BarcodeDetectedEvent(result));
       }
     });

@@ -7,6 +7,7 @@ import 'package:food_scan/config/theme/bloc/theme_bloc.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
 import 'package:food_scan/features/home/presentation/widgets/no_scans_widget.dart';
+import 'package:food_scan/features/scanner/presentation/bloc/scanner_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -69,7 +70,9 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                               onPressed: () {
-                                context.read<ThemeBloc>().add(ToggleThemeEvent());
+                                context.read<ThemeBloc>().add(
+                                  ToggleThemeEvent(),
+                                );
                               },
                             ),
                             IconButton(
@@ -134,7 +137,6 @@ class _HomePageState extends State<HomePage> {
                             return ListView(
                               padding: EdgeInsets.zero,
                               children: [
-
                                 const NoScansWidget(),
                                 // Placeholder for mockup TODO: Replace with actual data
                                 // GestureDetector(
@@ -202,10 +204,12 @@ class _HomePageState extends State<HomePage> {
                 // Scan button
                 GestureDetector(
                   onTap: () async {
+                    final scannerBloc = context.read<ScannerBloc>();
                     final router = GoRouter.of(context);
                     final result = await router.push('/scanner');
+
                     if (result != null && result is String) {
-                      // TODO: fetch product Details
+                      scannerBloc.add(const ScannerResetEvent());
                     }
                   },
                   child: Container(
