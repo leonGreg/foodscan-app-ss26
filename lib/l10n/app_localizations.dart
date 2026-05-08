@@ -757,6 +757,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Explore the Data'**
   String get exploreData;
+
+  /// No description provided for @noScansYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No scans yet'**
+  String get noScansYet;
+
+  /// No description provided for @tapScanButtonToGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the scan button to get started'**
+  String get tapScanButtonToGetStarted;
 }
 
 class _AppLocalizationsDelegate

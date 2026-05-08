@@ -108,5 +108,7 @@
   "openDataLicense": "Open Data License",
   "licenseDescription": "All product data is published under the Open Database License (ODbL). Product images are under Creative Commons Attribution ShareAlike license.",
   "visitWebsite": "Visit Open Food Facts Website",
-  "exploreData": "Explore the Data"
+  "exploreData": "Explore the Data",
+  "noScansYet": "No scans yet",
+  "tapScanButtonToGetStarted": "Tap the scan button to get started"
 }

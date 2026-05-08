@@ -82,6 +82,8 @@ class AppTheme {
           horizontal: AppDimensions.paddingMedium,
           vertical: AppDimensions.paddingSmall,
         ),
+        fillColor: Color(AppColors.white),
+        filled: true,
         border: OutlineInputBorder(
           borderRadius:
               BorderRadius.circular(AppDimensions.borderRadiusMedium),
@@ -101,9 +103,11 @@ class AppTheme {
           ),
         ),
       ),
+      iconTheme: const IconThemeData(
+        color: Color(AppColors.mediumGray),
+      ),
     );
   }
-
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
@@ -177,6 +181,35 @@ class AppTheme {
                 BorderRadius.circular(AppDimensions.borderRadiusMedium),
           ),
         ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.paddingMedium,
+          vertical: AppDimensions.paddingSmall,
+        ),
+        fillColor: Color(AppColors.surfaceDark),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(AppDimensions.borderRadiusMedium),
+          borderSide: const BorderSide(color: Color(AppColors.surfaceDark)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(AppDimensions.borderRadiusMedium),
+          borderSide: const BorderSide(color: Color(AppColors.surfaceDark)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius:
+              BorderRadius.circular(AppDimensions.borderRadiusMedium),
+          borderSide: const BorderSide(
+            color: Color(AppColors.primaryGreen),
+            width: 2,
+          ),
+        ),
+      ),
+      iconTheme: const IconThemeData(
+        color: Colors.grey,
       ),
     );
   }

@@ -359,4 +359,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get exploreData => 'Daten erkunden';
+
+  @override
+  String get noScansYet => 'Noch keine Scans';
+
+  @override
+  String get tapScanButtonToGetStarted =>
+      'Drücken Sie die Schaltfläche zum Scannen, um zu beginnen';
 }

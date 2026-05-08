@@ -357,4 +357,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exploreData => 'Explore the Data';
+
+  @override
+  String get noScansYet => 'No scans yet';
+
+  @override
+  String get tapScanButtonToGetStarted => 'Tap the scan button to get started';
 }

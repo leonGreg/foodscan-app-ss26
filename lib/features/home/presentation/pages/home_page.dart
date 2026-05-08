@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
-import 'package:food_scan/config/constants/nutrition.dart';
+import 'package:food_scan/config/theme/bloc/theme_bloc.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
-import 'package:food_scan/features/home/presentation/widgets/recent_scan_card.dart';
+import 'package:food_scan/features/home/presentation/widgets/no_scans_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           Column(
@@ -55,12 +55,31 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.info_outline,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => {},
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: BlocBuilder<ThemeBloc, ThemeState>(
+                                builder: (context, state) {
+                                  return Icon(
+                                    state.themeMode == ThemeMode.dark
+                                        ? Icons.light_mode
+                                        : Icons.dark_mode,
+                                    color: Colors.white,
+                                  );
+                                },
+                              ),
+                              onPressed: () {
+                                context.read<ThemeBloc>().add(ToggleThemeEvent());
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.info_outline,
+                                color: Colors.white,
+                              ),
+                              onPressed: () => {},
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -86,9 +105,9 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.history,
-                            color: Color(AppColors.darkGray),
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           const SizedBox(width: AppDimensions.paddingSmall),
                           Text(
@@ -111,20 +130,23 @@ class _HomePageState extends State<HomePage> {
                               return Text(state.message);
                             }
 
-                            // Placeholder for mockup TODO: Replace
+                            // Check if there are scans, otherwise show NoScansWidget
                             return ListView(
                               padding: EdgeInsets.zero,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    // TODO Implement navigation to product details page
-                                  },
-                                  child: RecentScanCard(
-                                    productName: 'Nutella',
-                                    barcode: '3017620422003',
-                                    nutriScore: NutriScore.e,
-                                  ),
-                                ),
+
+                                const NoScansWidget(),
+                                // Placeholder for mockup TODO: Replace with actual data
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     // TODO Implement navigation to product details page
+                                //   },
+                                //   child: RecentScanCard(
+                                //     productName: 'Nutella',
+                                //     barcode: '3017620422003',
+                                //     nutriScore: NutriScore.e,
+                                //   ),
+                                // ),
                               ],
                             );
                           },
@@ -147,7 +169,9 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     height: AppDimensions.searchBarHeight,
                     decoration: BoxDecoration(
-                      color: Color(AppColors.white),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(AppColors.surfaceDark)
+                          : const Color(AppColors.white),
                       borderRadius: BorderRadius.circular(
                         AppDimensions.borderRadiusMedium,
                       ),
@@ -163,9 +187,9 @@ class _HomePageState extends State<HomePage> {
                       decoration: InputDecoration(
                         hintText: localizations.searchHint,
                         border: InputBorder.none,
-                        prefixIcon: const Icon(
+                        prefixIcon: Icon(
                           Icons.search,
-                          color: Color(AppColors.mediumGray),
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: AppDimensions.paddingMedium - 1, // 15
