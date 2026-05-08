@@ -57,9 +57,7 @@ class _ManualBarcodeInputDialogState extends State<ManualBarcodeInputDialog> {
             const SizedBox(height: AppDimensions.paddingSmall),
             Text(
               widget.localizations.enterBarcodeInstructions,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: const Color(AppColors.mediumGray),
-              ),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             // Input Field
             const SizedBox(height: AppDimensions.paddingMedium),
@@ -127,7 +125,7 @@ class _CancelButton extends StatelessWidget {
         padding: const EdgeInsets.all(AppDimensions.paddingMedium),
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color(AppColors.borderGray),
+            color: Theme.of(context).dividerColor,
           ),
           borderRadius: BorderRadius.circular(
             AppDimensions.borderRadiusMedium,
@@ -136,7 +134,6 @@ class _CancelButton extends StatelessWidget {
         child: Text(
           label,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: const Color(AppColors.darkGray),
             fontWeight: FontWeight.bold,
           ),
           textAlign: TextAlign.center,
@@ -162,7 +159,7 @@ class _SearchButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppDimensions.paddingMedium),
         decoration: BoxDecoration(
-          color: const Color(AppColors.primaryGreen),
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(
             AppDimensions.borderRadiusMedium,
           ),

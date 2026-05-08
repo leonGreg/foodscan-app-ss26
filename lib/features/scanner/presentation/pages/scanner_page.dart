@@ -22,9 +22,7 @@ class _ScannerPageState extends State<ScannerPage> {
   void _onScan(Code result) {
     if (!hasScanned && mounted && result.isValid && result.text != null) {
       hasScanned = true;
-      context.read<ScannerBloc>().add(
-        BarcodeDetectedEvent(result.text!),
-      );
+      context.read<ScannerBloc>().add(BarcodeDetectedEvent(result.text!));
     }
   }
 
@@ -35,16 +33,15 @@ class _ScannerPageState extends State<ScannerPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(AppDimensions.bottomSheetBorderRadius),
           topRight: Radius.circular(AppDimensions.bottomSheetBorderRadius),
         ),
       ),
-      builder: (context) => ManualBarcodeInputDialog(
-        localizations: localizations,
-      ),
+      builder: (context) =>
+          ManualBarcodeInputDialog(localizations: localizations),
     ).then((result) {
       if (result != null && result is String && mounted) {
         hasScanned = true;
@@ -79,13 +76,9 @@ class _ScannerPageState extends State<ScannerPage> {
               codeFormat: Format.ean13 | Format.ean8,
             ),
             // Top App Bar
-            ScannerAppBar(
-              title: localizations.scanProduct,
-            ),
+            ScannerAppBar(title: localizations.scanProduct),
             // Scanner Frame Overlay
-            ScannerFrameOverlay(
-              instructionText: localizations.positionBarcode,
-            ),
+            ScannerFrameOverlay(instructionText: localizations.positionBarcode),
 
             ScannerBottomActions(
               onManualEntry: () => _showManualBarcodeEntry(context),
@@ -96,4 +89,3 @@ class _ScannerPageState extends State<ScannerPage> {
     );
   }
 }
-
