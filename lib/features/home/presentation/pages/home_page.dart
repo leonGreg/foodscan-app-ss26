@@ -209,6 +209,11 @@ class _HomePageState extends State<HomePage> {
                     final result = await router.push('/scanner');
 
                     if (result != null && result is String) {
+                      // Navigate to details page with the barcode
+                      await router.pushNamed('details', pathParameters: {
+                        'barcode': result,
+                      });
+                      // Reset scanner after navigating back
                       scannerBloc.add(const ScannerResetEvent());
                     }
                   },
