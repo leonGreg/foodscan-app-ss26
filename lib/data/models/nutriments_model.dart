@@ -1,3 +1,5 @@
+import 'package:food_scan/core/models/product_model.dart';
+
 class NutrimentsModel {
   const NutrimentsModel({
     this.energyKcal100g,
@@ -31,6 +33,26 @@ class NutrimentsModel {
       'sugars_100g': sugars100g,
       'salt_100g': salt100g,
     };
+  }
+
+  /// Convert to domain entity
+  ProductNutriments toDomainEntity() {
+    return ProductNutriments(
+      energyKcal100g: energyKcal100g,
+      fat100g: fat100g,
+      sugars100g: sugars100g,
+      salt100g: salt100g,
+    );
+  }
+
+  /// Create from domain entity
+  factory NutrimentsModel.fromDomainEntity(ProductNutriments nutriments) {
+    return NutrimentsModel(
+      energyKcal100g: nutriments.energyKcal100g,
+      fat100g: nutriments.fat100g,
+      sugars100g: nutriments.sugars100g,
+      salt100g: nutriments.salt100g,
+    );
   }
 
   static double? _toDouble(dynamic value) {
