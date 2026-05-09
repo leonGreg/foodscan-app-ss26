@@ -45,7 +45,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           carbohydrates100g: 57.5,
           sugars100g: 56.3,
           proteins100g: 6.3,
-          salt100g: 0.107,
+          salt100g: 30.107,
         ),
       );
 
