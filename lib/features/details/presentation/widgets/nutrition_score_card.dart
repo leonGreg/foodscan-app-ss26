@@ -1,32 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
-import 'package:food_scan/config/constants/nutrition.dart';
+import 'package:food_scan/core/models/product_model.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
 class NutritionScoreCard extends StatelessWidget {
-  final String? nutritionGrade;
+  final Product product;
 
-  const NutritionScoreCard({super.key, required this.nutritionGrade});
-
-  NutriScore? _getNutriScore() {
-    if (nutritionGrade == null) return null;
-    try {
-      return NutriScore.values.firstWhere(
-        (e) => e.letter.toLowerCase() == nutritionGrade!.toLowerCase(),
-      );
-    } catch (e) {
-      return null;
-    }
-  }
+  const NutritionScoreCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    final nutriScore = _getNutriScore();
     final localizations = AppLocalizations.of(context)!;
 
-    // Get overall rating score (mock data - in this case 61)
-    final overallScore = 61;
+    final overallScore = product.overallScore;
+    final ratingKey = product.overallRatingKey;
+
+    String ratingText = '';
+    switch (ratingKey) {
+      case 'excellent':
+        ratingText = localizations.excellent;
+        break;
+      case 'goodLabel':
+        ratingText = localizations.goodLabel;
+        break;
+      case 'moderate':
+        ratingText = localizations.moderate;
+        break;
+      case 'poor':
+        ratingText = localizations.poor;
+        break;
+      default:
+        ratingText = localizations.unknown;
+    }
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -52,7 +58,7 @@ class NutritionScoreCard extends StatelessWidget {
                 Text(
                   localizations.overallRating,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Color(AppColors.mediumGray),
+                    color: const Color(AppColors.mediumGray),
                   ),
                 ),
                 const SizedBox(height: AppDimensions.paddingSmall),
@@ -63,7 +69,7 @@ class NutritionScoreCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: nutriScore?.color,
+                            color: _getScoreColor(overallScore),
                           ),
                     ),
                     const SizedBox(width: AppDimensions.paddingSmall),
@@ -73,17 +79,17 @@ class NutritionScoreCard extends StatelessWidget {
                         vertical: AppDimensions.paddingXSmall / 2,
                       ),
                       decoration: BoxDecoration(
-                        color:
-                            nutriScore?.color.withValues(alpha: 0.2) ??
-                            Colors.grey.withValues(alpha: 0.2),
+                        color: _getScoreColor(
+                          overallScore,
+                        ).withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(
                           AppDimensions.borderRadiusSmall,
                         ),
                       ),
                       child: Text(
-                        localizations.moderate,
+                        ratingText,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: nutriScore?.color ?? Colors.grey,
+                          color: _getScoreColor(overallScore),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -103,10 +109,11 @@ class NutritionScoreCard extends StatelessWidget {
                 CircularProgressIndicator(
                   value: overallScore / 100,
                   strokeWidth: 8,
-                  backgroundColor: (nutriScore?.color ?? Colors.grey)
-                      .withValues(alpha: 0.2),
+                  backgroundColor: _getScoreColor(
+                    overallScore,
+                  ).withValues(alpha: 0.2),
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    nutriScore?.color ?? Colors.grey,
+                    _getScoreColor(overallScore),
                   ),
                   strokeCap: StrokeCap.round,
                 ),
@@ -115,7 +122,7 @@ class NutritionScoreCard extends StatelessWidget {
                     '$overallScore',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: nutriScore?.color,
+                      color: _getScoreColor(overallScore),
                     ),
                   ),
                 ),
@@ -125,5 +132,12 @@ class NutritionScoreCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color _getScoreColor(int score) {
+    if (score >= 80) return Colors.green;
+    if (score >= 60) return Colors.lightGreen;
+    if (score >= 40) return Colors.orange;
+    return Colors.red;
   }
 }

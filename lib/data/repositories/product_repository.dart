@@ -20,6 +20,7 @@ class ProductRepository {
         off.ProductField.ADDITIVES,
         off.ProductField.NUTRIMENTS,
         off.ProductField.NUTRIENT_LEVELS,
+        off.ProductField.LABELS_TAGS,
       ],
       version: off.ProductQueryVersion.v3,
     );
@@ -43,6 +44,7 @@ class ProductRepository {
             allergensTags: apiProduct.allergens?.names ?? [],
             categoriesTags: apiProduct.categoriesTags ?? [],
             additivesTags: apiProduct.additives?.names ?? [],
+            labelsTags: apiProduct.labelsTags ?? [],
             nutriments: _mapNutriments(apiProduct.nutriments),
             nutrientLevels: _mapNutrientLevels(apiProduct.nutrientLevels),
           );

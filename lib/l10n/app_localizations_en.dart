@@ -64,6 +64,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moderate => 'Moderate';
 
   @override
+  String get poor => 'Poor';
+
+  @override
   String get nutriScore => 'Nutri-Score';
 
   @override

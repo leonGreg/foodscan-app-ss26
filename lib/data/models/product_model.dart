@@ -14,6 +14,7 @@ class ProductModel {
     this.allergensTags = const [],
     this.categoriesTags = const [],
     this.additivesTags = const [],
+    this.labelsTags = const [],
     this.nutriments = const NutrimentsModel(),
     this.nutrientLevels,
   });
@@ -29,6 +30,7 @@ class ProductModel {
   final List<String> allergensTags;
   final List<String> categoriesTags;
   final List<String> additivesTags;
+  final List<String> labelsTags;
   final NutrimentsModel nutriments;
   final ProductNutrientLevels? nutrientLevels;
 
@@ -46,6 +48,7 @@ class ProductModel {
       allergensTags: allergensTags,
       categoriesTags: categoriesTags,
       additivesTags: additivesTags,
+      labelsTags: labelsTags,
       nutriments: nutriments.toDomainEntity(),
       nutrientLevels: nutrientLevels,
     );
@@ -65,6 +68,7 @@ class ProductModel {
       allergensTags: product.allergensTags,
       categoriesTags: product.categoriesTags,
       additivesTags: product.additivesTags,
+      labelsTags: product.labelsTags,
       nutriments: product.nutriments != null
           ? NutrimentsModel.fromDomainEntity(product.nutriments!)
           : const NutrimentsModel(),
@@ -85,6 +89,7 @@ class ProductModel {
       allergensTags: _readStringList(json['allergens_tags']),
       categoriesTags: _readStringList(json['categories_tags']),
       additivesTags: _readStringList(json['additives_tags']),
+      labelsTags: _readStringList(json['labels_tags']),
       nutriments: NutrimentsModel.fromJson(
         json['nutriments'] is Map<String, dynamic>
             ? json['nutriments'] as Map<String, dynamic>
@@ -130,6 +135,7 @@ class ProductModel {
       'allergens_tags': allergensTags,
       'categories_tags': categoriesTags,
       'additives_tags': additivesTags,
+      'labels_tags': labelsTags,
       'nutriments': nutriments.toJson(),
       'nutrient_levels': nutrientLevels != null ? {
         'fat': nutrientLevels!.fat.name,

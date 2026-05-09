@@ -206,6 +206,12 @@ abstract class AppLocalizations {
   /// **'Moderate'**
   String get moderate;
 
+  /// No description provided for @poor.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get poor;
+
   /// No description provided for @nutriScore.
   ///
   /// In en, this message translates to:

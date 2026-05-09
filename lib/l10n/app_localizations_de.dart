@@ -62,7 +62,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get overallRating => 'Gesamtbewertung';
 
   @override
-  String get moderate => 'Moderat';
+  String get moderate => 'Mittelmäßig';
+
+  @override
+  String get poor => 'Schlecht';
 
   @override
   String get nutriScore => 'Nutri-Score';

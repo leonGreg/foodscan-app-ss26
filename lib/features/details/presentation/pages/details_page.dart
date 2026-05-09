@@ -73,9 +73,9 @@ class _DetailsPageState extends State<DetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ProductHeader(product: product),
-                    SizedBox(height: AppDimensions.paddingLarge),
-                    NutritionScoreCard(nutritionGrade: product.nutritionGrade),
-                    SizedBox(height: AppDimensions.paddingLarge),
+                    const SizedBox(height: AppDimensions.paddingLarge),
+                    NutritionScoreCard(product: product),
+                    const SizedBox(height: AppDimensions.paddingLarge),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppDimensions.paddingLarge,
