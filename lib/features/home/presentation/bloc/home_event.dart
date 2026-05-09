@@ -20,3 +20,11 @@ class SearchProductEvent extends HomeEvent {
   List<Object?> get props => [query];
 }
 
+class AddProductToHistoryEvent extends HomeEvent {
+  final Product product;
+
+  const AddProductToHistoryEvent(this.product);
+
+  @override
+  List<Object?> get props => [product];
+}

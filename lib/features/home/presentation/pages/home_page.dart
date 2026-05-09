@@ -7,7 +7,9 @@ import 'package:food_scan/config/theme/bloc/theme_bloc.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
 import 'package:food_scan/features/home/presentation/widgets/no_scans_widget.dart';
+import 'package:food_scan/features/home/presentation/widgets/recent_scan_card.dart';
 import 'package:food_scan/features/scanner/presentation/bloc/scanner_bloc.dart';
+import 'package:food_scan/config/constants/nutrition.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -133,24 +135,39 @@ class _HomePageState extends State<HomePage> {
                               return Text(state.message);
                             }
 
-                            // Check if there are scans, otherwise show NoScansWidget
-                            return ListView(
-                              padding: EdgeInsets.zero,
-                              children: [
-                                const NoScansWidget(),
-                                // Placeholder for mockup TODO: Replace with actual data
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     // TODO Implement navigation to product details page
-                                //   },
-                                //   child: RecentScanCard(
-                                //     productName: 'Nutella',
-                                //     barcode: '3017620422003',
-                                //     nutriScore: NutriScore.e,
-                                //   ),
-                                // ),
-                              ],
-                            );
+                            if (state is HomeLoaded) {
+                              if (state.recentScans.isEmpty) {
+                                return const NoScansWidget();
+                              }
+
+                              return ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: state.recentScans.length,
+                                itemBuilder: (context, index) {
+                                  final product = state.recentScans[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      context.pushNamed('details',
+                                          pathParameters: {
+                                            'barcode': product.code,
+                                          });
+                                    },
+                                    child: RecentScanCard(
+                                      productName: product.productName,
+                                      barcode: product.code,
+                                      nutriScore: NutriScore.values.firstWhere(
+                                        (e) =>
+                                            e.letter == product.nutritionGrade,
+                                        orElse: () => NutriScore.c,
+                                      ),
+                                      imageUrl: product.imageFrontUrl,
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+
+                            return const NoScansWidget();
                           },
                         ),
                       ),
