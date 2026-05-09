@@ -14,7 +14,9 @@ class AppRouter {
     initialLocation: home,
     errorPageBuilder: (context, state) {
       return const NoTransitionPage(
-        child: Scaffold(body: Center(child: Text('Page not found'))), // TODO: replace
+        child: Scaffold(
+          body: Center(child: Text('Page not found')),
+        ), // TODO: replace
       );
     },
     routes: [

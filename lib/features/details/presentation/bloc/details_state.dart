@@ -32,4 +32,3 @@ class DetailsError extends DetailsState {
   @override
   List<Object?> get props => [message];
 }
-

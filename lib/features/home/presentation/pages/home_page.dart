@@ -147,10 +147,12 @@ class _HomePageState extends State<HomePage> {
                                   final product = state.recentScans[index];
                                   return GestureDetector(
                                     onTap: () {
-                                      context.pushNamed('details',
-                                          pathParameters: {
-                                            'barcode': product.code,
-                                          });
+                                      context.pushNamed(
+                                        'details',
+                                        pathParameters: {
+                                          'barcode': product.code,
+                                        },
+                                      );
                                     },
                                     child: RecentScanCard(
                                       productName: product.productName,
@@ -227,9 +229,10 @@ class _HomePageState extends State<HomePage> {
 
                     if (result != null && result is String) {
                       // Navigate to details page with the barcode
-                      await router.pushNamed('details', pathParameters: {
-                        'barcode': result,
-                      });
+                      await router.pushNamed(
+                        'details',
+                        pathParameters: {'barcode': result},
+                      );
                       // Reset scanner after navigating back
                       scannerBloc.add(const ScannerResetEvent());
                     }

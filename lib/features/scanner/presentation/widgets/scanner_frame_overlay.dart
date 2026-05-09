@@ -5,10 +5,7 @@ import 'package:food_scan/config/constants/dimensions.dart';
 class ScannerFrameOverlay extends StatelessWidget {
   final String instructionText;
 
-  const ScannerFrameOverlay({
-    super.key,
-    required this.instructionText,
-  });
+  const ScannerFrameOverlay({super.key, required this.instructionText});
 
   @override
   Widget build(BuildContext context) {
@@ -52,4 +49,3 @@ class ScannerFrameOverlay extends StatelessWidget {
     );
   }
 }
-

@@ -10,8 +10,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final ProductRepository _productRepository;
 
   DetailsBloc({ProductRepository? productRepository})
-      : _productRepository = productRepository ?? ProductRepository(),
-        super(const DetailsInitial()) {
+    : _productRepository = productRepository ?? ProductRepository(),
+      super(const DetailsInitial()) {
     on<LoadProductDetailsEvent>(_onLoadProductDetails);
     on<ResetDetailsEvent>(_onReset);
   }
@@ -23,7 +23,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     emit(const DetailsLoading());
     try {
       final product = await _productRepository.getProduct(event.barcode);
-      
+
       if (product != null) {
         emit(DetailsLoaded(product: product));
       } else {

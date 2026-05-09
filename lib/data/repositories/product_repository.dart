@@ -3,33 +3,35 @@ import 'package:food_scan/core/models/product_model.dart';
 
 class ProductRepository {
   Future<Product?> getProduct(String barcode) async {
-    final off.ProductQueryConfiguration configuration = off.ProductQueryConfiguration(
-      barcode,
-      language: off.OpenFoodFactsLanguage.GERMAN,
-      fields: [
-        off.ProductField.BARCODE,
-        off.ProductField.NAME,
-        off.ProductField.BRANDS,
-        off.ProductField.IMAGE_FRONT_URL,
-        off.ProductField.NUTRISCORE,
-        off.ProductField.ECOSCORE_GRADE,
-        off.ProductField.NOVA_GROUP,
-        off.ProductField.INGREDIENTS_TEXT,
-        off.ProductField.ALLERGENS,
-        off.ProductField.CATEGORIES_TAGS,
-        off.ProductField.ADDITIVES,
-        off.ProductField.NUTRIMENTS,
-        off.ProductField.NUTRIENT_LEVELS,
-        off.ProductField.LABELS_TAGS,
-      ],
-      version: off.ProductQueryVersion.v3,
-    );
+    final off.ProductQueryConfiguration configuration =
+        off.ProductQueryConfiguration(
+          barcode,
+          language: off.OpenFoodFactsLanguage.GERMAN,
+          fields: [
+            off.ProductField.BARCODE,
+            off.ProductField.NAME,
+            off.ProductField.BRANDS,
+            off.ProductField.IMAGE_FRONT_URL,
+            off.ProductField.NUTRISCORE,
+            off.ProductField.ECOSCORE_GRADE,
+            off.ProductField.NOVA_GROUP,
+            off.ProductField.INGREDIENTS_TEXT,
+            off.ProductField.ALLERGENS,
+            off.ProductField.CATEGORIES_TAGS,
+            off.ProductField.ADDITIVES,
+            off.ProductField.NUTRIMENTS,
+            off.ProductField.NUTRIENT_LEVELS,
+            off.ProductField.LABELS_TAGS,
+          ],
+          version: off.ProductQueryVersion.v3,
+        );
 
     try {
       final off.ProductResultV3 result =
           await off.OpenFoodAPIClient.getProductV3(configuration);
 
-      if (result.status == off.ProductResultV3.statusSuccess || result.product != null) {
+      if (result.status == off.ProductResultV3.statusSuccess ||
+          result.product != null) {
         final apiProduct = result.product;
         if (apiProduct != null) {
           return Product(
@@ -60,13 +62,34 @@ class ProductRepository {
     if (nutriments == null) return null;
 
     return ProductNutriments(
-      energyKcal100g: nutriments.getValue(off.Nutrient.energyKCal, off.PerSize.oneHundredGrams),
-      fat100g: nutriments.getValue(off.Nutrient.fat, off.PerSize.oneHundredGrams),
-      saturatedFat100g: nutriments.getValue(off.Nutrient.saturatedFat, off.PerSize.oneHundredGrams),
-      carbohydrates100g: nutriments.getValue(off.Nutrient.carbohydrates, off.PerSize.oneHundredGrams),
-      sugars100g: nutriments.getValue(off.Nutrient.sugars, off.PerSize.oneHundredGrams),
-      proteins100g: nutriments.getValue(off.Nutrient.proteins, off.PerSize.oneHundredGrams),
-      salt100g: nutriments.getValue(off.Nutrient.salt, off.PerSize.oneHundredGrams),
+      energyKcal100g: nutriments.getValue(
+        off.Nutrient.energyKCal,
+        off.PerSize.oneHundredGrams,
+      ),
+      fat100g: nutriments.getValue(
+        off.Nutrient.fat,
+        off.PerSize.oneHundredGrams,
+      ),
+      saturatedFat100g: nutriments.getValue(
+        off.Nutrient.saturatedFat,
+        off.PerSize.oneHundredGrams,
+      ),
+      carbohydrates100g: nutriments.getValue(
+        off.Nutrient.carbohydrates,
+        off.PerSize.oneHundredGrams,
+      ),
+      sugars100g: nutriments.getValue(
+        off.Nutrient.sugars,
+        off.PerSize.oneHundredGrams,
+      ),
+      proteins100g: nutriments.getValue(
+        off.Nutrient.proteins,
+        off.PerSize.oneHundredGrams,
+      ),
+      salt100g: nutriments.getValue(
+        off.Nutrient.salt,
+        off.PerSize.oneHundredGrams,
+      ),
     );
   }
 
@@ -75,8 +98,12 @@ class ProductRepository {
 
     return ProductNutrientLevels(
       fat: _toNutrientLevel(levels.levels[off.NutrientLevels.NUTRIENT_FAT]),
-      saturatedFat: _toNutrientLevel(levels.levels[off.NutrientLevels.NUTRIENT_SATURATED_FAT]),
-      sugars: _toNutrientLevel(levels.levels[off.NutrientLevels.NUTRIENT_SUGARS]),
+      saturatedFat: _toNutrientLevel(
+        levels.levels[off.NutrientLevels.NUTRIENT_SATURATED_FAT],
+      ),
+      sugars: _toNutrientLevel(
+        levels.levels[off.NutrientLevels.NUTRIENT_SUGARS],
+      ),
       salt: _toNutrientLevel(levels.levels[off.NutrientLevels.NUTRIENT_SALT]),
     );
   }

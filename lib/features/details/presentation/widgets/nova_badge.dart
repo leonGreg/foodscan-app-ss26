@@ -29,9 +29,9 @@ class NovaBadge extends StatelessWidget {
           child: Text(
             'NOVA $novaGroup',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         const SizedBox(width: AppDimensions.paddingSmall),
@@ -39,8 +39,8 @@ class NovaBadge extends StatelessWidget {
           child: Text(
             _getNovaText(novaGroup!, l10n),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: const Color(AppColors.mediumGray),
-                ),
+              color: const Color(AppColors.mediumGray),
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

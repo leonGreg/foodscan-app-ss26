@@ -5,10 +5,7 @@ import 'package:food_scan/config/constants/dimensions.dart';
 class ScannerAppBar extends StatelessWidget {
   final String title;
 
-  const ScannerAppBar({
-    super.key,
-    required this.title,
-  });
+  const ScannerAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -60,4 +57,3 @@ class ScannerAppBar extends StatelessWidget {
     );
   }
 }
-

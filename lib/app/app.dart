@@ -19,12 +19,8 @@ class FoodScanApp extends StatelessWidget {
         BlocProvider(
           create: (context) => HomeBloc()..add(const LoadRecentScansEvent()),
         ),
-        BlocProvider(
-          create: (context) => ScannerBloc(),
-        ),
-        BlocProvider(
-          create: (context) => DetailsBloc(),
-        ),
+        BlocProvider(create: (context) => ScannerBloc()),
+        BlocProvider(create: (context) => DetailsBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {

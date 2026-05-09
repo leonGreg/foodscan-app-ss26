@@ -79,4 +79,3 @@ class AppDimensions {
   static const double scannerTopBarBackButtonSize = 24.0;
   static const double scannerTopBarSpacerWidth = 40.0;
 }
-

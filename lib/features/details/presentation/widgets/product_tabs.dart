@@ -84,11 +84,11 @@ class _ProductTabsState extends State<ProductTabs> {
           label,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected
-                    ? (isDarkMode ? Colors.white : Colors.black)
-                    : Colors.grey,
-              ),
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color: isSelected
+                ? (isDarkMode ? Colors.white : Colors.black)
+                : Colors.grey,
+          ),
         ),
       ),
     );
@@ -115,7 +115,7 @@ class _ProductTabsState extends State<ProductTabs> {
         final tag = additives[index];
         final additiveName = tag.replaceAll('en:', '').toUpperCase();
         final risk = AdditiveRisk.getFromTag(tag);
-        
+
         return Container(
           margin: const EdgeInsets.only(bottom: AppDimensions.paddingSmall),
           decoration: BoxDecoration(
@@ -139,8 +139,8 @@ class _ProductTabsState extends State<ProductTabs> {
                   Text(
                     additiveName,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(width: 4),
                   Icon(Icons.circle, color: risk.color, size: 8),
@@ -161,7 +161,10 @@ class _ProductTabsState extends State<ProductTabs> {
     );
   }
 
-  Widget _buildNutritionTable(ProductNutriments? nutriments, AppLocalizations l10n) {
+  Widget _buildNutritionTable(
+    ProductNutriments? nutriments,
+    AppLocalizations l10n,
+  ) {
     if (nutriments == null) {
       return Center(
         child: Padding(

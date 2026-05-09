@@ -44,18 +44,14 @@ class NutriScoreBadge extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.eco_outlined,
-                  color: Colors.green,
-                  size: 20,
-                ),
+                const Icon(Icons.eco_outlined, color: Colors.green, size: 20),
                 const SizedBox(width: AppDimensions.paddingSmall),
                 Text(
                   l10n.nutriScore,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: const Color(AppColors.mediumGray),
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: const Color(AppColors.mediumGray),
+                  ),
                 ),
               ],
             ),
@@ -73,7 +69,11 @@ class NutriScoreBadge extends StatelessWidget {
     );
   }
 
-  Widget _buildBadge(BuildContext context, NutriScore? score, AppLocalizations l10n) {
+  Widget _buildBadge(
+    BuildContext context,
+    NutriScore? score,
+    AppLocalizations l10n,
+  ) {
     if (score == null) {
       return Container(
         width: double.infinity,
@@ -86,9 +86,9 @@ class NutriScoreBadge extends StatelessWidget {
         child: Text(
           l10n.unknown.toUpperCase(),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
           textAlign: TextAlign.center,
         ),
       );
@@ -105,9 +105,9 @@ class NutriScoreBadge extends StatelessWidget {
       child: Text(
         score.letter.toUpperCase(),
         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
         textAlign: TextAlign.center,
       ),
     );

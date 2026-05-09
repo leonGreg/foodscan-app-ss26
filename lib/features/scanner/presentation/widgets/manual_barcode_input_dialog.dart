@@ -5,10 +5,7 @@ import 'package:food_scan/l10n/app_localizations.dart';
 class ManualBarcodeInputDialog extends StatefulWidget {
   final AppLocalizations localizations;
 
-  const ManualBarcodeInputDialog({
-    super.key,
-    required this.localizations,
-  });
+  const ManualBarcodeInputDialog({super.key, required this.localizations});
 
   @override
   State<ManualBarcodeInputDialog> createState() =>
@@ -37,7 +34,8 @@ class _ManualBarcodeInputDialogState extends State<ManualBarcodeInputDialog> {
         left: AppDimensions.paddingLarge,
         right: AppDimensions.paddingLarge,
         top: AppDimensions.paddingLarge,
-        bottom: MediaQuery.of(context).viewInsets.bottom +
+        bottom:
+            MediaQuery.of(context).viewInsets.bottom +
             AppDimensions.paddingLarge,
       ),
       child: SingleChildScrollView(
@@ -48,9 +46,9 @@ class _ManualBarcodeInputDialogState extends State<ManualBarcodeInputDialog> {
             // Title
             Text(
               widget.localizations.enterBarcode,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             // Instructions
             const SizedBox(height: AppDimensions.paddingSmall),
@@ -111,10 +109,7 @@ class _CancelButton extends StatelessWidget {
   final VoidCallback onTap;
   final String label;
 
-  const _CancelButton({
-    required this.onTap,
-    required this.label,
-  });
+  const _CancelButton({required this.onTap, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -123,18 +118,14 @@ class _CancelButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppDimensions.paddingMedium),
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).dividerColor,
-          ),
-          borderRadius: BorderRadius.circular(
-            AppDimensions.borderRadiusMedium,
-          ),
+          border: Border.all(color: Theme.of(context).dividerColor),
+          borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
         ),
         child: Text(
           label,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       ),
@@ -146,10 +137,7 @@ class _SearchButton extends StatelessWidget {
   final VoidCallback onTap;
   final String label;
 
-  const _SearchButton({
-    required this.onTap,
-    required this.label,
-  });
+  const _SearchButton({required this.onTap, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -159,9 +147,7 @@ class _SearchButton extends StatelessWidget {
         padding: const EdgeInsets.all(AppDimensions.paddingMedium),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(
-            AppDimensions.borderRadiusMedium,
-          ),
+          borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
         ),
         child: Text(
           label,
@@ -175,4 +161,3 @@ class _SearchButton extends StatelessWidget {
     );
   }
 }
-

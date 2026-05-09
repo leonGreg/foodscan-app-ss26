@@ -35,8 +35,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       await Future.delayed(const Duration(milliseconds: 500));
       // For now, search just filters local history or returns empty
       final filtered = _history
-          .where((product) =>
-              product.productName.toLowerCase().contains(event.query.toLowerCase()))
+          .where(
+            (product) => product.productName.toLowerCase().contains(
+              event.query.toLowerCase(),
+            ),
+          )
           .toList();
       emit(HomeLoaded(recentScans: filtered));
     } catch (e) {
@@ -51,7 +54,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // Remove if already exists to move to top
     _history.removeWhere((product) => product.code == event.product.code);
     _history.insert(0, event.product);
-    
+
     // Limit history size to e.g. 20
     if (_history.length > 20) {
       _history.removeLast();

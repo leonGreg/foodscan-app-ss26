@@ -53,9 +53,9 @@ class EcoScoreCard extends StatelessWidget {
                 Text(
                   l10n.ecoScore,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: const Color(AppColors.mediumGray),
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: const Color(AppColors.mediumGray),
+                  ),
                 ),
               ],
             ),
@@ -73,7 +73,11 @@ class EcoScoreCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBadge(BuildContext context, EcoScore? score, AppLocalizations l10n) {
+  Widget _buildBadge(
+    BuildContext context,
+    EcoScore? score,
+    AppLocalizations l10n,
+  ) {
     if (score == null) {
       return Container(
         width: double.infinity,
@@ -86,9 +90,9 @@ class EcoScoreCard extends StatelessWidget {
         child: Text(
           l10n.unknown.toUpperCase(),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
           textAlign: TextAlign.center,
         ),
       );
@@ -105,9 +109,9 @@ class EcoScoreCard extends StatelessWidget {
       child: Text(
         score.letter.toUpperCase(),
         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
         textAlign: TextAlign.center,
       ),
     );

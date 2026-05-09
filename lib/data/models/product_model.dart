@@ -137,12 +137,14 @@ class ProductModel {
       'additives_tags': additivesTags,
       'labels_tags': labelsTags,
       'nutriments': nutriments.toJson(),
-      'nutrient_levels': nutrientLevels != null ? {
-        'fat': nutrientLevels!.fat.name,
-        'saturated-fat': nutrientLevels!.saturatedFat.name,
-        'sugars': nutrientLevels!.sugars.name,
-        'salt': nutrientLevels!.salt.name,
-      } : null,
+      'nutrient_levels': nutrientLevels != null
+          ? {
+              'fat': nutrientLevels!.fat.name,
+              'saturated-fat': nutrientLevels!.saturatedFat.name,
+              'sugars': nutrientLevels!.sugars.name,
+              'salt': nutrientLevels!.salt.name,
+            }
+          : null,
     };
   }
 

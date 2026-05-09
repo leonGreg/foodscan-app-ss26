@@ -6,10 +6,7 @@ import 'package:food_scan/l10n/app_localizations.dart';
 class ScannerBottomActions extends StatelessWidget {
   final VoidCallback onManualEntry;
 
-  const ScannerBottomActions({
-    super.key,
-    required this.onManualEntry,
-  });
+  const ScannerBottomActions({super.key, required this.onManualEntry});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,8 @@ class ScannerBottomActions extends StatelessWidget {
           left: AppDimensions.paddingLarge,
           right: AppDimensions.paddingLarge,
           top: AppDimensions.paddingLarge,
-          bottom: MediaQuery.of(context).padding.bottom +
+          bottom:
+              MediaQuery.of(context).padding.bottom +
               AppDimensions.paddingLarge,
         ),
         child: Column(
@@ -44,9 +42,7 @@ class ScannerBottomActions extends StatelessWidget {
               onTap: onManualEntry,
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(
-                  AppDimensions.paddingMedium,
-                ),
+                padding: const EdgeInsets.all(AppDimensions.paddingMedium),
                 decoration: BoxDecoration(
                   color: const Color(AppColors.primaryGreen),
                   borderRadius: BorderRadius.circular(
@@ -56,10 +52,7 @@ class ScannerBottomActions extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                    ),
+                    const Icon(Icons.edit, color: Colors.white),
                     const SizedBox(width: AppDimensions.paddingSmall),
                     Text(
                       localizations.enterBarcodeManually,
@@ -78,4 +71,3 @@ class ScannerBottomActions extends StatelessWidget {
     );
   }
 }
-

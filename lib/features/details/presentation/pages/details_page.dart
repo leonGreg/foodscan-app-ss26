@@ -33,7 +33,9 @@ class _DetailsPageState extends State<DetailsPage> {
       body: BlocListener<DetailsBloc, DetailsState>(
         listener: (context, state) {
           if (state is DetailsLoaded) {
-            context.read<HomeBloc>().add(AddProductToHistoryEvent(state.product));
+            context.read<HomeBloc>().add(
+              AddProductToHistoryEvent(state.product),
+            );
           }
         },
         child: BlocBuilder<DetailsBloc, DetailsState>(

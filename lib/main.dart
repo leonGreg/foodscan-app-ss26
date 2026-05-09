@@ -4,9 +4,7 @@ import 'app/app.dart';
 
 void main() {
   // Set the global UserAgent for all queries
-  OpenFoodAPIConfiguration.userAgent = UserAgent(
-    name: 'FoodScanApp',
-  );
+  OpenFoodAPIConfiguration.userAgent = UserAgent(name: 'FoodScanApp');
 
   runApp(const FoodScanApp());
 }

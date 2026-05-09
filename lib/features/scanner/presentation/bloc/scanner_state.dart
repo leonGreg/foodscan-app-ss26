@@ -28,4 +28,3 @@ class ScannerError extends ScannerState {
   @override
   List<Object?> get props => [message];
 }
-

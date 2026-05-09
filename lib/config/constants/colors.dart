@@ -36,4 +36,3 @@ class AppColors {
   static const int surfaceLight = 0xFFF5F5F5;
   static const int surfaceDark = 0xFF2D2D2D;
 }
-

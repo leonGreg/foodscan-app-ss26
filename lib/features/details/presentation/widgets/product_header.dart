@@ -42,7 +42,9 @@ class ProductHeader extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 AppDimensions.borderRadiusMedium,
               ),
-              image: product.imageFrontUrl != null && product.imageFrontUrl!.isNotEmpty
+              image:
+                  product.imageFrontUrl != null &&
+                      product.imageFrontUrl!.isNotEmpty
                   ? DecorationImage(
                       image: NetworkImage(product.imageFrontUrl!),
                       fit: BoxFit.cover,
