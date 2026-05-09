@@ -20,8 +20,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(const HomeLoading());
     try {
-      // simulate delay
-      await Future.delayed(const Duration(milliseconds: 500));
       emit(HomeLoaded(recentScans: List.from(_history)));
     } catch (e) {
       emit(HomeError(message: e.toString()));
