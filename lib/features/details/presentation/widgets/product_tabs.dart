@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
+import 'package:food_scan/core/constants/additives.dart';
 import 'package:food_scan/core/models/product_model.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
@@ -111,7 +112,10 @@ class _ProductTabsState extends State<ProductTabs> {
       ),
       itemCount: additives.length,
       itemBuilder: (context, index) {
-        final additive = additives[index].replaceAll('en:', '').toUpperCase();
+        final tag = additives[index];
+        final additiveName = tag.replaceAll('en:', '').toUpperCase();
+        final risk = AdditiveRisk.getFromTag(tag);
+        
         return Container(
           margin: const EdgeInsets.only(bottom: AppDimensions.paddingSmall),
           decoration: BoxDecoration(
@@ -133,18 +137,18 @@ class _ProductTabsState extends State<ProductTabs> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    additive,
+                    additiveName,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   const SizedBox(width: 4),
-                  const Icon(Icons.circle, color: Colors.orange, size: 8),
+                  Icon(Icons.circle, color: risk.color, size: 8),
                 ],
               ),
             ),
             title: Text(
-              additive,
+              additiveName,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             trailing: const Icon(Icons.chevron_right, color: Colors.grey),
@@ -198,12 +202,12 @@ class _ProductTabsState extends State<ProductTabs> {
           _buildNutritionRow(
             l10n.fat,
             '${nutriments.fat100g?.toStringAsFixed(1) ?? '-'} g',
-            _getLevelColor(levels?.fat),
+            levels?.fat.color ?? Colors.grey,
           ),
           _buildNutritionRow(
             l10n.saturatedFat,
             '${nutriments.saturatedFat100g?.toStringAsFixed(1) ?? '-'} g',
-            _getLevelColor(levels?.saturatedFat),
+            levels?.saturatedFat.color ?? Colors.grey,
             isIndented: true,
           ),
           _buildNutritionRow(
@@ -214,7 +218,7 @@ class _ProductTabsState extends State<ProductTabs> {
           _buildNutritionRow(
             l10n.sugars,
             '${nutriments.sugars100g?.toStringAsFixed(1) ?? '-'} g',
-            _getLevelColor(levels?.sugars),
+            levels?.sugars.color ?? Colors.grey,
             isIndented: true,
           ),
           _buildNutritionRow(
@@ -225,25 +229,11 @@ class _ProductTabsState extends State<ProductTabs> {
           _buildNutritionRow(
             l10n.salt,
             '${nutriments.salt100g?.toStringAsFixed(2) ?? '-'} g',
-            _getLevelColor(levels?.salt),
+            levels?.salt.color ?? Colors.grey,
           ),
         ],
       ),
     );
-  }
-
-  Color _getLevelColor(NutrientLevel? level) {
-    switch (level) {
-      case NutrientLevel.low:
-        return Colors.green;
-      case NutrientLevel.moderate:
-        return Colors.orange;
-      case NutrientLevel.high:
-        return Colors.red;
-      case NutrientLevel.unknown:
-      default:
-        return Colors.grey;
-    }
   }
 
   Widget _buildNutritionRow(

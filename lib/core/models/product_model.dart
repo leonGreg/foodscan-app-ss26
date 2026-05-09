@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import '../constants/additives.dart';
+import '../../config/constants/colors.dart';
+
 class Product {
   const Product({
     required this.code,
@@ -60,14 +64,23 @@ class Product {
     score += nutriScorePoints * 0.6;
 
     // 2. Additives (30%)
-    // Simple logic: Start with 100, deduct points for each additive
-    // In a real app, we would have a risk-mapping for each E-Number
     double additiveScore = 100;
     if (additivesTags.isNotEmpty) {
-      // Deduct 10 points per additive, min 0
-      additiveScore = (100 - (additivesTags.length * 10))
-          .clamp(0, 100)
-          .toDouble();
+      double totalDeduction = 0;
+      for (final tag in additivesTags) {
+        final risk = AdditiveRisk.getFromTag(tag);
+
+        if (risk == AdditiveRisk.high) {
+          totalDeduction += 25;
+        } else if (risk == AdditiveRisk.moderate) {
+          totalDeduction += 10;
+        } else if (risk == AdditiveRisk.low) {
+          totalDeduction += 0;
+        }
+        // Falls der Tag gar nicht im Mapping ist, wurde er oben als moderate gewertet
+        // Wir könnten getFromTag anpassen, um null zurückzugeben für echtes "Unbekannt"
+      }
+      additiveScore = (100 - totalDeduction).clamp(0, 100).toDouble();
     }
     score += additiveScore * 0.3;
 
@@ -107,7 +120,15 @@ class ProductNutriments {
   final double? salt100g;
 }
 
-enum NutrientLevel { low, moderate, high, unknown }
+enum NutrientLevel {
+  low(Color(AppColors.successGreen)),
+  moderate(Color(AppColors.warningOrange)),
+  high(Color(AppColors.dangerRed)),
+  unknown(Colors.grey);
+
+  final Color color;
+  const NutrientLevel(this.color);
+}
 
 class ProductNutrientLevels {
   const ProductNutrientLevels({
