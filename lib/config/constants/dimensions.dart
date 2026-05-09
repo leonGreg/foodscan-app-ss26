@@ -11,6 +11,7 @@ class AppDimensions {
   static const double borderRadiusMedium = 8.0;
   static const double borderRadiusLarge = 12.0;
   static const double borderRadiusXLarge = 16.0;
+  static const double borderRadiusXXLarge = 24.0;
   static const double borderRadiusCircle = 999.0;
 
   // Icon Sizes

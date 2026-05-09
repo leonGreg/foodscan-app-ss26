@@ -7,17 +7,16 @@ import 'package:food_scan/core/models/product_model.dart';
 class ProductHeader extends StatelessWidget {
   final Product product;
 
-  const ProductHeader({
-    super.key,
-    required this.product,
-  });
+  const ProductHeader({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      margin: const EdgeInsets.all(AppDimensions.paddingLarge),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.paddingLarge,
+      ),
       padding: const EdgeInsets.all(AppDimensions.paddingMedium),
       decoration: BoxDecoration(
         color: isDarkMode
@@ -37,7 +36,9 @@ class ProductHeader extends StatelessWidget {
             height: 120,
             decoration: BoxDecoration(
               color: const Color(AppColors.lightGray),
-              borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
+              borderRadius: BorderRadius.circular(
+                AppDimensions.borderRadiusMedium,
+              ),
               image: product.imageFrontUrl != null
                   ? DecorationImage(
                       image: NetworkImage(product.imageFrontUrl!),
@@ -58,9 +59,9 @@ class ProductHeader extends StatelessWidget {
                 // Product Name
                 Text(
                   product.productName,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -120,4 +121,3 @@ class ProductHeader extends StatelessWidget {
     );
   }
 }
-

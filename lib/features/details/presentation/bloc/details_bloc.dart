@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:food_scan/core/models/product_model.dart';
 
 part 'details_event.dart';
+
 part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
@@ -20,19 +21,34 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       // TODO: Fetch product details from API/repository based on barcode
       // For now, simulate with mock data
       await Future.delayed(const Duration(seconds: 1));
-      
+
       final mockProduct = Product(
         code: event.barcode,
-        productName: 'Product Name',
-        brands: 'Brand',
+        productName: 'Example Chocolate Nut Spread',
+        brands: 'Ferrero',
         imageFrontUrl: null,
         nutritionGrade: 'E',
-        ingredientsText: null,
-        allergensTags: const [],
-        categoriesTags: const [],
-        nutriments: null,
+        ecoScore: 'D',
+        ingredientsText:
+            'Sugar, Palm Oil, Hazelnuts (13%), Skimmed Milk Powder (8.7%), Fat-Reduced Cocoa (7.4%), Emulsifier: Lecithins (Soya), Vanillin',
+        allergensTags: const ['en:hazelnuts', 'en:milk', 'en:soybeans'],
+        categoriesTags: const [
+          'en:breakfasts',
+          'en:spreads',
+          'en:sweet-spreads',
+        ],
+        additivesTags: const ['en:e322', 'en:e322i'],
+        nutriments: const ProductNutriments(
+          energyKcal100g: 539,
+          fat100g: 30.9,
+          saturatedFat100g: 10.6,
+          carbohydrates100g: 57.5,
+          sugars100g: 56.3,
+          proteins100g: 6.3,
+          salt100g: 0.107,
+        ),
       );
-      
+
       emit(DetailsLoaded(product: mockProduct));
     } catch (e) {
       emit(DetailsError(message: e.toString()));

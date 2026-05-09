@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:food_scan/config/constants/colors.dart';
-import 'package:food_scan/config/constants/nutrition.dart';
+import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/features/details/presentation/bloc/details_bloc.dart';
 import 'package:food_scan/features/details/presentation/widgets/product_header.dart';
 import 'package:food_scan/features/details/presentation/widgets/nutrition_score_card.dart';
+import 'package:food_scan/features/details/presentation/widgets/nutri_score_badge.dart';
+import 'package:food_scan/features/details/presentation/widgets/eco_score_card.dart';
+import 'package:food_scan/features/details/presentation/widgets/product_tabs.dart';
 
 class DetailsPage extends StatefulWidget {
   final String barcode;
@@ -20,7 +22,6 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    // Load product details when page is created
     context.read<DetailsBloc>().add(LoadProductDetailsEvent(widget.barcode));
   }
 
@@ -61,10 +62,6 @@ class _DetailsPageState extends State<DetailsPage> {
               appBar: AppBar(
                 elevation: 0,
                 backgroundColor: Colors.transparent,
-                title: Text(
-                  product.productName,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
                 leading: IconButton(
                   color: Theme.of(context).iconTheme.color,
                   icon: const Icon(Icons.arrow_back),
@@ -76,7 +73,31 @@ class _DetailsPageState extends State<DetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ProductHeader(product: product),
+                    SizedBox(height: AppDimensions.paddingLarge),
                     NutritionScoreCard(nutritionGrade: product.nutritionGrade),
+                    SizedBox(height: AppDimensions.paddingLarge),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimensions.paddingLarge,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: NutriScoreBadge(
+                              nutritionGrade: product.nutritionGrade,
+                            ),
+                          ),
+                          const SizedBox(width: AppDimensions.paddingMedium),
+                          Expanded(
+                            child: EcoScoreCard(ecoScore: product.ecoScore),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppDimensions.paddingLarge),
+                    ProductTabs(product: product),
+                    const SizedBox(height: AppDimensions.paddingLarge),
                   ],
                 ),
               ),
