@@ -1,5 +1,4 @@
 import 'package:food_scan/core/models/product_model.dart';
-
 import 'nutriments_model.dart';
 
 class ProductModel {
@@ -10,11 +9,13 @@ class ProductModel {
     this.imageFrontUrl,
     this.nutritionGrade,
     this.ecoScore,
+    this.novaGroup,
     this.ingredientsText,
     this.allergensTags = const [],
     this.categoriesTags = const [],
     this.additivesTags = const [],
     this.nutriments = const NutrimentsModel(),
+    this.nutrientLevels,
   });
 
   final String code;
@@ -23,11 +24,13 @@ class ProductModel {
   final String? imageFrontUrl;
   final String? nutritionGrade;
   final String? ecoScore;
+  final int? novaGroup;
   final String? ingredientsText;
   final List<String> allergensTags;
   final List<String> categoriesTags;
   final List<String> additivesTags;
   final NutrimentsModel nutriments;
+  final ProductNutrientLevels? nutrientLevels;
 
   /// Convert to domain entity
   Product toDomainEntity() {
@@ -38,11 +41,13 @@ class ProductModel {
       imageFrontUrl: imageFrontUrl,
       nutritionGrade: nutritionGrade,
       ecoScore: ecoScore,
+      novaGroup: novaGroup,
       ingredientsText: ingredientsText,
       allergensTags: allergensTags,
       categoriesTags: categoriesTags,
       additivesTags: additivesTags,
       nutriments: nutriments.toDomainEntity(),
+      nutrientLevels: nutrientLevels,
     );
   }
 
@@ -55,6 +60,7 @@ class ProductModel {
       imageFrontUrl: product.imageFrontUrl,
       nutritionGrade: product.nutritionGrade,
       ecoScore: product.ecoScore,
+      novaGroup: product.novaGroup,
       ingredientsText: product.ingredientsText,
       allergensTags: product.allergensTags,
       categoriesTags: product.categoriesTags,
@@ -62,6 +68,7 @@ class ProductModel {
       nutriments: product.nutriments != null
           ? NutrimentsModel.fromDomainEntity(product.nutriments!)
           : const NutrimentsModel(),
+      nutrientLevels: product.nutrientLevels,
     );
   }
 
@@ -73,6 +80,7 @@ class ProductModel {
       imageFrontUrl: _readNullableString(json['image_front_url']),
       nutritionGrade: _readNullableString(json['nutrition_grades']),
       ecoScore: _readNullableString(json['ecoscore_grade']),
+      novaGroup: json['nova_group'] as int?,
       ingredientsText: _readNullableString(json['ingredients_text']),
       allergensTags: _readStringList(json['allergens_tags']),
       categoriesTags: _readStringList(json['categories_tags']),
@@ -82,7 +90,31 @@ class ProductModel {
             ? json['nutriments'] as Map<String, dynamic>
             : null,
       ),
+      nutrientLevels: _parseNutrientLevels(json['nutrient_levels']),
     );
+  }
+
+  static ProductNutrientLevels? _parseNutrientLevels(dynamic json) {
+    if (json is! Map) return null;
+    return ProductNutrientLevels(
+      fat: _parseLevel(json['fat']),
+      saturatedFat: _parseLevel(json['saturated-fat']),
+      sugars: _parseLevel(json['sugars']),
+      salt: _parseLevel(json['salt']),
+    );
+  }
+
+  static NutrientLevel _parseLevel(dynamic value) {
+    switch (value?.toString().toLowerCase()) {
+      case 'low':
+        return NutrientLevel.low;
+      case 'moderate':
+        return NutrientLevel.moderate;
+      case 'high':
+        return NutrientLevel.high;
+      default:
+        return NutrientLevel.unknown;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -93,11 +125,18 @@ class ProductModel {
       'image_front_url': imageFrontUrl,
       'nutrition_grades': nutritionGrade,
       'ecoscore_grade': ecoScore,
+      'nova_group': novaGroup,
       'ingredients_text': ingredientsText,
       'allergens_tags': allergensTags,
       'categories_tags': categoriesTags,
       'additives_tags': additivesTags,
       'nutriments': nutriments.toJson(),
+      'nutrient_levels': nutrientLevels != null ? {
+        'fat': nutrientLevels!.fat.name,
+        'saturated-fat': nutrientLevels!.saturatedFat.name,
+        'sugars': nutrientLevels!.sugars.name,
+        'salt': nutrientLevels!.salt.name,
+      } : null,
     };
   }
 

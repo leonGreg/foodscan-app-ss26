@@ -48,14 +48,14 @@ class RecentScanCard extends StatelessWidget {
                 AppDimensions.borderRadiusMedium,
               ),
               color: const Color(AppColors.lightGray),
-              image: imageUrl != null
+              image: imageUrl != null && imageUrl!.isNotEmpty
                   ? DecorationImage(
                       image: NetworkImage(imageUrl!),
                       fit: BoxFit.cover,
                     )
-                  : const DecorationImage(
-                      image: NetworkImage(AppStrings.placeholderImageUrl),
-                      fit: BoxFit.cover,
+                  : DecorationImage(
+                      image: AssetImage(AppStrings.noImagePlaceholder),
+                      fit: BoxFit.contain,
                     ),
             ),
           ),

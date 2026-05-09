@@ -110,5 +110,14 @@
   "visitWebsite": "Open Food Facts Website besuchen",
   "exploreData": "Daten erkunden",
   "noScansYet": "Noch keine Scans",
-  "tapScanButtonToGetStarted": "Drücken Sie die Schaltfläche zum Scannen, um zu beginnen"
+  "tapScanButtonToGetStarted": "Drücken Sie die Schaltfläche zum Scannen, um zu beginnen",
+  "noAdditivesFound": "Keine Zusatzstoffe gefunden",
+  "noNutritionDataFound": "Keine Nährwertangaben gefunden",
+  "nutritionalValuesPer100g": "Nährwertangaben (pro 100g)",
+  "unknown": "Unbekannt",
+  "nova1": "Unverarbeitet",
+  "nova2": "Verarbeitete Zutaten",
+  "nova3": "Verarbeitetes Lebensmittel",
+  "nova4": "Hochverarbeitet",
+  "errorFetchingProduct": "Fehler beim Abrufen des Produkts"
 }

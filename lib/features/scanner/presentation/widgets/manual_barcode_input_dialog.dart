@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 

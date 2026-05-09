@@ -769,6 +769,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap the scan button to get started'**
   String get tapScanButtonToGetStarted;
+
+  /// No description provided for @noAdditivesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No additives found'**
+  String get noAdditivesFound;
+
+  /// No description provided for @noNutritionDataFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No nutrition data found'**
+  String get noNutritionDataFound;
+
+  /// No description provided for @nutritionalValuesPer100g.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutritional Values (per 100g)'**
+  String get nutritionalValuesPer100g;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @nova1.
+  ///
+  /// In en, this message translates to:
+  /// **'Unprocessed'**
+  String get nova1;
+
+  /// No description provided for @nova2.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed ingredients'**
+  String get nova2;
+
+  /// No description provided for @nova3.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed foods'**
+  String get nova3;
+
+  /// No description provided for @nova4.
+  ///
+  /// In en, this message translates to:
+  /// **'Ultra-processed'**
+  String get nova4;
+
+  /// No description provided for @errorFetchingProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Error fetching product'**
+  String get errorFetchingProduct;
 }
 
 class _AppLocalizationsDelegate

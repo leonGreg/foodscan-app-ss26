@@ -366,4 +366,31 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get tapScanButtonToGetStarted =>
       'Drücken Sie die Schaltfläche zum Scannen, um zu beginnen';
+
+  @override
+  String get noAdditivesFound => 'Keine Zusatzstoffe gefunden';
+
+  @override
+  String get noNutritionDataFound => 'Keine Nährwertangaben gefunden';
+
+  @override
+  String get nutritionalValuesPer100g => 'Nährwertangaben (pro 100g)';
+
+  @override
+  String get unknown => 'Unbekannt';
+
+  @override
+  String get nova1 => 'Unverarbeitet';
+
+  @override
+  String get nova2 => 'Verarbeitete Zutaten';
+
+  @override
+  String get nova3 => 'Verarbeitetes Lebensmittel';
+
+  @override
+  String get nova4 => 'Hochverarbeitet';
+
+  @override
+  String get errorFetchingProduct => 'Fehler beim Abrufen des Produkts';
 }

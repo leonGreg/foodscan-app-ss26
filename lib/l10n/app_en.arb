@@ -110,5 +110,14 @@
   "visitWebsite": "Visit Open Food Facts Website",
   "exploreData": "Explore the Data",
   "noScansYet": "No scans yet",
-  "tapScanButtonToGetStarted": "Tap the scan button to get started"
+  "tapScanButtonToGetStarted": "Tap the scan button to get started",
+  "noAdditivesFound": "No additives found",
+  "noNutritionDataFound": "No nutrition data found",
+  "nutritionalValuesPer100g": "Nutritional Values (per 100g)",
+  "unknown": "Unknown",
+  "nova1": "Unprocessed",
+  "nova2": "Processed ingredients",
+  "nova3": "Processed foods",
+  "nova4": "Ultra-processed",
+  "errorFetchingProduct": "Error fetching product"
 }

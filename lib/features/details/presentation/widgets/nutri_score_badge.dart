@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/config/constants/nutrition.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 
 class NutriScoreBadge extends StatelessWidget {
   final String? nutritionGrade;
@@ -23,6 +24,7 @@ class NutriScoreBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final score = _getNutriScore();
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       decoration: BoxDecoration(
@@ -45,11 +47,11 @@ class NutriScoreBadge extends StatelessWidget {
                 const Icon(
                   Icons.eco_outlined,
                   color: Colors.green,
-                  size: AppDimensions.iconSizeMedium,
+                  size: 20,
                 ),
                 const SizedBox(width: AppDimensions.paddingSmall),
                 Text(
-                  'Nutri-Score',
+                  l10n.nutriScore,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: const Color(AppColors.mediumGray),
@@ -64,14 +66,14 @@ class NutriScoreBadge extends StatelessWidget {
               right: AppDimensions.paddingMedium,
               bottom: AppDimensions.paddingLarge,
             ),
-            child: _buildBadge(context, score),
+            child: _buildBadge(context, score, l10n),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBadge(BuildContext context, NutriScore? score) {
+  Widget _buildBadge(BuildContext context, NutriScore? score, AppLocalizations l10n) {
     if (score == null) {
       return Container(
         width: double.infinity,
@@ -82,7 +84,7 @@ class NutriScoreBadge extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppDimensions.borderRadiusLarge),
         ),
         child: Text(
-          'UNKNOWN',
+          l10n.unknown.toUpperCase(),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.grey,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/core/models/product_model.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 
 class ProductTabs extends StatefulWidget {
   final Product product;
@@ -17,18 +18,20 @@ class _ProductTabsState extends State<ProductTabs> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       children: [
-        _buildTabSwitcher(),
+        _buildTabSwitcher(l10n),
         const SizedBox(height: AppDimensions.paddingMedium),
         _selectedIndex == 0
-            ? _buildAdditivesList(widget.product.additivesTags)
-            : _buildNutritionTable(widget.product.nutriments),
+            ? _buildAdditivesList(widget.product.additivesTags, l10n)
+            : _buildNutritionTable(widget.product.nutriments, l10n),
       ],
     );
   }
 
-  Widget _buildTabSwitcher() {
+  Widget _buildTabSwitcher(AppLocalizations l10n) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
@@ -44,8 +47,8 @@ class _ProductTabsState extends State<ProductTabs> {
       ),
       child: Row(
         children: [
-          Expanded(child: _buildTabItem(0, 'Additives')),
-          Expanded(child: _buildTabItem(1, 'Nutrition')),
+          Expanded(child: _buildTabItem(0, l10n.additives)),
+          Expanded(child: _buildTabItem(1, l10n.nutrition)),
         ],
       ),
     );
@@ -80,22 +83,22 @@ class _ProductTabsState extends State<ProductTabs> {
           label,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected
-                ? (isDarkMode ? Colors.white : Colors.black)
-                : Colors.grey,
-          ),
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color: isSelected
+                    ? (isDarkMode ? Colors.white : Colors.black)
+                    : Colors.grey,
+              ),
         ),
       ),
     );
   }
 
-  Widget _buildAdditivesList(List<String> additives) {
+  Widget _buildAdditivesList(List<String> additives, AppLocalizations l10n) {
     if (additives.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(AppDimensions.paddingLarge),
-          child: Text('No additives found'),
+          padding: const EdgeInsets.all(AppDimensions.paddingLarge),
+          child: Text(l10n.noAdditivesFound),
         ),
       );
     }
@@ -132,8 +135,8 @@ class _ProductTabsState extends State<ProductTabs> {
                   Text(
                     additive,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(width: 4),
                   const Icon(Icons.circle, color: Colors.orange, size: 8),
@@ -154,15 +157,17 @@ class _ProductTabsState extends State<ProductTabs> {
     );
   }
 
-  Widget _buildNutritionTable(ProductNutriments? nutriments) {
+  Widget _buildNutritionTable(ProductNutriments? nutriments, AppLocalizations l10n) {
     if (nutriments == null) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(AppDimensions.paddingLarge),
-          child: Text('No nutrition data found'),
+          padding: const EdgeInsets.all(AppDimensions.paddingLarge),
+          child: Text(l10n.noNutritionDataFound),
         ),
       );
     }
+
+    final levels = widget.product.nutrientLevels;
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -179,52 +184,66 @@ class _ProductTabsState extends State<ProductTabs> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Nutritional Values (per 100g)',
+            l10n.nutritionalValuesPer100g,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: AppDimensions.paddingMedium),
           _buildNutritionRow(
-            'Energy',
+            l10n.energy,
             '${nutriments.energyKcal100g?.toStringAsFixed(0) ?? '-'} kcal',
-            Colors.red,
+            Colors.grey, // Energy doesn't have a level
           ),
           _buildNutritionRow(
-            'Fat',
+            l10n.fat,
             '${nutriments.fat100g?.toStringAsFixed(1) ?? '-'} g',
-            Colors.red,
+            _getLevelColor(levels?.fat),
           ),
           _buildNutritionRow(
-            'Saturated Fat',
+            l10n.saturatedFat,
             '${nutriments.saturatedFat100g?.toStringAsFixed(1) ?? '-'} g',
-            Colors.red,
+            _getLevelColor(levels?.saturatedFat),
             isIndented: true,
           ),
           _buildNutritionRow(
-            'Carbohydrates',
+            l10n.carbohydrates,
             '${nutriments.carbohydrates100g?.toStringAsFixed(1) ?? '-'} g',
-            Colors.grey,
+            Colors.grey, // Carbohydrates don't have a level
           ),
           _buildNutritionRow(
-            'Sugars',
+            l10n.sugars,
             '${nutriments.sugars100g?.toStringAsFixed(1) ?? '-'} g',
-            Colors.red,
+            _getLevelColor(levels?.sugars),
             isIndented: true,
           ),
           _buildNutritionRow(
-            'Proteins',
+            l10n.proteins,
             '${nutriments.proteins100g?.toStringAsFixed(1) ?? '-'} g',
-            Colors.orange,
+            Colors.grey, // Proteins don't have a level
           ),
           _buildNutritionRow(
-            'Salt',
+            l10n.salt,
             '${nutriments.salt100g?.toStringAsFixed(2) ?? '-'} g',
-            Colors.green,
+            _getLevelColor(levels?.salt),
           ),
         ],
       ),
     );
+  }
+
+  Color _getLevelColor(NutrientLevel? level) {
+    switch (level) {
+      case NutrientLevel.low:
+        return Colors.green;
+      case NutrientLevel.moderate:
+        return Colors.orange;
+      case NutrientLevel.high:
+        return Colors.red;
+      case NutrientLevel.unknown:
+      default:
+        return Colors.grey;
+    }
   }
 
   Widget _buildNutritionRow(

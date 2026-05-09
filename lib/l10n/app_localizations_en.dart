@@ -363,4 +363,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapScanButtonToGetStarted => 'Tap the scan button to get started';
+
+  @override
+  String get noAdditivesFound => 'No additives found';
+
+  @override
+  String get noNutritionDataFound => 'No nutrition data found';
+
+  @override
+  String get nutritionalValuesPer100g => 'Nutritional Values (per 100g)';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get nova1 => 'Unprocessed';
+
+  @override
+  String get nova2 => 'Processed ingredients';
+
+  @override
+  String get nova3 => 'Processed foods';
+
+  @override
+  String get nova4 => 'Ultra-processed';
+
+  @override
+  String get errorFetchingProduct => 'Error fetching product';
 }

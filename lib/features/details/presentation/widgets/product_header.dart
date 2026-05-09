@@ -3,6 +3,8 @@ import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/config/constants/strings.dart';
 import 'package:food_scan/core/models/product_model.dart';
+import 'package:food_scan/features/details/presentation/widgets/nova_badge.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 
 class ProductHeader extends StatelessWidget {
   final Product product;
@@ -12,6 +14,7 @@ class ProductHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -39,14 +42,14 @@ class ProductHeader extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 AppDimensions.borderRadiusMedium,
               ),
-              image: product.imageFrontUrl != null
+              image: product.imageFrontUrl != null && product.imageFrontUrl!.isNotEmpty
                   ? DecorationImage(
                       image: NetworkImage(product.imageFrontUrl!),
                       fit: BoxFit.cover,
                     )
                   : const DecorationImage(
-                      image: NetworkImage(AppStrings.placeholderImageUrl),
-                      fit: BoxFit.cover,
+                      image: AssetImage(AppStrings.noImagePlaceholder),
+                      fit: BoxFit.contain,
                     ),
             ),
           ),
@@ -68,51 +71,16 @@ class ProductHeader extends StatelessWidget {
                 const SizedBox(height: AppDimensions.paddingSmall),
                 // Barcode
                 Text(
-                  'Barcode: ${product.code}',
+                  '${l10n.barcode}: ${product.code}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Color(AppColors.mediumGray),
+                    color: const Color(AppColors.mediumGray),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: AppDimensions.paddingMedium),
-                // NOVA Badge and Category
-                Row(
-                  children: [
-                    // NOVA Badge
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimensions.paddingSmall,
-                        vertical: AppDimensions.paddingXSmall / 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(
-                          AppDimensions.borderRadiusSmall,
-                        ),
-                      ),
-                      child: Text(
-                        'NOVA 4',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: AppDimensions.paddingSmall),
-                    // Ultra-processed Text
-                    Expanded(
-                      child: Text(
-                        'Ultra-processed',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Color(AppColors.mediumGray),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
+                // NOVA Badge
+                NovaBadge(novaGroup: product.novaGroup),
               ],
             ),
           ),

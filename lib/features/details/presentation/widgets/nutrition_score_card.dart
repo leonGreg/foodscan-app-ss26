@@ -81,7 +81,7 @@ class NutritionScoreCard extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        'Moderate', // TODO: Get localized rating text
+                        localizations.moderate,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: nutriScore?.color ?? Colors.grey,
                           fontWeight: FontWeight.bold,
