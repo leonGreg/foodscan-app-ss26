@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants/additives.dart';
-import '../../config/constants/colors.dart';
+import 'package:food_scan/config/constants/nutrition.dart';
+import 'package:food_scan/core/constants/additives.dart';
+import 'package:food_scan/config/constants/colors.dart';
 
 class Product {
   const Product({
@@ -41,32 +42,23 @@ class Product {
   final Map<String, String> additiveNames;
   final Map<String, AdditiveRisk> additiveRisks;
 
+  NutriScore? get nutriScoreEnum => NutriScore.fromString(nutritionGrade);
+  EcoScore? get ecoScoreEnum => EcoScore.fromString(ecoScore);
+
   bool get isOrganic => labelsTags.any((tag) => tag.contains('organic'));
 
   int get overallScore {
     double score = 0;
 
     // 1. Nutri-Score (60%)
-    double nutriScorePoints = 0;
-    switch (nutritionGrade?.toLowerCase()) {
-      case 'a':
-        nutriScorePoints = 100;
-        break;
-      case 'b':
-        nutriScorePoints = 80;
-        break;
-      case 'c':
-        nutriScorePoints = 60;
-        break;
-      case 'd':
-        nutriScorePoints = 40;
-        break;
-      case 'e':
-        nutriScorePoints = 20;
-        break;
-      default:
-        nutriScorePoints = 50; // Neutral for unknown
-    }
+    double nutriScorePoints = switch (nutriScoreEnum) {
+      NutriScore.a => 100,
+      NutriScore.b => 80,
+      NutriScore.c => 60,
+      NutriScore.d => 40,
+      NutriScore.e => 20,
+      null => 50,
+    };
     score += nutriScorePoints * 0.6;
 
     // 2. Additives (30%)
