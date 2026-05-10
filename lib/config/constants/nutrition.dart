@@ -12,6 +12,11 @@ enum NutriScore {
   final Color color;
 
   const NutriScore(this.letter, this.color);
+
+  static NutriScore? fromString(String? score) {
+    if (score == null) return null;
+    return NutriScore.values.where((e) => e.letter.toLowerCase() == score.toLowerCase()).firstOrNull;
+  }
 }
 
 enum EcoScore {
@@ -25,4 +30,9 @@ enum EcoScore {
   final Color color;
 
   const EcoScore(this.letter, this.color);
+
+  static EcoScore? fromString(String? score) {
+    if (score == null) return null;
+    return EcoScore.values.where((e) => e.letter.toLowerCase() == score.toLowerCase()).firstOrNull;
+  }
 }

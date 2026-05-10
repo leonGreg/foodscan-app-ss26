@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
+import 'package:food_scan/core/models/product_model.dart';
 import 'package:food_scan/features/details/presentation/bloc/details_bloc.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
 import 'package:food_scan/features/details/presentation/widgets/product_header.dart';
@@ -31,94 +32,81 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          color: Theme.of(context).iconTheme.color,
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
+      ),
       body: BlocListener<DetailsBloc, DetailsState>(
         listener: (context, state) {
           if (state is DetailsLoaded) {
-            context.read<HomeBloc>().add(
-              AddProductToHistoryEvent(state.product),
-            );
+            context.read<HomeBloc>().add(AddProductToHistoryEvent(state.product));
           }
         },
         child: BlocBuilder<DetailsBloc, DetailsState>(
           builder: (context, state) {
             if (state is DetailsLoading) {
-              return Scaffold(
-                appBar: AppBar(
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => context.pop(),
-                  ),
-                ),
-                body: const Center(child: CircularProgressIndicator()),
-              );
+              return const Center(child: CircularProgressIndicator());
             } else if (state is DetailsError) {
-              return Scaffold(
-                appBar: AppBar(
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => context.pop(),
-                  ),
-                ),
-                body: Center(child: Text(state.message)),
-              );
+              return Center(child: Text(state.message));
             } else if (state is DetailsLoaded) {
-              final product = state.product;
-              return Scaffold(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                appBar: AppBar(
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  leading: IconButton(
-                    color: Theme.of(context).iconTheme.color,
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => context.pop(),
-                  ),
-                ),
-                body: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProductHeader(product: product),
-                      const SizedBox(height: AppDimensions.paddingLarge),
-                      NutritionScoreCard(product: product),
-                      const SizedBox(height: AppDimensions.paddingLarge),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppDimensions.paddingLarge,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: NutriScoreBadge(
-                                nutritionGrade: product.nutritionGrade,
-                              ),
-                            ),
-                            const SizedBox(width: AppDimensions.paddingMedium),
-                            Expanded(
-                              child: EcoScoreCard(ecoScore: product.ecoScore),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: AppDimensions.paddingLarge),
-                      AdditiveSummaryCard(additives: product.additivesTags),
-                      const SizedBox(height: AppDimensions.paddingLarge),
-                      ProductTabs(product: product),
-                      const SizedBox(height: AppDimensions.paddingLarge),
-                    ],
-                  ),
-                ),
-              );
+              return _ProductDetails(product: state.product);
             }
-
             return const SizedBox.shrink();
           },
         ),
+      ),
+    );
+  }
+}
+
+class _ProductDetails extends StatelessWidget {
+  final Product product;
+
+  const _ProductDetails({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ProductHeader(product: product),
+          const SizedBox(height: AppDimensions.paddingLarge),
+          NutritionScoreCard(product: product),
+          const SizedBox(height: AppDimensions.paddingLarge),
+          _ScoreBadges(product: product),
+          const SizedBox(height: AppDimensions.paddingLarge),
+          AdditiveSummaryCard(additives: product.additivesTags),
+          const SizedBox(height: AppDimensions.paddingLarge),
+          ProductTabs(product: product),
+          const SizedBox(height: AppDimensions.paddingLarge),
+        ],
+      ),
+    );
+  }
+}
+
+class _ScoreBadges extends StatelessWidget {
+  final Product product;
+
+  const _ScoreBadges({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimensions.paddingLarge),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: NutriScoreBadge(nutritionGrade: product.nutritionGrade)),
+          const SizedBox(width: AppDimensions.paddingMedium),
+          Expanded(child: EcoScoreCard(ecoScore: product.ecoScore)),
+        ],
       ),
     );
   }

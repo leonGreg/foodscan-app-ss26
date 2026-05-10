@@ -3,6 +3,7 @@ import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/core/constants/additives.dart';
 import 'package:food_scan/core/models/product_model.dart';
+import 'package:food_scan/core/widgets/app_card.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 import 'package:food_scan/features/details/presentation/widgets/additive_info_dialog.dart';
 
@@ -24,16 +25,33 @@ class _ProductTabsState extends State<ProductTabs> {
 
     return Column(
       children: [
-        _buildTabSwitcher(l10n),
+        _TabSwitcher(
+          selectedIndex: _selectedIndex,
+          labels: [l10n.additives, l10n.nutrition],
+          onChanged: (index) => setState(() => _selectedIndex = index),
+        ),
         const SizedBox(height: AppDimensions.paddingMedium),
         _selectedIndex == 0
-            ? _buildAdditivesList(widget.product.additivesTags, l10n)
-            : _buildNutritionTable(widget.product.nutriments, l10n),
+            ? _AdditivesList(product: widget.product)
+            : _NutritionTable(product: widget.product),
       ],
     );
   }
+}
 
-  Widget _buildTabSwitcher(AppLocalizations l10n) {
+class _TabSwitcher extends StatelessWidget {
+  final int selectedIndex;
+  final List<String> labels;
+  final ValueChanged<int> onChanged;
+
+  const _TabSwitcher({
+    required this.selectedIndex,
+    required this.labels,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
@@ -48,54 +66,61 @@ class _ProductTabsState extends State<ProductTabs> {
         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusXXLarge),
       ),
       child: Row(
-        children: [
-          Expanded(child: _buildTabItem(0, l10n.additives)),
-          Expanded(child: _buildTabItem(1, l10n.nutrition)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTabItem(int index, String label) {
-    final isSelected = _selectedIndex == index;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    return GestureDetector(
-      onTap: () => setState(() => _selectedIndex = index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? (isDarkMode ? Colors.grey[800] : Colors.white)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(
-            AppDimensions.borderRadiusXXLarge,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+        children: List.generate(labels.length, (index) {
+          final isSelected = selectedIndex == index;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => onChanged(index),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? (isDarkMode ? Colors.grey[800] : Colors.white)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(
+                    AppDimensions.borderRadiusXXLarge,
                   ),
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected
-                ? (isDarkMode ? Colors.white : Colors.black)
-                : Colors.grey,
-          ),
-        ),
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Text(
+                  labels[index],
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    color: isSelected
+                        ? (isDarkMode ? Colors.white : Colors.black)
+                        : Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
+}
 
-  Widget _buildAdditivesList(List<String> additives, AppLocalizations l10n) {
+class _AdditivesList extends StatelessWidget {
+  final Product product;
+
+  const _AdditivesList({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final additives = product.additivesTags;
+
     if (additives.isEmpty) {
       return Center(
         child: Padding(
@@ -114,56 +139,69 @@ class _ProductTabsState extends State<ProductTabs> {
       itemCount: additives.length,
       itemBuilder: (context, index) {
         final tag = additives[index];
-        final additiveName = tag.replaceAll('en:', '').toUpperCase();
+        final formattedTag = AdditiveRisk.formatTag(tag);
         final risk = AdditiveRisk.getFromTag(tag);
 
-        return Container(
+        return AppCard(
           margin: const EdgeInsets.only(bottom: AppDimensions.paddingSmall),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              AppDimensions.borderRadiusLarge,
-            ),
-            border: Border.all(
-              color: const Color(AppColors.borderGray).withValues(alpha: 0.3),
-            ),
-          ),
+          padding: EdgeInsets.zero,
+          onTap: () => AdditiveInfoDialog.show(context, tag, product),
           child: ListTile(
-            leading: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    additiveName,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Icon(Icons.circle, color: risk.color, size: 8),
-                ],
-              ),
-            ),
+            leading: _TagBadge(tag: formattedTag, riskColor: risk.color),
             title: Text(
-              additiveName,
+              product.additiveNames[tag] ?? formattedTag,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             trailing: const Icon(Icons.chevron_right, color: Colors.grey),
-            onTap: () => AdditiveInfoDialog.show(context, tag, widget.product),
           ),
         );
       },
     );
   }
+}
 
-  Widget _buildNutritionTable(
-    ProductNutriments? nutriments,
-    AppLocalizations l10n,
-  ) {
+class _TagBadge extends StatelessWidget {
+  final String tag;
+  final Color riskColor;
+
+  const _TagBadge({required this.tag, required this.riskColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            tag,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(width: 4),
+          Icon(Icons.circle, color: riskColor, size: 8),
+        ],
+      ),
+    );
+  }
+}
+
+class _NutritionTable extends StatelessWidget {
+  final Product product;
+
+  const _NutritionTable({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final nutriments = product.nutriments;
+    final levels = product.nutrientLevels;
+
     if (nutriments == null) {
       return Center(
         child: Padding(
@@ -173,18 +211,9 @@ class _ProductTabsState extends State<ProductTabs> {
       );
     }
 
-    final levels = widget.product.nutrientLevels;
-
-    return Container(
+    return AppCard(
       margin: const EdgeInsets.symmetric(
         horizontal: AppDimensions.paddingLarge,
-      ),
-      padding: const EdgeInsets.all(AppDimensions.paddingMedium),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppDimensions.borderRadiusLarge),
-        border: Border.all(
-          color: const Color(AppColors.borderGray).withValues(alpha: 0.3),
-        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,54 +225,67 @@ class _ProductTabsState extends State<ProductTabs> {
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: AppDimensions.paddingMedium),
-          _buildNutritionRow(
-            l10n.energy,
-            '${nutriments.energyKcal100g?.toStringAsFixed(0) ?? '-'} kcal',
-            Colors.grey, // Energy doesn't have a level
+          _NutritionRow(
+            label: l10n.energy,
+            value:
+                '${nutriments.energyKcal100g?.toStringAsFixed(0) ?? '-'} kcal',
+            statusColor: Colors.grey,
           ),
-          _buildNutritionRow(
-            l10n.fat,
-            '${nutriments.fat100g?.toStringAsFixed(1) ?? '-'} g',
-            levels?.fat.color ?? Colors.grey,
+          _NutritionRow(
+            label: l10n.fat,
+            value: '${nutriments.fat100g?.toStringAsFixed(1) ?? '-'} g',
+            statusColor: levels?.fat.color ?? Colors.grey,
           ),
-          _buildNutritionRow(
-            l10n.saturatedFat,
-            '${nutriments.saturatedFat100g?.toStringAsFixed(1) ?? '-'} g',
-            levels?.saturatedFat.color ?? Colors.grey,
+          _NutritionRow(
+            label: l10n.saturatedFat,
+            value:
+                '${nutriments.saturatedFat100g?.toStringAsFixed(1) ?? '-'} g',
+            statusColor: levels?.saturatedFat.color ?? Colors.grey,
             isIndented: true,
           ),
-          _buildNutritionRow(
-            l10n.carbohydrates,
-            '${nutriments.carbohydrates100g?.toStringAsFixed(1) ?? '-'} g',
-            Colors.grey, // Carbohydrates don't have a level
+          _NutritionRow(
+            label: l10n.carbohydrates,
+            value:
+                '${nutriments.carbohydrates100g?.toStringAsFixed(1) ?? '-'} g',
+            statusColor: Colors.grey,
           ),
-          _buildNutritionRow(
-            l10n.sugars,
-            '${nutriments.sugars100g?.toStringAsFixed(1) ?? '-'} g',
-            levels?.sugars.color ?? Colors.grey,
+          _NutritionRow(
+            label: l10n.sugars,
+            value: '${nutriments.sugars100g?.toStringAsFixed(1) ?? '-'} g',
+            statusColor: levels?.sugars.color ?? Colors.grey,
             isIndented: true,
           ),
-          _buildNutritionRow(
-            l10n.proteins,
-            '${nutriments.proteins100g?.toStringAsFixed(1) ?? '-'} g',
-            Colors.grey, // Proteins don't have a level
+          _NutritionRow(
+            label: l10n.proteins,
+            value: '${nutriments.proteins100g?.toStringAsFixed(1) ?? '-'} g',
+            statusColor: Colors.grey,
           ),
-          _buildNutritionRow(
-            l10n.salt,
-            '${nutriments.salt100g?.toStringAsFixed(2) ?? '-'} g',
-            levels?.salt.color ?? Colors.grey,
+          _NutritionRow(
+            label: l10n.salt,
+            value: '${nutriments.salt100g?.toStringAsFixed(2) ?? '-'} g',
+            statusColor: levels?.salt.color ?? Colors.grey,
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildNutritionRow(
-    String label,
-    String value,
-    Color statusColor, {
-    bool isIndented = false,
-  }) {
+class _NutritionRow extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color statusColor;
+  final bool isIndented;
+
+  const _NutritionRow({
+    required this.label,
+    required this.value,
+    required this.statusColor,
+    this.isIndented = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
         bottom: AppDimensions.paddingSmall,

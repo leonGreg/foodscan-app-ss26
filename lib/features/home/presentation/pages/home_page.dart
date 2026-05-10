@@ -21,248 +21,262 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return const Scaffold(
       body: Stack(
         children: [
-          Column(
-            children: [
-              Container(
-                height: AppDimensions.appBarExpandedHeight,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color(AppColors.primaryGreen),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(0),
-                    bottomRight: Radius.circular(0),
-                  ),
-                ),
-                padding: const EdgeInsets.only(
-                  top: AppDimensions.appBarTopPadding,
-                  left: AppDimensions.paddingLarge,
-                  right: AppDimensions.paddingLarge,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          localizations.appTitle,
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: BlocBuilder<ThemeBloc, ThemeState>(
-                                builder: (context, state) {
-                                  return Icon(
-                                    state.themeMode == ThemeMode.dark
-                                        ? Icons.light_mode
-                                        : Icons.dark_mode,
-                                    color: Colors.white,
-                                  );
-                                },
-                              ),
-                              onPressed: () {
-                                context.read<ThemeBloc>().add(
-                                  ToggleThemeEvent(),
-                                );
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.info_outline,
-                                color: Colors.white,
-                              ),
-                              onPressed: () => {},
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppDimensions.paddingXSmall),
-                    Text(
-                      localizations.homeSubtitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppDimensions.paddingXLarge + 8),
-              // Content
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.paddingLarge,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.history,
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                          const SizedBox(width: AppDimensions.paddingSmall),
-                          Text(
-                            localizations.recentScans,
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppDimensions.paddingMedium),
-                      // Recent Scans List
-                      Expanded(
-                        child: BlocBuilder<HomeBloc, HomeState>(
-                          builder: (context, state) {
-                            if (state is HomeLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              ); // TODO: Replace with Skeleton loader
-                            } else if (state is HomeError) {
-                              return Text(state.message);
-                            }
+          _HomeContent(),
+          _SearchBarOverlay(),
+        ],
+      ),
+    );
+  }
+}
 
-                            if (state is HomeLoaded) {
-                              if (state.recentScans.isEmpty) {
-                                return const NoScansWidget();
-                              }
+class _HomeContent extends StatelessWidget {
+  const _HomeContent();
 
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: state.recentScans.length,
-                                itemBuilder: (context, index) {
-                                  final product = state.recentScans[index];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      context.pushNamed(
-                                        'details',
-                                        pathParameters: {
-                                          'barcode': product.code,
-                                        },
-                                      );
-                                    },
-                                    child: RecentScanCard(
-                                      productName: product.productName,
-                                      barcode: product.code,
-                                      nutriScore: NutriScore.values.firstWhere(
-                                        (e) =>
-                                            e.letter == product.nutritionGrade,
-                                        orElse: () => NutriScore.c,
-                                      ),
-                                      imageUrl: product.imageFrontUrl,
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-
-                            return const NoScansWidget();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          // Search bar and scan button
-          Positioned(
-            top: AppDimensions.searchBarTopOffset,
-            left: AppDimensions.paddingLarge,
-            right: AppDimensions.paddingLarge,
-            child: Row(
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const _HomeHeader(),
+        const SizedBox(height: AppDimensions.paddingXLarge + 8),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimensions.paddingLarge),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Container(
-                    height: AppDimensions.searchBarHeight,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? const Color(AppColors.surfaceDark)
-                          : const Color(AppColors.white),
-                      borderRadius: BorderRadius.circular(
-                        AppDimensions.borderRadiusMedium,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: AppDimensions.shadowBlurRadius,
-                          offset: const Offset(0, AppDimensions.shadowOffsetY),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: localizations.searchHint,
-                        border: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: AppDimensions.paddingMedium - 1, // 15
-                        ),
-                      ),
-                    ),
-                  ),
+                _SectionHeader(
+                  title: AppLocalizations.of(context)!.recentScans,
+                  icon: Icons.history,
                 ),
-                const SizedBox(width: AppDimensions.paddingSmall),
-                // Scan button
-                GestureDetector(
-                  onTap: () async {
-                    final scannerBloc = context.read<ScannerBloc>();
-                    final router = GoRouter.of(context);
-                    final result = await router.push('/scanner');
-
-                    if (result != null && result is String) {
-                      // Navigate to details page with the barcode
-                      await router.pushNamed(
-                        'details',
-                        pathParameters: {'barcode': result},
-                      );
-                      // Reset scanner after navigating back
-                      scannerBloc.add(const ScannerResetEvent());
-                    }
-                  },
-                  child: Container(
-                    width: AppDimensions.searchBarHeight,
-                    height: AppDimensions.searchBarHeight,
-                    decoration: BoxDecoration(
-                      color: Color(AppColors.primaryGreen),
-                      borderRadius: BorderRadius.circular(
-                        AppDimensions.borderRadiusMedium,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: AppDimensions.shadowBlurRadius,
-                          offset: const Offset(0, AppDimensions.shadowOffsetY),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.qr_code_scanner,
-                      color: Color(AppColors.white),
-                    ),
-                  ),
-                ),
+                const SizedBox(height: AppDimensions.paddingMedium),
+                const Expanded(child: _RecentScansList()),
               ],
             ),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _HomeHeader extends StatelessWidget {
+  const _HomeHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Container(
+      height: AppDimensions.appBarExpandedHeight,
+      width: double.infinity,
+      decoration: const BoxDecoration(color: Color(AppColors.primaryGreen)),
+      padding: const EdgeInsets.only(
+        top: AppDimensions.appBarTopPadding,
+        left: AppDimensions.paddingLarge,
+        right: AppDimensions.paddingLarge,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                l10n.appTitle,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const _HeaderActions(),
+            ],
+          ),
+          const SizedBox(height: AppDimensions.paddingXSmall),
+          Text(
+            l10n.homeSubtitle,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Colors.white.withValues(alpha: 0.9),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _HeaderActions extends StatelessWidget {
+  const _HeaderActions();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          icon: BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) => Icon(
+              state.themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+              color: Colors.white,
+            ),
+          ),
+          onPressed: () => context.read<ThemeBloc>().add(ToggleThemeEvent()),
+        ),
+        IconButton(
+          icon: const Icon(Icons.info_outline, color: Colors.white),
+          onPressed: () => {},
+        ),
+      ],
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final IconData icon;
+
+  const _SectionHeader({required this.title, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: Theme.of(context).iconTheme.color),
+        const SizedBox(width: AppDimensions.paddingSmall),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+}
+
+class _RecentScansList extends StatelessWidget {
+  const _RecentScansList();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoading) return const Center(child: CircularProgressIndicator());
+        if (state is HomeError) return Text(state.message);
+        if (state is HomeLoaded) {
+          if (state.recentScans.isEmpty) return const NoScansWidget();
+          return ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: state.recentScans.length,
+            itemBuilder: (context, index) {
+              final product = state.recentScans[index];
+              return GestureDetector(
+                onTap: () => context.pushNamed('details', pathParameters: {'barcode': product.code}),
+                child: RecentScanCard(
+                  productName: product.productName,
+                  barcode: product.code,
+                  nutriScore: NutriScore.fromString(product.nutritionGrade) ?? NutriScore.c,
+                  imageUrl: product.imageFrontUrl,
+                ),
+              );
+            },
+          );
+        }
+        return const NoScansWidget();
+      },
+    );
+  }
+}
+
+class _SearchBarOverlay extends StatelessWidget {
+  const _SearchBarOverlay();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return Positioned(
+      top: AppDimensions.searchBarTopOffset,
+      left: AppDimensions.paddingLarge,
+      right: AppDimensions.paddingLarge,
+      child: Row(
+        children: [
+          Expanded(
+            child: _CustomSearchBar(hint: l10n.searchHint, isDarkMode: isDarkMode),
+          ),
+          const SizedBox(width: AppDimensions.paddingSmall),
+          const _ScanButton(),
+        ],
+      ),
+    );
+  }
+}
+
+class _CustomSearchBar extends StatelessWidget {
+  final String hint;
+  final bool isDarkMode;
+
+  const _CustomSearchBar({required this.hint, required this.isDarkMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: AppDimensions.searchBarHeight,
+      decoration: BoxDecoration(
+        color: isDarkMode ? const Color(AppColors.surfaceDark) : const Color(AppColors.white),
+        borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: AppDimensions.shadowBlurRadius,
+            offset: const Offset(0, AppDimensions.shadowOffsetY),
+          ),
+        ],
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: hint,
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          prefixIcon: Icon(Icons.search, color: Theme.of(context).iconTheme.color),
+          contentPadding: const EdgeInsets.symmetric(vertical: AppDimensions.paddingMedium - 1),
+        ),
+      ),
+    );
+  }
+}
+
+class _ScanButton extends StatelessWidget {
+  const _ScanButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        final scannerBloc = context.read<ScannerBloc>();
+        final router = GoRouter.of(context);
+        final result = await router.push('/scanner');
+
+        if (result != null && result is String) {
+          await router.pushNamed('details', pathParameters: {'barcode': result});
+          scannerBloc.add(const ScannerResetEvent());
+        }
+      },
+      child: Container(
+        width: AppDimensions.searchBarHeight,
+        height: AppDimensions.searchBarHeight,
+        decoration: BoxDecoration(
+          color: const Color(AppColors.primaryGreen),
+          borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: AppDimensions.shadowBlurRadius,
+              offset: const Offset(0, AppDimensions.shadowOffsetY),
+            ),
+          ],
+        ),
+        child: const Icon(Icons.qr_code_scanner, color: Color(AppColors.white)),
       ),
     );
   }
