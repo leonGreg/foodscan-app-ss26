@@ -4,6 +4,7 @@ import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/core/constants/additives.dart';
 import 'package:food_scan/core/models/product_model.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
+import 'package:food_scan/features/details/presentation/widgets/additive_info_dialog.dart';
 
 class ProductTabs extends StatefulWidget {
   final Product product;
@@ -152,9 +153,7 @@ class _ProductTabsState extends State<ProductTabs> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             trailing: const Icon(Icons.chevron_right, color: Colors.grey),
-            onTap: () {
-              // Handle tap
-            },
+            onTap: () => AdditiveInfoDialog.show(context, tag, widget.product),
           ),
         );
       },

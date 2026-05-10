@@ -13,6 +13,8 @@ class AppColors {
   static const int warningOrange = 0xFFFF6B35;
   static const int successGreen = 0xFF27AE60;
   static const int infoBlue = 0xFF1976D2;
+  static const int infoLightBlue = 0xFFEFF6FF;
+  static const int infoDarkBlue = 0xFF1E40AF;
 
   // Neutral Colors
   static const int white = 0xFFFFFFFF;

@@ -56,13 +56,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Geben Sie die Barcodenummer ein, um nach einem Produkt zu suchen';
 
   @override
-  String get demoScan => 'Demo-Scan (Nutella)';
-
-  @override
   String get overallRating => 'Gesamtbewertung';
 
   @override
-  String get moderate => 'Mittelmäßig';
+  String get moderate => 'Mittel';
 
   @override
   String get poor => 'Schlecht';
@@ -107,13 +104,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get novaGroup => 'NOVA Gruppe';
 
   @override
+  String get highRisk => 'Hohes Risiko';
+
+  @override
   String get moderateRisk => 'Mittleres Risiko';
 
   @override
-  String get ultraProcessedFoods => 'Stark verarbeitete Lebensmittel';
+  String get lowRisk => 'Niedriges Risiko';
 
   @override
-  String get group4 => 'Gruppe 4';
+  String get high => 'Hoch';
+
+  @override
+  String get low => 'Niedrig';
+
+  @override
+  String get avoid => 'Vermeiden';
+
+  @override
+  String get limit => 'Einschränken';
+
+  @override
+  String get safe => 'Sicher';
+
+  @override
+  String get total => 'Gesamt';
 
   @override
   String get aboutNutriScore => 'Über Nutri-Score';
@@ -125,9 +140,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get nutriScoreDescription =>
       'Der Nutri-Score ist ein Nährwertkennzeichnungssystem, das den Nährwert von Produkten in einen einfachen Code aus 5 Buchstaben mit jeweils eigener Farbe übersetzt. Jedes Produkt erhält eine Bewertung basierend auf einem wissenschaftlichen Algorithmus.';
-
-  @override
-  String get thisProductGradeE => 'Dieses Produkt: Stufe E';
 
   @override
   String get fruitsVegetablesNuts => 'Obst, Gemüse, Nüsse';
@@ -147,25 +159,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Der Eco-Score bewertet die Umweltauswirkungen von Lebensmitteln von A bis E. Er berücksichtigt Produktionsmethoden, Transport, Verpackung und die Auswirkungen auf die Artenvielfalt.';
 
   @override
-  String get thisProductGradeUnknown => 'Dieses Produkt: Stufe UNBEKANNT';
-
-  @override
   String get impactFactors => 'Einflussfaktoren';
-
-  @override
-  String get carbonFootprint =>
-      'CO2-Fußabdruck: CO2-Emissionen aus Produktion und Transport';
-
-  @override
-  String get packagingInfo =>
-      'Verpackung: Verwendete Materialien und Recyclingfähigkeit';
-
-  @override
-  String get originInfo => 'Herkunft: Transportweg und -methode';
-
-  @override
-  String get productionMethodInfo =>
-      'Produktionsmethode: Landwirtschaftliche Praktiken und Zertifizierungen';
 
   @override
   String get gradeClassifications => 'Stufen-Klassifizierung';
@@ -193,30 +187,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get baseScore => 'Basispunktzahl';
 
   @override
-  String get startingPoint => 'Ausgangspunkt für alle Produkte';
-
-  @override
-  String get ratingScale => 'Bewertungsskala';
-
-  @override
-  String get goodScore => 'Gut: 70-100 Punkte';
-
-  @override
-  String get moderateScore => 'Mittel: 40-69 Punkte';
-
-  @override
-  String get poorScore => 'Schlecht: 0-39 Punkte';
-
-  @override
-  String get nutriScoreEInfo => 'Stufe E - Ernährungsqualität';
-
-  @override
-  String get ecoScoreUnknownInfo => 'Stufe UNBEKANNT - Umweltauswirkungen';
-
-  @override
-  String get additivesInfo => '0 hohes Risiko, 2 mittleres Risiko Zusatzstoffe';
-
-  @override
   String get productNotFound => 'Produkt nicht gefunden';
 
   @override
@@ -231,7 +201,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addProductDescription =>
-      'Sie können Millionen von Nutzern helfen, indem Sie dieses Produkt zu Open Food Facts hinzufügen! Es dauert nur wenige Minuten und macht die Datenbank vollständiger.';
+      'Sie können Millionen von Nutzern helfen, indem Sie dieses Produkt zu Open Food Facts hinzufügen! It dauert nur wenige Minuten und macht die Datenbank vollständiger.';
 
   @override
   String get takePhotos =>
@@ -378,6 +348,27 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get nutritionalValuesPer100g => 'Nährwertangaben (pro 100g)';
+
+  @override
+  String get additiveInformation => 'Informationen über diesen Zusatzstoff';
+
+  @override
+  String get additiveName => 'Name';
+
+  @override
+  String get riskLevel => 'Risikostufe';
+
+  @override
+  String get lowRiskDescription =>
+      'Dieser Zusatzstoff gilt allgemein als sicher und hat in üblichen Mengen keine bekannten negativen Auswirkungen auf die Gesundheit.';
+
+  @override
+  String get moderateRiskDescription =>
+      'Dieser Zusatzstoff ist allgemein sicher, sollte aber in Maßen verzehrt werden. Manche Menschen können empfindlich darauf reagieren.';
+
+  @override
+  String get highRiskDescription =>
+      'Dieser Zusatzstoff ist umstritten oder wird mit gesundheitlichen Bedenken in Verbindung gebracht. Es wird empfohlen, den Verzehr zu vermeiden oder einzuschränken.';
 
   @override
   String get unknown => 'Unbekannt';

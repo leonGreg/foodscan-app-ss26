@@ -1,5 +1,6 @@
 import 'package:openfoodfacts/openfoodfacts.dart' as off;
 import 'package:food_scan/core/models/product_model.dart';
+import 'package:food_scan/core/constants/additives.dart';
 
 class ProductRepository {
   Future<Product?> getProduct(String barcode) async {
@@ -22,6 +23,7 @@ class ProductRepository {
             off.ProductField.NUTRIMENTS,
             off.ProductField.NUTRIENT_LEVELS,
             off.ProductField.LABELS_TAGS,
+            off.ProductField.KNOWLEDGE_PANELS,
           ],
           version: off.ProductQueryVersion.v3,
         );
@@ -34,6 +36,11 @@ class ProductRepository {
           result.product != null) {
         final apiProduct = result.product;
         if (apiProduct != null) {
+          final additiveData = _fetchAdditiveData(
+            apiProduct.additives?.ids,
+            apiProduct.knowledgePanels,
+          );
+
           return Product(
             code: apiProduct.barcode ?? barcode,
             productName: apiProduct.productName ?? 'Unknown Product',
@@ -45,10 +52,13 @@ class ProductRepository {
             ingredientsText: apiProduct.ingredientsText,
             allergensTags: apiProduct.allergens?.names ?? [],
             categoriesTags: apiProduct.categoriesTags ?? [],
-            additivesTags: apiProduct.additives?.names ?? [],
+            additivesTags: apiProduct.additives?.ids ?? [],
             labelsTags: apiProduct.labelsTags ?? [],
             nutriments: _mapNutriments(apiProduct.nutriments),
             nutrientLevels: _mapNutrientLevels(apiProduct.nutrientLevels),
+            additiveDescriptions: additiveData.descriptions,
+            additiveNames: additiveData.names,
+            additiveRisks: additiveData.risks,
           );
         }
       }
@@ -56,6 +66,64 @@ class ProductRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  ({
+    Map<String, String> names,
+    Map<String, String> descriptions,
+    Map<String, AdditiveRisk> risks,
+  })
+  _fetchAdditiveData(List<String>? tags, off.KnowledgePanels? panels) {
+    final Map<String, String> names = {};
+    final Map<String, String> descriptions = {};
+    final Map<String, AdditiveRisk> risks = {};
+
+    if (tags == null || tags.isEmpty) {
+      return (names: names, descriptions: descriptions, risks: risks);
+    }
+
+    for (final tag in tags) {
+      // 1. Try to get direct info from Knowledge Panels (additive_en:e322)
+      final panelId = 'additive_$tag';
+      final panel = panels?.panelIdToPanelMap[panelId];
+
+      if (panel != null) {
+        // Name (e.g., "E322 - Lecithine")
+        if (panel.titleElement?.title != null) {
+          names[tag] = panel.titleElement!.title!;
+        }
+
+        // Risk level from evaluation (GOOD/BAD/NEUTRAL)
+        if (panel.evaluation != null) {
+          switch (panel.evaluation!) {
+            case off.Evaluation.GOOD:
+              risks[tag] = AdditiveRisk.low;
+              break;
+            case off.Evaluation.BAD:
+              risks[tag] = AdditiveRisk.high;
+              break;
+            default:
+              risks[tag] = AdditiveRisk.moderate;
+          }
+        }
+
+        // Keep raw HTML for better rendering with flutter_widget_from_html
+        final htmlParts = panel.elements
+            ?.where((e) => e.elementType == off.KnowledgePanelElementType.TEXT)
+            .map((e) => e.textElement?.html)
+            .where((h) => h != null && h!.isNotEmpty);
+
+        if (htmlParts != null && htmlParts.isNotEmpty) {
+          descriptions[tag] = htmlParts.join('<br><br>');
+        }
+      }
+
+      // 2. Fallbacks for missing panel data
+      names.putIfAbsent(tag, () => tag.replaceFirst('en:', '').toUpperCase());
+      risks.putIfAbsent(tag, () => AdditiveRisk.getFromTag(tag));
+    }
+
+    return (names: names, descriptions: descriptions, risks: risks);
   }
 
   ProductNutriments? _mapNutriments(off.Nutriments? nutriments) {

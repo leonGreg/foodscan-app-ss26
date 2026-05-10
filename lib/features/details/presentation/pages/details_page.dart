@@ -8,6 +8,7 @@ import 'package:food_scan/features/details/presentation/widgets/product_header.d
 import 'package:food_scan/features/details/presentation/widgets/nutrition_score_card.dart';
 import 'package:food_scan/features/details/presentation/widgets/nutri_score_badge.dart';
 import 'package:food_scan/features/details/presentation/widgets/eco_score_card.dart';
+import 'package:food_scan/features/details/presentation/widgets/additive_summary_card.dart';
 import 'package:food_scan/features/details/presentation/widgets/product_tabs.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -104,6 +105,8 @@ class _DetailsPageState extends State<DetailsPage> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: AppDimensions.paddingLarge),
+                      AdditiveSummaryCard(additives: product.additivesTags),
                       const SizedBox(height: AppDimensions.paddingLarge),
                       ProductTabs(product: product),
                       const SizedBox(height: AppDimensions.paddingLarge),

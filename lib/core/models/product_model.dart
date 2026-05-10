@@ -18,6 +18,9 @@ class Product {
     this.labelsTags = const [],
     this.nutriments,
     this.nutrientLevels,
+    this.additiveDescriptions = const {},
+    this.additiveNames = const {},
+    this.additiveRisks = const {},
   });
 
   final String code;
@@ -34,6 +37,9 @@ class Product {
   final List<String> labelsTags;
   final ProductNutriments? nutriments;
   final ProductNutrientLevels? nutrientLevels;
+  final Map<String, String> additiveDescriptions;
+  final Map<String, String> additiveNames;
+  final Map<String, AdditiveRisk> additiveRisks;
 
   bool get isOrganic => labelsTags.any((tag) => tag.contains('organic'));
 
@@ -68,17 +74,13 @@ class Product {
     if (additivesTags.isNotEmpty) {
       double totalDeduction = 0;
       for (final tag in additivesTags) {
-        final risk = AdditiveRisk.getFromTag(tag);
+        final risk = additiveRisks[tag] ?? AdditiveRisk.low;
 
         if (risk == AdditiveRisk.high) {
           totalDeduction += 25;
         } else if (risk == AdditiveRisk.moderate) {
           totalDeduction += 10;
-        } else if (risk == AdditiveRisk.low) {
-          totalDeduction += 0;
         }
-        // Falls der Tag gar nicht im Mapping ist, wurde er oben als moderate gewertet
-        // Wir könnten getFromTag anpassen, um null zurückzugeben für echtes "Unbekannt"
       }
       additiveScore = (100 - totalDeduction).clamp(0, 100).toDouble();
     }

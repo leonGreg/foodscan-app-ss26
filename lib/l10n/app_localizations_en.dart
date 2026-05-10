@@ -55,9 +55,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Type in the barcode number to search for a product';
 
   @override
-  String get demoScan => 'Demo Scan (Nutella)';
-
-  @override
   String get overallRating => 'Overall Rating';
 
   @override
@@ -106,13 +103,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get novaGroup => 'NOVA Group';
 
   @override
+  String get highRisk => 'High Risk';
+
+  @override
   String get moderateRisk => 'Moderate Risk';
 
   @override
-  String get ultraProcessedFoods => 'Ultra-processed foods';
+  String get lowRisk => 'Low Risk';
 
   @override
-  String get group4 => 'Group 4';
+  String get high => 'High';
+
+  @override
+  String get low => 'Low';
+
+  @override
+  String get avoid => 'Avoid';
+
+  @override
+  String get limit => 'Limit';
+
+  @override
+  String get safe => 'Safe';
+
+  @override
+  String get total => 'Total';
 
   @override
   String get aboutNutriScore => 'About Nutri-Score';
@@ -124,9 +139,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get nutriScoreDescription =>
       'Nutri-Score is a nutrition label that converts the nutritional value of products into a simple code consisting of 5 letters, each with its own color. Each product is awarded a score based on a scientific algorithm.';
-
-  @override
-  String get thisProductGradeE => 'This Product: Grade E';
 
   @override
   String get fruitsVegetablesNuts => 'Fruits, Vegetables, Nuts';
@@ -146,24 +158,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Eco-Score evaluates the environmental impact of food products from A to E. It considers production methods, transportation, packaging, and the impact on biodiversity.';
 
   @override
-  String get thisProductGradeUnknown => 'This Product: Grade UNKNOWN';
-
-  @override
   String get impactFactors => 'Impact Factors';
-
-  @override
-  String get carbonFootprint =>
-      'Carbon Footprint: CO2 emissions from production and transportation';
-
-  @override
-  String get packagingInfo => 'Packaging: Materials used and recyclability';
-
-  @override
-  String get originInfo => 'Origin: Transportation distance and method';
-
-  @override
-  String get productionMethodInfo =>
-      'Production Method: Farming practices and certifications';
 
   @override
   String get gradeClassifications => 'Grade Classifications';
@@ -189,30 +184,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get baseScore => 'Base Score';
-
-  @override
-  String get startingPoint => 'Starting point for all products';
-
-  @override
-  String get ratingScale => 'Rating Scale';
-
-  @override
-  String get goodScore => 'Good: 70-100 points';
-
-  @override
-  String get moderateScore => 'Moderate: 40-69 points';
-
-  @override
-  String get poorScore => 'Poor: 0-39 points';
-
-  @override
-  String get nutriScoreEInfo => 'Grade E - Nutritional quality';
-
-  @override
-  String get ecoScoreUnknownInfo => 'Grade UNKNOWN - Environmental impact';
-
-  @override
-  String get additivesInfo => '0 high-risk, 2 moderate-risk additives';
 
   @override
   String get productNotFound => 'Product Not Found';
@@ -375,6 +346,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nutritionalValuesPer100g => 'Nutritional Values (per 100g)';
+
+  @override
+  String get additiveInformation => 'Information about this food additive';
+
+  @override
+  String get additiveName => 'Name';
+
+  @override
+  String get riskLevel => 'Risk Level';
+
+  @override
+  String get lowRiskDescription =>
+      'This additive is generally considered safe and has no known negative health effects in typical quantities.';
+
+  @override
+  String get moderateRiskDescription =>
+      'This additive is generally safe but should be consumed in moderation. Some individuals may be sensitive to it.';
+
+  @override
+  String get highRiskDescription =>
+      'This additive is controversial or linked to health concerns. It is recommended to avoid or limit its consumption.';
 
   @override
   String get unknown => 'Unknown';
