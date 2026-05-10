@@ -22,12 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Stack(
-        children: [
-          _HomeContent(),
-          _SearchBarOverlay(),
-        ],
-      ),
+      body: Stack(children: [_HomeContent(), _SearchBarOverlay()]),
     );
   }
 }
@@ -43,7 +38,9 @@ class _HomeContent extends StatelessWidget {
         const SizedBox(height: AppDimensions.paddingXLarge + 8),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimensions.paddingLarge),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimensions.paddingLarge,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -116,7 +113,9 @@ class _HeaderActions extends StatelessWidget {
         IconButton(
           icon: BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) => Icon(
-              state.themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+              state.themeMode == ThemeMode.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
               color: Colors.white,
             ),
           ),
@@ -145,7 +144,9 @@ class _SectionHeader extends StatelessWidget {
         const SizedBox(width: AppDimensions.paddingSmall),
         Text(
           title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -159,7 +160,8 @@ class _RecentScansList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state is HomeLoading) return const Center(child: CircularProgressIndicator());
+        if (state is HomeLoading)
+          return const Center(child: CircularProgressIndicator());
         if (state is HomeError) return Text(state.message);
         if (state is HomeLoaded) {
           if (state.recentScans.isEmpty) return const NoScansWidget();
@@ -169,11 +171,16 @@ class _RecentScansList extends StatelessWidget {
             itemBuilder: (context, index) {
               final product = state.recentScans[index];
               return GestureDetector(
-                onTap: () => context.pushNamed('details', pathParameters: {'barcode': product.code}),
+                onTap: () => context.pushNamed(
+                  'details',
+                  pathParameters: {'barcode': product.code},
+                ),
                 child: RecentScanCard(
                   productName: product.productName,
                   barcode: product.code,
-                  nutriScore: NutriScore.fromString(product.nutritionGrade) ?? NutriScore.c,
+                  nutriScore:
+                      NutriScore.fromString(product.nutritionGrade) ??
+                      NutriScore.c,
                   imageUrl: product.imageFrontUrl,
                 ),
               );
@@ -201,7 +208,10 @@ class _SearchBarOverlay extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: _CustomSearchBar(hint: l10n.searchHint, isDarkMode: isDarkMode),
+            child: _CustomSearchBar(
+              hint: l10n.searchHint,
+              isDarkMode: isDarkMode,
+            ),
           ),
           const SizedBox(width: AppDimensions.paddingSmall),
           const _ScanButton(),
@@ -222,7 +232,9 @@ class _CustomSearchBar extends StatelessWidget {
     return Container(
       height: AppDimensions.searchBarHeight,
       decoration: BoxDecoration(
-        color: isDarkMode ? const Color(AppColors.surfaceDark) : const Color(AppColors.white),
+        color: isDarkMode
+            ? const Color(AppColors.surfaceDark)
+            : const Color(AppColors.white),
         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
         boxShadow: [
           BoxShadow(
@@ -238,8 +250,13 @@ class _CustomSearchBar extends StatelessWidget {
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          prefixIcon: Icon(Icons.search, color: Theme.of(context).iconTheme.color),
-          contentPadding: const EdgeInsets.symmetric(vertical: AppDimensions.paddingMedium - 1),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: AppDimensions.paddingMedium - 1,
+          ),
         ),
       ),
     );
@@ -258,7 +275,10 @@ class _ScanButton extends StatelessWidget {
         final result = await router.push('/scanner');
 
         if (result != null && result is String) {
-          await router.pushNamed('details', pathParameters: {'barcode': result});
+          await router.pushNamed(
+            'details',
+            pathParameters: {'barcode': result},
+          );
           scannerBloc.add(const ScannerResetEvent());
         }
       },

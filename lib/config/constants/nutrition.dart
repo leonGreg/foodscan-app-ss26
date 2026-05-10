@@ -15,7 +15,9 @@ enum NutriScore {
 
   static NutriScore? fromString(String? score) {
     if (score == null) return null;
-    return NutriScore.values.where((e) => e.letter.toLowerCase() == score.toLowerCase()).firstOrNull;
+    return NutriScore.values
+        .where((e) => e.letter.toLowerCase() == score.toLowerCase())
+        .firstOrNull;
   }
 }
 
@@ -33,6 +35,8 @@ enum EcoScore {
 
   static EcoScore? fromString(String? score) {
     if (score == null) return null;
-    return EcoScore.values.where((e) => e.letter.toLowerCase() == score.toLowerCase()).firstOrNull;
+    return EcoScore.values
+        .where((e) => e.letter.toLowerCase() == score.toLowerCase())
+        .firstOrNull;
   }
 }

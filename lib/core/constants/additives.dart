@@ -15,7 +15,8 @@ enum AdditiveRisk {
     return additiveRiskMapping[cleanTag] ?? AdditiveRisk.moderate;
   }
 
-  static String formatTag(String tag) => tag.replaceFirst('en:', '').toUpperCase();
+  static String formatTag(String tag) =>
+      tag.replaceFirst('en:', '').toUpperCase();
 }
 
 /// Mapping von E-Nummern zu Risikostufen.

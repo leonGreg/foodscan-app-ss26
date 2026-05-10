@@ -129,6 +129,7 @@ enum NutrientLevel {
   unknown(Colors.grey);
 
   final Color color;
+
   const NutrientLevel(this.color);
 }
 
