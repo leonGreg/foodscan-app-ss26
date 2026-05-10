@@ -54,10 +54,7 @@ class AdditiveInfoDialog extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _InfoSection(
-                        title: l10n.additiveName,
-                        content: name,
-                      ),
+                      _InfoSection(title: l10n.additiveName, content: name),
                       const SizedBox(height: AppDimensions.paddingLarge),
                       _RiskSection(
                         title: l10n.riskLevel,
@@ -66,7 +63,8 @@ class AdditiveInfoDialog extends StatelessWidget {
                       ),
                       const SizedBox(height: AppDimensions.paddingLarge),
                       _DescriptionBox(
-                        description: apiDescription ?? risk.localizedDescription(l10n),
+                        description:
+                            apiDescription ?? risk.localizedDescription(l10n),
                         isHtml: apiDescription != null,
                       ),
                     ],
@@ -99,16 +97,16 @@ class AdditiveInfoDialog extends StatelessWidget {
 
 extension on AdditiveRisk {
   String localizedName(AppLocalizations l10n) => switch (this) {
-        AdditiveRisk.low => l10n.lowRisk,
-        AdditiveRisk.moderate => l10n.moderateRisk,
-        AdditiveRisk.high => l10n.highRisk,
-      };
+    AdditiveRisk.low => l10n.lowRisk,
+    AdditiveRisk.moderate => l10n.moderateRisk,
+    AdditiveRisk.high => l10n.highRisk,
+  };
 
   String localizedDescription(AppLocalizations l10n) => switch (this) {
-        AdditiveRisk.low => l10n.lowRiskDescription,
-        AdditiveRisk.moderate => l10n.moderateRiskDescription,
-        AdditiveRisk.high => l10n.highRiskDescription,
-      };
+    AdditiveRisk.low => l10n.lowRiskDescription,
+    AdditiveRisk.moderate => l10n.moderateRiskDescription,
+    AdditiveRisk.high => l10n.highRiskDescription,
+  };
 }
 
 class _DialogHeader extends StatelessWidget {
@@ -135,15 +133,15 @@ class _DialogHeader extends StatelessWidget {
                 Text(
                   tag,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   l10n.additiveInformation,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: const Color(AppColors.mediumGray),
-                      ),
+                    color: const Color(AppColors.mediumGray),
+                  ),
                 ),
               ],
             ),
@@ -181,9 +179,9 @@ class _InfoSection extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           content,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -214,9 +212,9 @@ class _RiskSection extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               riskText,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -234,9 +232,9 @@ class _DescriptionBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
-          color: const Color(AppColors.infoDarkBlue),
-          height: 1.5,
-        );
+      color: const Color(AppColors.infoDarkBlue),
+      height: 1.5,
+    );
 
     return Container(
       width: double.infinity,
@@ -262,9 +260,9 @@ class _SectionTitle extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: const Color(AppColors.mediumGray),
-            fontWeight: FontWeight.w500,
-          ),
+        color: const Color(AppColors.mediumGray),
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }

@@ -18,10 +18,7 @@ class NutriScoreBadge extends StatelessWidget {
       title: l10n.nutriScore,
       icon: Icons.eco_outlined,
       iconColor: Colors.green,
-      child: ScoreBadge(
-        letter: score?.letter,
-        color: score?.color,
-      ),
+      child: ScoreBadge(letter: score?.letter, color: score?.color),
     );
   }
 }

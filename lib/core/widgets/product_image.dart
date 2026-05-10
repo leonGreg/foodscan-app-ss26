@@ -26,10 +26,7 @@ class ProductImage extends StatelessWidget {
         color: const Color(AppColors.lightGray),
         borderRadius: BorderRadius.circular(borderRadius),
         image: imageUrl != null && imageUrl!.isNotEmpty
-            ? DecorationImage(
-                image: NetworkImage(imageUrl!),
-                fit: BoxFit.cover,
-              )
+            ? DecorationImage(image: NetworkImage(imageUrl!), fit: BoxFit.cover)
             : const DecorationImage(
                 image: AssetImage(AppStrings.noImagePlaceholder),
                 fit: BoxFit.contain,

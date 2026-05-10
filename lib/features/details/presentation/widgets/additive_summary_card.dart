@@ -98,15 +98,33 @@ class _AdditiveSummaryCardState extends State<AdditiveSummaryCard> {
           const SizedBox(height: AppDimensions.paddingLarge),
 
           if (widget.additives.isNotEmpty) ...[
-            _buildStatRow(l10n.total, widget.additives.length.toString(), Colors.grey),
+            _buildStatRow(
+              l10n.total,
+              widget.additives.length.toString(),
+              Colors.grey,
+            ),
             const SizedBox(height: AppDimensions.paddingSmall),
-            _buildStatRow('${l10n.highRisk} (${l10n.avoid})', _highRiskCount.toString(), const Color(AppColors.dangerRed)),
+            _buildStatRow(
+              '${l10n.highRisk} (${l10n.avoid})',
+              _highRiskCount.toString(),
+              const Color(AppColors.dangerRed),
+            ),
             const SizedBox(height: AppDimensions.paddingSmall),
-            _buildStatRow('${l10n.moderateRisk} (${l10n.limit})', _moderateRiskCount.toString(), const Color(AppColors.warningOrange)),
+            _buildStatRow(
+              '${l10n.moderateRisk} (${l10n.limit})',
+              _moderateRiskCount.toString(),
+              const Color(AppColors.warningOrange),
+            ),
             const SizedBox(height: AppDimensions.paddingSmall),
-            _buildStatRow('${l10n.lowRisk} (${l10n.safe})', _lowRiskCount.toString(), const Color(AppColors.successGreen)),
+            _buildStatRow(
+              '${l10n.lowRisk} (${l10n.safe})',
+              _lowRiskCount.toString(),
+              const Color(AppColors.successGreen),
+            ),
             const SizedBox(height: AppDimensions.paddingLarge),
-            Divider(color: const Color(AppColors.borderGray).withValues(alpha: 0.3)),
+            Divider(
+              color: const Color(AppColors.borderGray).withValues(alpha: 0.3),
+            ),
             const SizedBox(height: AppDimensions.paddingMedium),
           ],
 
@@ -144,7 +162,9 @@ class _AdditiveSummaryCardState extends State<AdditiveSummaryCard> {
             vertical: AppDimensions.paddingXSmall,
           ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppDimensions.borderRadiusSmall),
+            borderRadius: BorderRadius.circular(
+              AppDimensions.borderRadiusSmall,
+            ),
             color: color.withValues(alpha: 0.15),
           ),
           child: Text(
@@ -170,16 +190,36 @@ class _AdditiveSummaryCardState extends State<AdditiveSummaryCard> {
       icon: Icons.warning_outlined,
       iconColor: const Color(AppColors.warningOrange),
       onTap: _showAdditiveDetailsBottomSheet,
-      margin: const EdgeInsets.symmetric(horizontal: AppDimensions.paddingLarge),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.paddingLarge,
+      ),
       child: Column(
         children: [
           Row(
             children: [
-              Expanded(child: _RiskBadge(label: l10n.high, count: _highRiskCount, color: const Color(AppColors.dangerRed))),
+              Expanded(
+                child: _RiskBadge(
+                  label: l10n.high,
+                  count: _highRiskCount,
+                  color: const Color(AppColors.dangerRed),
+                ),
+              ),
               const SizedBox(width: AppDimensions.paddingSmall),
-              Expanded(child: _RiskBadge(label: l10n.moderate, count: _moderateRiskCount, color: const Color(AppColors.warningOrange))),
+              Expanded(
+                child: _RiskBadge(
+                  label: l10n.moderate,
+                  count: _moderateRiskCount,
+                  color: const Color(AppColors.warningOrange),
+                ),
+              ),
               const SizedBox(width: AppDimensions.paddingSmall),
-              Expanded(child: _RiskBadge(label: l10n.low, count: _lowRiskCount, color: const Color(AppColors.successGreen))),
+              Expanded(
+                child: _RiskBadge(
+                  label: l10n.low,
+                  count: _lowRiskCount,
+                  color: const Color(AppColors.successGreen),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: AppDimensions.paddingSmall),
@@ -188,7 +228,9 @@ class _AdditiveSummaryCardState extends State<AdditiveSummaryCard> {
             children: [
               Text(
                 '${l10n.total}: ${widget.additives.length}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.grey),
               ),
               const Icon(Icons.chevron_right, color: Colors.grey),
             ],
@@ -204,7 +246,11 @@ class _RiskBadge extends StatelessWidget {
   final int count;
   final Color color;
 
-  const _RiskBadge({required this.label, required this.count, required this.color});
+  const _RiskBadge({
+    required this.label,
+    required this.count,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +275,9 @@ class _RiskBadge extends StatelessWidget {
           ),
           Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(color: color),
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: color),
           ),
         ],
       ),
@@ -275,7 +323,9 @@ class _AdditiveItemTile extends StatelessWidget {
               children: [
                 Text(
                   additiveName,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -294,7 +344,9 @@ class _AdditiveItemTile extends StatelessWidget {
               vertical: AppDimensions.paddingXSmall,
             ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppDimensions.borderRadiusSmall),
+              borderRadius: BorderRadius.circular(
+                AppDimensions.borderRadiusSmall,
+              ),
               color: risk.color.withValues(alpha: 0.15),
             ),
             child: Text(
@@ -312,9 +364,12 @@ class _AdditiveItemTile extends StatelessWidget {
 
   String _getRiskLabel(AdditiveRisk risk, AppLocalizations l10n) {
     switch (risk) {
-      case AdditiveRisk.high: return l10n.highRisk;
-      case AdditiveRisk.moderate: return l10n.moderateRisk;
-      case AdditiveRisk.low: return l10n.lowRisk;
+      case AdditiveRisk.high:
+        return l10n.highRisk;
+      case AdditiveRisk.moderate:
+        return l10n.moderateRisk;
+      case AdditiveRisk.low:
+        return l10n.lowRisk;
     }
   }
 }

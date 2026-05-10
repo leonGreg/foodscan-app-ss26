@@ -6,11 +6,7 @@ class ScoreBadge extends StatelessWidget {
   final String? letter;
   final Color? color;
 
-  const ScoreBadge({
-    super.key,
-    required this.letter,
-    required this.color,
-  });
+  const ScoreBadge({super.key, required this.letter, required this.color});
 
   @override
   Widget build(BuildContext context) {

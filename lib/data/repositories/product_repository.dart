@@ -111,7 +111,7 @@ class ProductRepository {
         final htmlParts = panel.elements
             ?.where((e) => e.elementType == off.KnowledgePanelElementType.TEXT)
             .map((e) => e.textElement?.html)
-            .where((h) => h != null && h!.isNotEmpty);
+            .where((h) => h != null && h.isNotEmpty);
 
         if (htmlParts != null && htmlParts.isNotEmpty) {
           descriptions[tag] = htmlParts.join('<br><br>');

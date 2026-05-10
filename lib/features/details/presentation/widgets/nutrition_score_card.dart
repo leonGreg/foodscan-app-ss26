@@ -18,7 +18,9 @@ class NutritionScoreCard extends StatelessWidget {
     final scoreColor = _getScoreColor(overallScore);
 
     return AppCard(
-      margin: const EdgeInsets.symmetric(horizontal: AppDimensions.paddingLarge),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.paddingLarge,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -37,10 +39,11 @@ class NutritionScoreCard extends StatelessWidget {
                   children: [
                     Text(
                       '$overallScore/100',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: scoreColor,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: scoreColor,
+                          ),
                     ),
                     const SizedBox(width: AppDimensions.paddingSmall),
                     _RatingBadge(text: ratingText, color: scoreColor),

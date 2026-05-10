@@ -44,7 +44,9 @@ class _DetailsPageState extends State<DetailsPage> {
       body: BlocListener<DetailsBloc, DetailsState>(
         listener: (context, state) {
           if (state is DetailsLoaded) {
-            context.read<HomeBloc>().add(AddProductToHistoryEvent(state.product));
+            context.read<HomeBloc>().add(
+              AddProductToHistoryEvent(state.product),
+            );
           }
         },
         child: BlocBuilder<DetailsBloc, DetailsState>(
@@ -99,11 +101,15 @@ class _ScoreBadges extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimensions.paddingLarge),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.paddingLarge,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: NutriScoreBadge(nutritionGrade: product.nutritionGrade)),
+          Expanded(
+            child: NutriScoreBadge(nutritionGrade: product.nutritionGrade),
+          ),
           const SizedBox(width: AppDimensions.paddingMedium),
           Expanded(child: EcoScoreCard(ecoScore: product.ecoScore)),
         ],

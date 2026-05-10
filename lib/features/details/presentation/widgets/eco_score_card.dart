@@ -18,10 +18,7 @@ class EcoScoreCard extends StatelessWidget {
       title: l10n.ecoScore,
       icon: Icons.local_fire_department_outlined,
       iconColor: Colors.orange,
-      child: ScoreBadge(
-        letter: score?.letter,
-        color: score?.color,
-      ),
+      child: ScoreBadge(letter: score?.letter, color: score?.color),
     );
   }
 }
