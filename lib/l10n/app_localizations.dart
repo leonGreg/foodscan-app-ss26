@@ -188,12 +188,6 @@ abstract class AppLocalizations {
   /// **'Type in the barcode number to search for a product'**
   String get enterBarcodeInstructions;
 
-  /// No description provided for @demoScan.
-  ///
-  /// In en, this message translates to:
-  /// **'Demo Scan (Nutella)'**
-  String get demoScan;
-
   /// No description provided for @overallRating.
   ///
   /// In en, this message translates to:
@@ -205,6 +199,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Moderate'**
   String get moderate;
+
+  /// No description provided for @poor.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get poor;
 
   /// No description provided for @nutriScore.
   ///
@@ -284,23 +284,59 @@ abstract class AppLocalizations {
   /// **'NOVA Group'**
   String get novaGroup;
 
+  /// No description provided for @highRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'High Risk'**
+  String get highRisk;
+
   /// No description provided for @moderateRisk.
   ///
   /// In en, this message translates to:
   /// **'Moderate Risk'**
   String get moderateRisk;
 
-  /// No description provided for @ultraProcessedFoods.
+  /// No description provided for @lowRisk.
   ///
   /// In en, this message translates to:
-  /// **'Ultra-processed foods'**
-  String get ultraProcessedFoods;
+  /// **'Low Risk'**
+  String get lowRisk;
 
-  /// No description provided for @group4.
+  /// No description provided for @high.
   ///
   /// In en, this message translates to:
-  /// **'Group 4'**
-  String get group4;
+  /// **'High'**
+  String get high;
+
+  /// No description provided for @low.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get low;
+
+  /// No description provided for @avoid.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid'**
+  String get avoid;
+
+  /// No description provided for @limit.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit'**
+  String get limit;
+
+  /// No description provided for @safe.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe'**
+  String get safe;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
 
   /// No description provided for @aboutNutriScore.
   ///
@@ -319,12 +355,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nutri-Score is a nutrition label that converts the nutritional value of products into a simple code consisting of 5 letters, each with its own color. Each product is awarded a score based on a scientific algorithm.'**
   String get nutriScoreDescription;
-
-  /// No description provided for @thisProductGradeE.
-  ///
-  /// In en, this message translates to:
-  /// **'This Product: Grade E'**
-  String get thisProductGradeE;
 
   /// No description provided for @fruitsVegetablesNuts.
   ///
@@ -356,41 +386,11 @@ abstract class AppLocalizations {
   /// **'Eco-Score evaluates the environmental impact of food products from A to E. It considers production methods, transportation, packaging, and the impact on biodiversity.'**
   String get ecoScoreDescription;
 
-  /// No description provided for @thisProductGradeUnknown.
-  ///
-  /// In en, this message translates to:
-  /// **'This Product: Grade UNKNOWN'**
-  String get thisProductGradeUnknown;
-
   /// No description provided for @impactFactors.
   ///
   /// In en, this message translates to:
   /// **'Impact Factors'**
   String get impactFactors;
-
-  /// No description provided for @carbonFootprint.
-  ///
-  /// In en, this message translates to:
-  /// **'Carbon Footprint: CO2 emissions from production and transportation'**
-  String get carbonFootprint;
-
-  /// No description provided for @packagingInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'Packaging: Materials used and recyclability'**
-  String get packagingInfo;
-
-  /// No description provided for @originInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'Origin: Transportation distance and method'**
-  String get originInfo;
-
-  /// No description provided for @productionMethodInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'Production Method: Farming practices and certifications'**
-  String get productionMethodInfo;
 
   /// No description provided for @gradeClassifications.
   ///
@@ -439,54 +439,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Base Score'**
   String get baseScore;
-
-  /// No description provided for @startingPoint.
-  ///
-  /// In en, this message translates to:
-  /// **'Starting point for all products'**
-  String get startingPoint;
-
-  /// No description provided for @ratingScale.
-  ///
-  /// In en, this message translates to:
-  /// **'Rating Scale'**
-  String get ratingScale;
-
-  /// No description provided for @goodScore.
-  ///
-  /// In en, this message translates to:
-  /// **'Good: 70-100 points'**
-  String get goodScore;
-
-  /// No description provided for @moderateScore.
-  ///
-  /// In en, this message translates to:
-  /// **'Moderate: 40-69 points'**
-  String get moderateScore;
-
-  /// No description provided for @poorScore.
-  ///
-  /// In en, this message translates to:
-  /// **'Poor: 0-39 points'**
-  String get poorScore;
-
-  /// No description provided for @nutriScoreEInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'Grade E - Nutritional quality'**
-  String get nutriScoreEInfo;
-
-  /// No description provided for @ecoScoreUnknownInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'Grade UNKNOWN - Environmental impact'**
-  String get ecoScoreUnknownInfo;
-
-  /// No description provided for @additivesInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'0 high-risk, 2 moderate-risk additives'**
-  String get additivesInfo;
 
   /// No description provided for @productNotFound.
   ///
@@ -769,6 +721,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap the scan button to get started'**
   String get tapScanButtonToGetStarted;
+
+  /// No description provided for @noAdditivesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No additives found'**
+  String get noAdditivesFound;
+
+  /// No description provided for @noNutritionDataFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No nutrition data found'**
+  String get noNutritionDataFound;
+
+  /// No description provided for @nutritionalValuesPer100g.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutritional Values (per 100g)'**
+  String get nutritionalValuesPer100g;
+
+  /// No description provided for @additiveInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Information about this food additive'**
+  String get additiveInformation;
+
+  /// No description provided for @additiveName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get additiveName;
+
+  /// No description provided for @riskLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk Level'**
+  String get riskLevel;
+
+  /// No description provided for @lowRiskDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This additive is generally considered safe and has no known negative health effects in typical quantities.'**
+  String get lowRiskDescription;
+
+  /// No description provided for @moderateRiskDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This additive is generally safe but should be consumed in moderation. Some individuals may be sensitive to it.'**
+  String get moderateRiskDescription;
+
+  /// No description provided for @highRiskDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This additive is controversial or linked to health concerns. It is recommended to avoid or limit its consumption.'**
+  String get highRiskDescription;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @nova1.
+  ///
+  /// In en, this message translates to:
+  /// **'Unprocessed'**
+  String get nova1;
+
+  /// No description provided for @nova2.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed ingredients'**
+  String get nova2;
+
+  /// No description provided for @nova3.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed foods'**
+  String get nova3;
+
+  /// No description provided for @nova4.
+  ///
+  /// In en, this message translates to:
+  /// **'Ultra-processed'**
+  String get nova4;
+
+  /// No description provided for @errorFetchingProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Error fetching product'**
+  String get errorFetchingProduct;
 }
 
 class _AppLocalizationsDelegate

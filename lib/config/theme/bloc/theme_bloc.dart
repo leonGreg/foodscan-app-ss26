@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'theme_event.dart';
+
 part 'theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
@@ -12,7 +13,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   }
 
   void _onToggleTheme(ToggleThemeEvent event, Emitter<ThemeState> emit) {
-    final newMode = state.themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    final newMode = state.themeMode == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
     emit(ThemeState(newMode));
   }
 

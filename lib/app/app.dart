@@ -5,6 +5,7 @@ import 'package:food_scan/config/theme/bloc/theme_bloc.dart';
 import 'package:food_scan/config/router/app_router.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
 import 'package:food_scan/features/scanner/presentation/bloc/scanner_bloc.dart';
+import 'package:food_scan/features/details/presentation/bloc/details_bloc.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
 class FoodScanApp extends StatelessWidget {
@@ -18,9 +19,8 @@ class FoodScanApp extends StatelessWidget {
         BlocProvider(
           create: (context) => HomeBloc()..add(const LoadRecentScansEvent()),
         ),
-        BlocProvider(
-          create: (context) => ScannerBloc(),
-        ),
+        BlocProvider(create: (context) => ScannerBloc()),
+        BlocProvider(create: (context) => DetailsBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {

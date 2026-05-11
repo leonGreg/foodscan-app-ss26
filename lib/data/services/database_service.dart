@@ -23,11 +23,7 @@ class DatabaseService {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, 'food_scanner_local.db');
 
-    return openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    return openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -62,19 +58,15 @@ class DatabaseService {
   Future<void> cacheProduct(ProductModel product) async {
     final db = await database;
 
-    await db.insert(
-      'cached_products',
-      {
-        'barcode': product.code,
-        'product_name': product.productName,
-        'brand': product.brands,
-        'image_url': product.imageFrontUrl,
-        'nutri_score': product.nutritionGrade,
-        'raw_json': jsonEncode(product.toJson()),
-        'updated_at': DateTime.now().toIso8601String(),
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await db.insert('cached_products', {
+      'barcode': product.code,
+      'product_name': product.productName,
+      'brand': product.brands,
+      'image_url': product.imageFrontUrl,
+      'nutri_score': product.nutritionGrade,
+      'raw_json': jsonEncode(product.toJson()),
+      'updated_at': DateTime.now().toIso8601String(),
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<ProductModel?> getCachedProduct(String barcode) async {
@@ -102,14 +94,10 @@ class DatabaseService {
   Future<void> addFavorite(String barcode) async {
     final db = await database;
 
-    await db.insert(
-      'favorite_products',
-      {
-        'barcode': barcode,
-        'created_at': DateTime.now().toIso8601String(),
-      },
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
+    await db.insert('favorite_products', {
+      'barcode': barcode,
+      'created_at': DateTime.now().toIso8601String(),
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
   Future<void> removeFavorite(String barcode) async {
@@ -149,13 +137,10 @@ class DatabaseService {
   Future<void> addScanHistory(String barcode) async {
     final db = await database;
 
-    await db.insert(
-      'scan_history',
-      {
-        'barcode': barcode,
-        'scanned_at': DateTime.now().toIso8601String(),
-      },
-    );
+    await db.insert('scan_history', {
+      'barcode': barcode,
+      'scanned_at': DateTime.now().toIso8601String(),
+    });
   }
 
   Future<List<String>> getScanHistoryBarcodes() async {

@@ -16,7 +16,7 @@ class HomeLoading extends HomeState {
 }
 
 class HomeLoaded extends HomeState {
-  final List<dynamic> recentScans;
+  final List<Product> recentScans;
 
   const HomeLoaded({required this.recentScans});
 
@@ -32,4 +32,3 @@ class HomeError extends HomeState {
   @override
   List<Object?> get props => [message];
 }
-
