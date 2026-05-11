@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_scan/features/auth/presentation/pages/login_page.dart';
+import 'package:food_scan/features/auth/presentation/pages/profile_page.dart';
 import 'package:food_scan/features/auth/presentation/pages/register_page.dart';
 import 'package:food_scan/features/home/presentation/pages/home_page.dart';
 import 'package:food_scan/features/scanner/presentation/pages/scanner_page.dart';
@@ -15,6 +16,7 @@ class AppRouter {
   static const String home = '/';
   static const String scanner = '/scanner';
   static const String details = '/details/:barcode';
+  static const String profile = '/profile';
 
   static final GoRouter router = GoRouter(
     initialLocation: home,
@@ -64,6 +66,11 @@ class AppRouter {
           final barcode = state.pathParameters['barcode']!;
           return DetailsPage(barcode: barcode);
         },
+      ),
+      GoRoute(
+        path: profile,
+        name: 'profile',
+        builder: (context, state) => const ProfilePage(),
       ),
     ],
   );

@@ -436,4 +436,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountSection => 'Account';
+
+  @override
+  String get loginTitle => 'Log in';
+
+  @override
+  String get loginSubtitle => 'Welcome back!';
+
+  @override
+  String get loginButton => 'Log in';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get noAccountYet => 'Don\'t have an account?';
+
+  @override
+  String get registerNow => 'Sign up';
+
+  @override
+  String get registerTitle => 'Sign up';
+
+  @override
+  String get registerSubtitle => 'Create a new account';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get nameRequired => 'Name is required';
+
+  @override
+  String get confirmPasswordLabel => 'Confirm password';
+
+  @override
+  String get confirmPasswordRequired => 'Please confirm your password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords don\'t match';
+
+  @override
+  String get registerButton => 'Sign up';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get loginNow => 'Log in';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Invalid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zxing/flutter_zxing.dart';
+import 'package:go_router/go_router.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 import 'package:food_scan/features/scanner/presentation/bloc/scanner_bloc.dart';
@@ -55,7 +56,7 @@ class _ScannerPageState extends State<ScannerPage> {
       body: BlocListener<ScannerBloc, ScannerState>(
         listener: (context, state) {
           if (state is ScannerBarcodeDetected) {
-            Navigator.of(context).pop(state.barcode);
+            context.pop(state.barcode);
           } else if (state is ScannerError) {
             // TODO: Show error message to user
           }

@@ -9,6 +9,7 @@ import 'package:food_scan/features/auth/presentation/widgets/auth_error_message.
 import 'package:food_scan/features/auth/presentation/widgets/auth_header.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_switch_row.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -25,6 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
+  late AppLocalizations _l10n;
 
   @override
   void dispose() {
@@ -49,6 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    _l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -60,8 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
           return Column(
             children: [
               AuthHeader(
-                title: 'Registrieren',
-                subtitle: 'Neues Konto erstellen',
+                title: _l10n.registerTitle,
+                subtitle: _l10n.registerSubtitle,
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -74,22 +77,22 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _nameController,
-                          label: 'Name',
+                          label: _l10n.nameLabel,
                           validator: (v) => v == null || v.trim().isEmpty
-                              ? 'Name ist erforderlich'
+                              ? _l10n.nameRequired
                               : null,
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _emailController,
-                          label: 'E-Mail',
+                          label: _l10n.emailLabel,
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _passwordController,
-                          label: 'Passwort',
+                          label: _l10n.passwordLabel,
                           obscureText: _obscurePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -106,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _confirmPasswordController,
-                          label: 'Passwort bestätigen',
+                          label: _l10n.confirmPasswordLabel,
                           obscureText: _obscureConfirm,
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -120,10 +123,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           validator: (v) {
                             if (v == null || v.isEmpty) {
-                              return 'Passwort bestätigen ist erforderlich';
+                              return _l10n.confirmPasswordRequired;
                             }
                             if (v != _passwordController.text) {
-                              return 'Passwörter stimmen nicht überein';
+                              return _l10n.passwordsDoNotMatch;
                             }
                             return null;
                           },
@@ -146,9 +149,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : const Text(
-                                    'Registrieren',
-                                    style: TextStyle(
+                                : Text(
+                                    _l10n.registerButton,
+                                    style: const TextStyle(
                                       fontSize: AppDimensions.fontSizeLarge,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -159,8 +162,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         const AuthDivider(),
                         const SizedBox(height: AppDimensions.paddingLarge),
                         AuthSwitchRow(
-                          question: 'Bereits ein Konto?',
-                          actionLabel: 'Jetzt anmelden',
+                          question: _l10n.alreadyHaveAccount,
+                          actionLabel: _l10n.loginNow,
                           onTap: () => context.go(AppRouter.login),
                         ),
                       ],
@@ -176,18 +179,16 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String? _validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return 'E-Mail ist erforderlich';
+    if (value == null || value.trim().isEmpty) return _l10n.emailRequired;
     if (!RegExp(r'^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$').hasMatch(value.trim())) {
-      return 'Ungültige E-Mail-Adresse';
+      return _l10n.emailInvalid;
     }
     return null;
   }
 
   String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'Passwort ist erforderlich';
-    if (value.length < 6) {
-      return 'Passwort muss mindestens 6 Zeichen lang sein';
-    }
+    if (value == null || value.isEmpty) return _l10n.passwordRequired;
+    if (value.length < 6) return _l10n.passwordTooShort;
     return null;
   }
 }

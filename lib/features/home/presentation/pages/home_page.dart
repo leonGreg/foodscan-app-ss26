@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_scan/config/router/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
@@ -122,8 +123,8 @@ class _HeaderActions extends StatelessWidget {
           onPressed: () => context.read<ThemeBloc>().add(ToggleThemeEvent()),
         ),
         IconButton(
-          icon: const Icon(Icons.info_outline, color: Colors.white),
-          onPressed: () => {},
+          icon: const Icon(Icons.account_circle_outlined, color: Colors.white),
+          onPressed: () => context.push(AppRouter.profile),
         ),
       ],
     );

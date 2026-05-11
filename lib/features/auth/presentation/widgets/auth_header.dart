@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 
 class AuthHeader extends StatelessWidget {
   final String title;
@@ -37,7 +38,7 @@ class AuthHeader extends StatelessWidget {
               ),
               const SizedBox(width: AppDimensions.paddingSmall),
               Text(
-                'FoodScan',
+                AppLocalizations.of(context)!.appTitle,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

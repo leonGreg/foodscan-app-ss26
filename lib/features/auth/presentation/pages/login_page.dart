@@ -9,6 +9,7 @@ import 'package:food_scan/features/auth/presentation/widgets/auth_error_message.
 import 'package:food_scan/features/auth/presentation/widgets/auth_header.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_switch_row.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  late AppLocalizations _l10n;
 
   @override
   void dispose() {
@@ -43,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -53,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context, state) {
           return Column(
             children: [
-              AuthHeader(title: 'Anmelden', subtitle: 'Willkommen zurück!'),
+              AuthHeader(title: _l10n.loginTitle, subtitle: _l10n.loginSubtitle),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(AppDimensions.paddingLarge),
@@ -65,14 +68,14 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _emailController,
-                          label: 'E-Mail',
+                          label: _l10n.emailLabel,
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _passwordController,
-                          label: 'Passwort',
+                          label: _l10n.passwordLabel,
                           obscureText: _obscurePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -104,9 +107,9 @@ class _LoginPageState extends State<LoginPage> {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                : const Text(
-                                    'Anmelden',
-                                    style: TextStyle(
+                                : Text(
+                                    _l10n.loginButton,
+                                    style: const TextStyle(
                                       fontSize: AppDimensions.fontSizeLarge,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -117,8 +120,8 @@ class _LoginPageState extends State<LoginPage> {
                         const AuthDivider(),
                         const SizedBox(height: AppDimensions.paddingLarge),
                         AuthSwitchRow(
-                          question: 'Noch kein Konto?',
-                          actionLabel: 'Jetzt registrieren',
+                          question: _l10n.noAccountYet,
+                          actionLabel: _l10n.registerNow,
                           onTap: () => context.push(AppRouter.register),
                         ),
                       ],
@@ -134,18 +137,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   String? _validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return 'E-Mail ist erforderlich';
+    if (value == null || value.trim().isEmpty) return _l10n.emailRequired;
     if (!RegExp(r'^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$').hasMatch(value.trim())) {
-      return 'Ungültige E-Mail-Adresse';
+      return _l10n.emailInvalid;
     }
     return null;
   }
 
   String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'Passwort ist erforderlich';
-    if (value.length < 6) {
-      return 'Passwort muss mindestens 6 Zeichen lang sein';
-    }
+    if (value == null || value.isEmpty) return _l10n.passwordRequired;
+    if (value.length < 6) return _l10n.passwordTooShort;
     return null;
   }
 }

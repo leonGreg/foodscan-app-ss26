@@ -438,4 +438,67 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get accountSection => 'Konto';
+
+  @override
+  String get loginTitle => 'Anmelden';
+
+  @override
+  String get loginSubtitle => 'Willkommen zurück!';
+
+  @override
+  String get loginButton => 'Anmelden';
+
+  @override
+  String get emailLabel => 'E-Mail';
+
+  @override
+  String get passwordLabel => 'Passwort';
+
+  @override
+  String get noAccountYet => 'Noch kein Konto?';
+
+  @override
+  String get registerNow => 'Jetzt registrieren';
+
+  @override
+  String get registerTitle => 'Registrieren';
+
+  @override
+  String get registerSubtitle => 'Neues Konto erstellen';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get nameRequired => 'Name ist erforderlich';
+
+  @override
+  String get confirmPasswordLabel => 'Passwort bestätigen';
+
+  @override
+  String get confirmPasswordRequired => 'Bitte Passwort bestätigen';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwörter stimmen nicht überein';
+
+  @override
+  String get registerButton => 'Registrieren';
+
+  @override
+  String get alreadyHaveAccount => 'Bereits ein Konto?';
+
+  @override
+  String get loginNow => 'Jetzt anmelden';
+
+  @override
+  String get emailRequired => 'E-Mail ist erforderlich';
+
+  @override
+  String get emailInvalid => 'Ungültige E-Mail-Adresse';
+
+  @override
+  String get passwordRequired => 'Passwort ist erforderlich';
+
+  @override
+  String get passwordTooShort => 'Passwort muss mindestens 6 Zeichen lang sein';
 }
