@@ -127,5 +127,11 @@
   "nova2": "Verarbeitete Zutaten",
   "nova3": "Verarbeitetes Lebensmittel",
   "nova4": "Hochverarbeitet",
-  "errorFetchingProduct": "Fehler beim Abrufen des Produkts"
+  "errorFetchingProduct": "Fehler beim Abrufen des Produkts",
+  "profileTitle": "Profil",
+  "logout": "Abmelden",
+  "logoutConfirmTitle": "Abmelden?",
+  "logoutConfirmMessage": "Möchtest du dich wirklich abmelden?",
+  "memberSince": "Mitglied seit",
+  "accountSection": "Konto"
 }

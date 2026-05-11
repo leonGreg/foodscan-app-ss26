@@ -75,7 +75,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         AuthTextField(
                           controller: _nameController,
                           label: 'Name',
-                          hint: 'Dein Name',
                           validator: (v) => v == null || v.trim().isEmpty
                               ? 'Name ist erforderlich'
                               : null,
@@ -84,7 +83,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         AuthTextField(
                           controller: _emailController,
                           label: 'E-Mail',
-                          hint: 'ihre@email.de',
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
                         ),
@@ -92,7 +90,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         AuthTextField(
                           controller: _passwordController,
                           label: 'Passwort',
-                          hint: 'Passwort eingeben',
                           obscureText: _obscurePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -110,7 +107,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         AuthTextField(
                           controller: _confirmPasswordController,
                           label: 'Passwort bestätigen',
-                          hint: 'Passwort wiederholen',
                           obscureText: _obscureConfirm,
                           suffixIcon: IconButton(
                             icon: Icon(

@@ -418,4 +418,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorFetchingProduct => 'Error fetching product';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get logout => 'Log out';
+
+  @override
+  String get logoutConfirmTitle => 'Log out?';
+
+  @override
+  String get logoutConfirmMessage => 'Are you sure you want to log out?';
+
+  @override
+  String get memberSince => 'Member since';
+
+  @override
+  String get accountSection => 'Account';
 }

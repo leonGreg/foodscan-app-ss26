@@ -53,10 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context, state) {
           return Column(
             children: [
-              AuthHeader(
-                title: 'Anmelden',
-                subtitle: 'Willkommen zurück!',
-              ),
+              AuthHeader(title: 'Anmelden', subtitle: 'Willkommen zurück!'),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(AppDimensions.paddingLarge),
@@ -69,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                         AuthTextField(
                           controller: _emailController,
                           label: 'E-Mail',
-                          hint: 'ihre@email.de',
                           keyboardType: TextInputType.emailAddress,
                           validator: _validateEmail,
                         ),
@@ -77,7 +73,6 @@ class _LoginPageState extends State<LoginPage> {
                         AuthTextField(
                           controller: _passwordController,
                           label: 'Passwort',
-                          hint: 'Passwort eingeben',
                           obscureText: _obscurePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -124,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                         AuthSwitchRow(
                           question: 'Noch kein Konto?',
                           actionLabel: 'Jetzt registrieren',
-                          onTap: () => context.go(AppRouter.register),
+                          onTap: () => context.push(AppRouter.register),
                         ),
                       ],
                     ),

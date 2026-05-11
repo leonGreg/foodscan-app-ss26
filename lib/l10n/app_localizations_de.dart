@@ -420,4 +420,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorFetchingProduct => 'Fehler beim Abrufen des Produkts';
+
+  @override
+  String get profileTitle => 'Profil';
+
+  @override
+  String get logout => 'Abmelden';
+
+  @override
+  String get logoutConfirmTitle => 'Abmelden?';
+
+  @override
+  String get logoutConfirmMessage => 'Möchtest du dich wirklich abmelden?';
+
+  @override
+  String get memberSince => 'Mitglied seit';
+
+  @override
+  String get accountSection => 'Konto';
 }

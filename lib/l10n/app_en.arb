@@ -126,5 +126,11 @@
   "nova2": "Processed ingredients",
   "nova3": "Processed foods",
   "nova4": "Ultra-processed",
-  "errorFetchingProduct": "Error fetching product"
+  "errorFetchingProduct": "Error fetching product",
+  "profileTitle": "Profile",
+  "logout": "Log out",
+  "logoutConfirmTitle": "Log out?",
+  "logoutConfirmMessage": "Are you sure you want to log out?",
+  "memberSince": "Member since",
+  "accountSection": "Account"
 }
