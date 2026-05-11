@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
@@ -19,18 +20,93 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (imageUrl == null || imageUrl!.isEmpty) {
+      return _Placeholder(
+        width: width,
+        height: height,
+        borderRadius: borderRadius,
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: CachedNetworkImage(
+        imageUrl: imageUrl!,
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => _LoadingPlaceholder(
+          width: width,
+          height: height,
+          borderRadius: borderRadius,
+        ),
+        errorWidget: (context, url, error) => _Placeholder(
+          width: width,
+          height: height,
+          borderRadius: borderRadius,
+        ),
+      ),
+    );
+  }
+}
+
+class _LoadingPlaceholder extends StatelessWidget {
+  final double width;
+  final double height;
+  final double borderRadius;
+
+  const _LoadingPlaceholder({
+    required this.width,
+    required this.height,
+    required this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         color: const Color(AppColors.lightGray),
         borderRadius: BorderRadius.circular(borderRadius),
-        image: imageUrl != null && imageUrl!.isNotEmpty
-            ? DecorationImage(image: NetworkImage(imageUrl!), fit: BoxFit.cover)
-            : const DecorationImage(
-                image: AssetImage(AppStrings.noImagePlaceholder),
-                fit: BoxFit.contain,
-              ),
+      ),
+      child: const Center(
+        child: SizedBox(
+          width: 24,
+          height: 24,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      ),
+    );
+  }
+}
+
+class _Placeholder extends StatelessWidget {
+  final double width;
+  final double height;
+  final double borderRadius;
+
+  const _Placeholder({
+    required this.width,
+    required this.height,
+    required this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: const Color(AppColors.lightGray),
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: Image.asset(
+          AppStrings.noImagePlaceholder,
+          fit: BoxFit.contain,
+        ),
       ),
     );
   }

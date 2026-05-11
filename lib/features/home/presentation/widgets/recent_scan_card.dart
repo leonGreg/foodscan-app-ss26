@@ -9,14 +9,14 @@ import 'package:food_scan/l10n/app_localizations.dart';
 class RecentScanCard extends StatelessWidget {
   final String productName;
   final String barcode;
-  final NutriScore nutriScore;
+  final NutriScore? nutriScore;
   final String? imageUrl;
 
   const RecentScanCard({
     super.key,
     required this.productName,
     required this.barcode,
-    required this.nutriScore,
+    this.nutriScore,
     this.imageUrl,
   });
 
@@ -49,12 +49,12 @@ class RecentScanCard extends StatelessWidget {
 class _ProductInfo extends StatelessWidget {
   final String productName;
   final String barcode;
-  final NutriScore nutriScore;
+  final NutriScore? nutriScore;
 
   const _ProductInfo({
     required this.productName,
     required this.barcode,
-    required this.nutriScore,
+    this.nutriScore,
   });
 
   @override
@@ -88,7 +88,16 @@ class _ProductInfo extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppDimensions.paddingSmall),
-            _NutriScoreBadge(nutriScore: nutriScore),
+            if (nutriScore != null)
+              _NutriScoreBadge(nutriScore: nutriScore!)
+            else
+              Text(
+                l10n.unknown,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: const Color(AppColors.mediumGray),
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
           ],
         ),
       ],
