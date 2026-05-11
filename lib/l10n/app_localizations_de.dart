@@ -184,7 +184,40 @@ class AppLocalizationsDe extends AppLocalizations {
   String get totalScore => 'Gesamtpunktzahl';
 
   @override
+  String get points => 'Punkte';
+
+  @override
   String get baseScore => 'Basispunktzahl';
+
+  @override
+  String get baseScoreSubtitle => 'Ausgangspunkt für alle Produkte';
+
+  @override
+  String nutriScoreSubtitle(Object grade) {
+    return 'Stufe $grade - Ernährungsphysiologische Qualität';
+  }
+
+  @override
+  String ecoScoreSubtitle(Object grade) {
+    return 'Stufe $grade - Umweltauswirkungen';
+  }
+
+  @override
+  String additivesSubtitle(Object high, Object moderate) {
+    return '$high Hochrisiko-, $moderate moderate Zusatzstoffe';
+  }
+
+  @override
+  String get novaSubtitleUltra => 'Ultra-verarbeitete Lebensmittel';
+
+  @override
+  String get novaSubtitleProcessed => 'Verarbeitete Lebensmittel';
+
+  @override
+  String get organicBonus => 'Bio-Bonus';
+
+  @override
+  String get organicBonusSubtitle => 'Zertifiziertes Bio-Produkt';
 
   @override
   String get productNotFound => 'Produkt nicht gefunden';

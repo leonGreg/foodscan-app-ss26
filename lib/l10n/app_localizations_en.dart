@@ -183,7 +183,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalScore => 'Total Score';
 
   @override
+  String get points => 'points';
+
+  @override
   String get baseScore => 'Base Score';
+
+  @override
+  String get baseScoreSubtitle => 'Starting point for all products';
+
+  @override
+  String nutriScoreSubtitle(Object grade) {
+    return 'Grade $grade - Nutritional quality';
+  }
+
+  @override
+  String ecoScoreSubtitle(Object grade) {
+    return 'Grade $grade - Environmental impact';
+  }
+
+  @override
+  String additivesSubtitle(Object high, Object moderate) {
+    return '$high high-risk, $moderate moderate-risk additives';
+  }
+
+  @override
+  String get novaSubtitleUltra => 'Ultra-processed foods';
+
+  @override
+  String get novaSubtitleProcessed => 'Processed foods';
+
+  @override
+  String get organicBonus => 'Organic Bonus';
+
+  @override
+  String get organicBonusSubtitle => 'Certified organic product';
 
   @override
   String get productNotFound => 'Product Not Found';

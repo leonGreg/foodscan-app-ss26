@@ -160,8 +160,9 @@ class _RecentScansList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state is HomeLoading)
+        if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator());
+        }
         if (state is HomeError) return Text(state.message);
         if (state is HomeLoaded) {
           if (state.recentScans.isEmpty) return const NoScansWidget();

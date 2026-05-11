@@ -434,11 +434,65 @@ abstract class AppLocalizations {
   /// **'Total Score'**
   String get totalScore;
 
+  /// No description provided for @points.
+  ///
+  /// In en, this message translates to:
+  /// **'points'**
+  String get points;
+
   /// No description provided for @baseScore.
   ///
   /// In en, this message translates to:
   /// **'Base Score'**
   String get baseScore;
+
+  /// No description provided for @baseScoreSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting point for all products'**
+  String get baseScoreSubtitle;
+
+  /// No description provided for @nutriScoreSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade {grade} - Nutritional quality'**
+  String nutriScoreSubtitle(Object grade);
+
+  /// No description provided for @ecoScoreSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade {grade} - Environmental impact'**
+  String ecoScoreSubtitle(Object grade);
+
+  /// No description provided for @additivesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{high} high-risk, {moderate} moderate-risk additives'**
+  String additivesSubtitle(Object high, Object moderate);
+
+  /// No description provided for @novaSubtitleUltra.
+  ///
+  /// In en, this message translates to:
+  /// **'Ultra-processed foods'**
+  String get novaSubtitleUltra;
+
+  /// No description provided for @novaSubtitleProcessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed foods'**
+  String get novaSubtitleProcessed;
+
+  /// No description provided for @organicBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Organic Bonus'**
+  String get organicBonus;
+
+  /// No description provided for @organicBonusSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Certified organic product'**
+  String get organicBonusSubtitle;
 
   /// No description provided for @productNotFound.
   ///
