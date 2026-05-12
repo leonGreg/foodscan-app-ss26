@@ -248,6 +248,8 @@ class _CustomSearchBar extends StatelessWidget {
         ],
       ),
       child: TextField(
+        onChanged: (query) =>
+            context.read<HomeBloc>().add(SearchProductEvent(query)),
         decoration: InputDecoration(
           hintText: hint,
           border: InputBorder.none,
