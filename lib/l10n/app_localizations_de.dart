@@ -420,4 +420,121 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorFetchingProduct => 'Fehler beim Abrufen des Produkts';
+
+  @override
+  String get profileTitle => 'Profil';
+
+  @override
+  String get logout => 'Abmelden';
+
+  @override
+  String get logoutConfirmTitle => 'Abmelden?';
+
+  @override
+  String get logoutConfirmMessage => 'Möchtest du dich wirklich abmelden?';
+
+  @override
+  String get memberSince => 'Mitglied seit';
+
+  @override
+  String get accountSection => 'Konto';
+
+  @override
+  String get loginTitle => 'Anmelden';
+
+  @override
+  String get loginSubtitle => 'Willkommen zurück!';
+
+  @override
+  String get loginButton => 'Anmelden';
+
+  @override
+  String get forgotPassword => 'Passwort vergessen?';
+
+  @override
+  String get forgotPasswordTitle => 'Passwort zurücksetzen';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.';
+
+  @override
+  String get forgotPasswordButton => 'Reset-Link senden';
+
+  @override
+  String get backToLogin => 'Zurück zum Login';
+
+  @override
+  String get resetEmailSent =>
+      'Falls ein Konto für diese E-Mail-Adresse existiert, wurde ein Reset-Link gesendet.';
+
+  @override
+  String get forgotPasswordErrorUserNotFound =>
+      'Für diese E-Mail-Adresse existiert kein Konto.';
+
+  @override
+  String get forgotPasswordErrorNetwork =>
+      'Netzwerkfehler. Bitte überprüfe deine Internetverbindung.';
+
+  @override
+  String get forgotPasswordErrorRateLimited =>
+      'Zu viele Anfragen. Bitte versuche es später erneut.';
+
+  @override
+  String get forgotPasswordErrorGeneric =>
+      'Die Reset-E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.';
+
+  @override
+  String get emailLabel => 'E-Mail';
+
+  @override
+  String get passwordLabel => 'Passwort';
+
+  @override
+  String get noAccountYet => 'Noch kein Konto?';
+
+  @override
+  String get registerNow => 'Jetzt registrieren';
+
+  @override
+  String get registerTitle => 'Registrieren';
+
+  @override
+  String get registerSubtitle => 'Neues Konto erstellen';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get nameRequired => 'Name ist erforderlich';
+
+  @override
+  String get confirmPasswordLabel => 'Passwort bestätigen';
+
+  @override
+  String get confirmPasswordRequired => 'Bitte Passwort bestätigen';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwörter stimmen nicht überein';
+
+  @override
+  String get registerButton => 'Registrieren';
+
+  @override
+  String get alreadyHaveAccount => 'Bereits ein Konto?';
+
+  @override
+  String get loginNow => 'Jetzt anmelden';
+
+  @override
+  String get emailRequired => 'E-Mail ist erforderlich';
+
+  @override
+  String get emailInvalid => 'Ungültige E-Mail-Adresse';
+
+  @override
+  String get passwordRequired => 'Passwort ist erforderlich';
+
+  @override
+  String get passwordTooShort => 'Passwort muss mindestens 6 Zeichen lang sein';
 }

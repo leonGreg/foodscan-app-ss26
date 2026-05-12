@@ -16,7 +16,7 @@ class HomeLoading extends HomeState {
 }
 
 class HomeLoaded extends HomeState {
-  final List<Product> recentScans;
+  final List<ScanRecord> recentScans;
 
   const HomeLoaded({required this.recentScans});
 

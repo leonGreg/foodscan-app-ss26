@@ -418,4 +418,121 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorFetchingProduct => 'Error fetching product';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get logout => 'Log out';
+
+  @override
+  String get logoutConfirmTitle => 'Log out?';
+
+  @override
+  String get logoutConfirmMessage => 'Are you sure you want to log out?';
+
+  @override
+  String get memberSince => 'Member since';
+
+  @override
+  String get accountSection => 'Account';
+
+  @override
+  String get loginTitle => 'Log in';
+
+  @override
+  String get loginSubtitle => 'Welcome back!';
+
+  @override
+  String get loginButton => 'Log in';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your email address and we will send you a reset link.';
+
+  @override
+  String get forgotPasswordButton => 'Send reset link';
+
+  @override
+  String get backToLogin => 'Back to log in';
+
+  @override
+  String get resetEmailSent =>
+      'If an account exists for this email address, a reset link has been sent.';
+
+  @override
+  String get forgotPasswordErrorUserNotFound =>
+      'No account exists for this email address.';
+
+  @override
+  String get forgotPasswordErrorNetwork =>
+      'Network error. Please check your internet connection.';
+
+  @override
+  String get forgotPasswordErrorRateLimited =>
+      'Too many requests. Please try again later.';
+
+  @override
+  String get forgotPasswordErrorGeneric =>
+      'Unable to send reset email. Please try again.';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get noAccountYet => 'Don\'t have an account?';
+
+  @override
+  String get registerNow => 'Sign up';
+
+  @override
+  String get registerTitle => 'Sign up';
+
+  @override
+  String get registerSubtitle => 'Create a new account';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get nameRequired => 'Name is required';
+
+  @override
+  String get confirmPasswordLabel => 'Confirm password';
+
+  @override
+  String get confirmPasswordRequired => 'Please confirm your password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords don\'t match';
+
+  @override
+  String get registerButton => 'Sign up';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get loginNow => 'Log in';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Invalid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
 }

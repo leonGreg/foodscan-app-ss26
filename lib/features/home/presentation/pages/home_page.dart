@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_scan/config/router/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/config/theme/bloc/theme_bloc.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
+import 'package:food_scan/features/home/data/models/scan_record.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
 import 'package:food_scan/features/home/presentation/widgets/no_scans_widget.dart';
 import 'package:food_scan/features/home/presentation/widgets/recent_scan_card.dart';
@@ -122,8 +124,8 @@ class _HeaderActions extends StatelessWidget {
           onPressed: () => context.read<ThemeBloc>().add(ToggleThemeEvent()),
         ),
         IconButton(
-          icon: const Icon(Icons.info_outline, color: Colors.white),
-          onPressed: () => {},
+          icon: const Icon(Icons.account_circle_outlined, color: Colors.white),
+          onPressed: () => context.push(AppRouter.profile),
         ),
       ],
     );
@@ -170,17 +172,19 @@ class _RecentScansList extends StatelessWidget {
             padding: EdgeInsets.zero,
             itemCount: state.recentScans.length,
             itemBuilder: (context, index) {
-              final product = state.recentScans[index];
+              final ScanRecord scan = state.recentScans[index];
               return GestureDetector(
                 onTap: () => context.pushNamed(
                   'details',
-                  pathParameters: {'barcode': product.code},
+                  pathParameters: {'barcode': scan.barcode},
                 ),
                 child: RecentScanCard(
-                  productName: product.productName,
-                  barcode: product.code,
-                  nutriScore: NutriScore.fromString(product.nutritionGrade),
-                  imageUrl: product.imageFrontUrl,
+                  productName: scan.productName,
+                  barcode: scan.barcode,
+                  nutriScore:
+                      NutriScore.fromString(scan.nutritionGrade) ??
+                      NutriScore.c,
+                  imageUrl: scan.imageFrontUrl,
                 ),
               );
             },
@@ -244,6 +248,8 @@ class _CustomSearchBar extends StatelessWidget {
         ],
       ),
       child: TextField(
+        onChanged: (query) =>
+            context.read<HomeBloc>().add(SearchProductEvent(query)),
         decoration: InputDecoration(
           hintText: hint,
           border: InputBorder.none,
