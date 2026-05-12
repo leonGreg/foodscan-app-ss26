@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/config/router/app_router.dart';
 import 'package:food_scan/features/auth/presentation/bloc/auth_bloc.dart';
@@ -56,7 +57,10 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context, state) {
           return Column(
             children: [
-              AuthHeader(title: _l10n.loginTitle, subtitle: _l10n.loginSubtitle),
+              AuthHeader(
+                title: _l10n.loginTitle,
+                subtitle: _l10n.loginSubtitle,
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(AppDimensions.paddingLarge),
@@ -88,6 +92,21 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           validator: _validatePassword,
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: _openForgotPassword,
+                            style: TextButton.styleFrom(
+                              foregroundColor: const Color(
+                                AppColors.primaryGreen,
+                              ),
+                              textStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            child: Text(_l10n.forgotPassword),
+                          ),
                         ),
                         if (state is AuthFailure) ...[
                           const SizedBox(height: AppDimensions.paddingMedium),
@@ -148,5 +167,17 @@ class _LoginPageState extends State<LoginPage> {
     if (value == null || value.isEmpty) return _l10n.passwordRequired;
     if (value.length < 6) return _l10n.passwordTooShort;
     return null;
+  }
+
+  void _openForgotPassword() {
+    final email = _emailController.text.trim();
+    if (email.isEmpty) {
+      context.push(AppRouter.forgotPassword);
+      return;
+    }
+
+    context.push(
+      '${AppRouter.forgotPassword}?email=${Uri.encodeComponent(email)}',
+    );
   }
 }

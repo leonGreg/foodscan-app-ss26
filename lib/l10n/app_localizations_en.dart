@@ -447,6 +447,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginButton => 'Log in';
 
   @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your email address and we will send you a reset link.';
+
+  @override
+  String get forgotPasswordButton => 'Send reset link';
+
+  @override
+  String get backToLogin => 'Back to log in';
+
+  @override
+  String get resetEmailSent =>
+      'If an account exists for this email address, a reset link has been sent.';
+
+  @override
+  String get forgotPasswordErrorUserNotFound =>
+      'No account exists for this email address.';
+
+  @override
+  String get forgotPasswordErrorNetwork =>
+      'Network error. Please check your internet connection.';
+
+  @override
+  String get forgotPasswordErrorRateLimited =>
+      'Too many requests. Please try again later.';
+
+  @override
+  String get forgotPasswordErrorGeneric =>
+      'Unable to send reset email. Please try again.';
+
+  @override
   String get emailLabel => 'Email';
 
   @override

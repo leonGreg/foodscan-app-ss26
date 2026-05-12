@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:food_scan/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:food_scan/features/auth/presentation/pages/login_page.dart';
 import 'package:food_scan/features/auth/presentation/pages/profile_page.dart';
 import 'package:food_scan/features/auth/presentation/pages/register_page.dart';
@@ -13,6 +14,7 @@ import 'package:food_scan/features/details/presentation/pages/details_page.dart'
 class AppRouter {
   static const String login = '/login';
   static const String register = '/register';
+  static const String forgotPassword = '/forgot-password';
   static const String home = '/';
   static const String scanner = '/scanner';
   static const String details = '/details/:barcode';
@@ -27,7 +29,8 @@ class AppRouter {
       final isLoggedIn = FirebaseAuth.instance.currentUser != null;
       final onAuthRoute =
           state.matchedLocation == login ||
-          state.matchedLocation == register;
+          state.matchedLocation == register ||
+          state.matchedLocation == forgotPassword;
 
       if (!isLoggedIn && !onAuthRoute) return login;
       if (isLoggedIn && onAuthRoute) return home;
@@ -48,6 +51,14 @@ class AppRouter {
         path: register,
         name: 'register',
         builder: (context, state) => const RegisterPage(),
+      ),
+      GoRoute(
+        path: forgotPassword,
+        name: 'forgotPassword',
+        builder: (context, state) {
+          final initialEmail = state.uri.queryParameters['email'] ?? '';
+          return ForgotPasswordPage(initialEmail: initialEmail);
+        },
       ),
       GoRoute(
         path: home,

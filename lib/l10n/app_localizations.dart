@@ -920,6 +920,66 @@ abstract class AppLocalizations {
   /// **'Log in'**
   String get loginButton;
 
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we will send you a reset link.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @forgotPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send reset link'**
+  String get forgotPasswordButton;
+
+  /// No description provided for @backToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to log in'**
+  String get backToLogin;
+
+  /// No description provided for @resetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for this email address, a reset link has been sent.'**
+  String get resetEmailSent;
+
+  /// No description provided for @forgotPasswordErrorUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No account exists for this email address.'**
+  String get forgotPasswordErrorUserNotFound;
+
+  /// No description provided for @forgotPasswordErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your internet connection.'**
+  String get forgotPasswordErrorNetwork;
+
+  /// No description provided for @forgotPasswordErrorRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests. Please try again later.'**
+  String get forgotPasswordErrorRateLimited;
+
+  /// No description provided for @forgotPasswordErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to send reset email. Please try again.'**
+  String get forgotPasswordErrorGeneric;
+
   /// No description provided for @emailLabel.
   ///
   /// In en, this message translates to:

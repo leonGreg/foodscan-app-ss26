@@ -20,6 +20,10 @@ class AuthService {
     return profile ?? AppUser.fromFirebaseUser(user);
   }
 
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.sendPasswordResetEmail(email: email.trim());
+  }
+
   Future<AppUser> registerWithEmail({
     required String email,
     required String password,
