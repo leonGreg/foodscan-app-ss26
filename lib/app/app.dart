@@ -4,6 +4,7 @@ import 'package:food_scan/config/theme/app_theme.dart';
 import 'package:food_scan/config/theme/bloc/theme_bloc.dart';
 import 'package:food_scan/config/router/app_router.dart';
 import 'package:food_scan/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:food_scan/features/home/data/repositories/scan_repository.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
 import 'package:food_scan/features/scanner/presentation/bloc/scanner_bloc.dart';
 import 'package:food_scan/features/details/presentation/bloc/details_bloc.dart';
@@ -21,7 +22,9 @@ class FoodScanApp extends StatelessWidget {
           create: (_) => AuthBloc()..add(const AuthStarted()),
         ),
         BlocProvider(
-          create: (context) => HomeBloc()..add(const LoadRecentScansEvent()),
+          create: (context) => HomeBloc(
+            scanRepository: ScanRepository(),
+          )..add(const LoadRecentScansEvent()),
         ),
         BlocProvider(create: (context) => ScannerBloc()),
         BlocProvider(create: (context) => DetailsBloc()),

@@ -1,26 +1,39 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_scan/core/models/product_model.dart';
+import 'package:food_scan/features/home/data/models/scan_record.dart';
+import 'package:food_scan/features/home/data/repositories/scan_repository.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final List<Product> _history = [];
+  final ScanRepository _scanRepository;
 
-  HomeBloc() : super(const HomeInitial()) {
+  HomeBloc({required ScanRepository scanRepository})
+      : _scanRepository = scanRepository,
+        super(const HomeInitial()) {
     on<LoadRecentScansEvent>(_onLoadRecentScans);
     on<SearchProductEvent>(_onSearchProduct);
     on<AddProductToHistoryEvent>(_onAddProductToHistory);
   }
 
+  String? get _uid => FirebaseAuth.instance.currentUser?.uid;
+
   Future<void> _onLoadRecentScans(
     LoadRecentScansEvent event,
     Emitter<HomeState> emit,
   ) async {
+    final uid = _uid;
+    if (uid == null) {
+      emit(const HomeLoaded(recentScans: []));
+      return;
+    }
     emit(const HomeLoading());
     try {
-      emit(HomeLoaded(recentScans: List.from(_history)));
+      final scans = await _scanRepository.getScans(uid);
+      emit(HomeLoaded(recentScans: scans));
     } catch (e) {
       emit(HomeError(message: e.toString()));
     }
@@ -30,13 +43,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SearchProductEvent event,
     Emitter<HomeState> emit,
   ) async {
+    final uid = _uid;
+    if (uid == null) {
+      emit(const HomeLoaded(recentScans: []));
+      return;
+    }
     emit(const HomeLoading());
     try {
-      await Future.delayed(const Duration(milliseconds: 500));
-      // For now, search just filters local history or returns empty
-      final filtered = _history
+      final scans = await _scanRepository.getScans(uid);
+      final filtered = scans
           .where(
-            (product) => product.productName.toLowerCase().contains(
+            (scan) => scan.productName.toLowerCase().contains(
               event.query.toLowerCase(),
             ),
           )
@@ -47,19 +64,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void _onAddProductToHistory(
+  Future<void> _onAddProductToHistory(
     AddProductToHistoryEvent event,
     Emitter<HomeState> emit,
-  ) {
-    // Remove if already exists to move to top
-    _history.removeWhere((product) => product.code == event.product.code);
-    _history.insert(0, event.product);
+  ) async {
+    final uid = _uid;
+    if (uid == null) return;
 
-    // Limit history size to e.g. 20
-    if (_history.length > 20) {
-      _history.removeLast();
+    final scan = ScanRecord.fromProduct(event.product);
+    try {
+      await _scanRepository.saveScan(uid, scan);
+      final scans = await _scanRepository.getScans(uid);
+      emit(HomeLoaded(recentScans: scans));
+    } catch (e) {
+      emit(HomeError(message: e.toString()));
     }
-
-    emit(HomeLoaded(recentScans: List.from(_history)));
   }
 }
