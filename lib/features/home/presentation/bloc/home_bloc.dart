@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -11,6 +12,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ScanRepository _scanRepository;
   List<ScanRecord> _allScans = [];
+  late final StreamSubscription<User?> _authSubscription;
 
   HomeBloc({required ScanRepository scanRepository})
       : _scanRepository = scanRepository,
@@ -18,6 +20,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadRecentScansEvent>(_onLoadRecentScans);
     on<SearchProductEvent>(_onSearchProduct);
     on<AddProductToHistoryEvent>(_onAddProductToHistory);
+
+    _authSubscription = FirebaseAuth.instance.authStateChanges().listen((_) {
+      add(const LoadRecentScansEvent());
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _authSubscription.cancel();
+    return super.close();
   }
 
   String? get _uid => FirebaseAuth.instance.currentUser?.uid;
@@ -28,6 +40,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final uid = _uid;
     if (uid == null) {
+      _allScans = [];
       emit(const HomeLoaded(recentScans: []));
       return;
     }

@@ -22,9 +22,7 @@ class FoodScanApp extends StatelessWidget {
           create: (_) => AuthBloc()..add(const AuthStarted()),
         ),
         BlocProvider(
-          create: (context) => HomeBloc(
-            scanRepository: ScanRepository(),
-          )..add(const LoadRecentScansEvent()),
+          create: (context) => HomeBloc(scanRepository: ScanRepository()),
         ),
         BlocProvider(create: (context) => ScannerBloc()),
         BlocProvider(create: (context) => DetailsBloc()),
