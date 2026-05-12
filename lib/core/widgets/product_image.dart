@@ -103,10 +103,7 @@ class _Placeholder extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
-        child: Image.asset(
-          AppStrings.noImagePlaceholder,
-          fit: BoxFit.contain,
-        ),
+        child: Image.asset(AppStrings.noImagePlaceholder, fit: BoxFit.contain),
       ),
     );
   }

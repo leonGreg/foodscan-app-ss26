@@ -27,9 +27,9 @@ class RatingBadge extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: useSolidBackground ? Colors.white : color,
-              fontWeight: FontWeight.bold,
-            ),
+          color: useSolidBackground ? Colors.white : color,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
