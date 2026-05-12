@@ -181,9 +181,7 @@ class _RecentScansList extends StatelessWidget {
                 child: RecentScanCard(
                   productName: scan.productName,
                   barcode: scan.barcode,
-                  nutriScore:
-                      NutriScore.fromString(scan.nutritionGrade) ??
-                      NutriScore.c,
+                  nutriScore: NutriScore.fromString(scan.nutritionGrade),
                   imageUrl: scan.imageFrontUrl,
                 ),
               );
