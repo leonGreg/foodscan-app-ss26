@@ -155,8 +155,86 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-class _RecentScansList extends StatelessWidget {
+// class _RecentScansList extends StatelessWidget {
+//   const _RecentScansList();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) {
+//         if (state is HomeLoading) {
+//           return const Center(child: CircularProgressIndicator());
+//         }
+//         if (state is HomeError) return Text(state.message);
+//         if (state is HomeLoaded) {
+//           if (state.recentScans.isEmpty) return const NoScansWidget();
+//           return ListView.builder(
+//             padding: EdgeInsets.zero,
+//             itemCount: state.recentScans.length,
+//             itemBuilder: (context, index) {
+//               final ScanRecord scan = state.recentScans[index];
+//               return GestureDetector(
+//                 onTap: () => context.pushNamed(
+//                   'details',
+//                   pathParameters: {'barcode': scan.barcode},
+//                 ),
+//                 child: RecentScanCard(
+//                   productName: scan.productName,
+//                   barcode: scan.barcode,
+//                   nutriScore: NutriScore.fromString(scan.nutritionGrade),
+//                   imageUrl: scan.imageFrontUrl,
+//                 ),
+//               );
+//             },
+//           );
+//         }
+//         return const NoScansWidget();
+//       },
+//     );
+//   }
+// }
+
+class _RecentScansList extends StatefulWidget {
   const _RecentScansList();
+
+  @override
+  State<_RecentScansList> createState() => _RecentScansListState();
+}
+
+class _RecentScansListState extends State<_RecentScansList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    if (!mounted) return;
+
+    final position = _scrollController.position;
+
+    if (position.extentAfter < 300) {
+      final state = context.read<HomeBloc>().state;
+
+      if (state is! HomeLoaded) return;
+      if (state.isSearchMode) return;
+      if (state.isLoadingMoreRecentScans) return;
+      if (!state.hasMoreRecentScans) return;
+
+      context.read<HomeBloc>().add(const LoadMoreRecentScansEvent());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,14 +243,33 @@ class _RecentScansList extends StatelessWidget {
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (state is HomeError) return Text(state.message);
+
+        if (state is HomeError) {
+          return Center(child: Text(state.message));
+        }
+
         if (state is HomeLoaded) {
-          if (state.recentScans.isEmpty) return const NoScansWidget();
+          if (state.recentScans.isEmpty) {
+            return const NoScansWidget();
+          }
+
+          final itemCount = state.recentScans.length +
+              (state.isLoadingMoreRecentScans ? 1 : 0);
+
           return ListView.builder(
+            controller: _scrollController,
             padding: EdgeInsets.zero,
-            itemCount: state.recentScans.length,
+            itemCount: itemCount,
             itemBuilder: (context, index) {
+              if (index >= state.recentScans.length) {
+                return const Padding(
+                  padding: EdgeInsets.all(AppDimensions.paddingMedium),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
               final ScanRecord scan = state.recentScans[index];
+
               return GestureDetector(
                 onTap: () => context.pushNamed(
                   'details',
@@ -188,6 +285,7 @@ class _RecentScansList extends StatelessWidget {
             },
           );
         }
+
         return const NoScansWidget();
       },
     );
