@@ -42,6 +42,7 @@ class ScanRecord extends Equatable {
 
   Map<String, dynamic> toFirestore() => {
     'productName': productName,
+    'productNameLower': productName.toLowerCase().trim(),
     'brands': brands,
     'imageFrontUrl': imageFrontUrl,
     'nutritionGrade': nutritionGrade,
