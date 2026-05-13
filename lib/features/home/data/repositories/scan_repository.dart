@@ -18,7 +18,7 @@ class ScanRepository {
 
   Future<ScanPage> getScansPage(
     String uid, {
-    int limit = 8,
+    int limit = 20,
     DocumentSnapshot<Map<String, dynamic>>? startAfterDocument,
   }) async {
     Query<Map<String, dynamic>> query = _firestore
@@ -44,16 +44,8 @@ class ScanRepository {
   }
 
   Future<List<ScanRecord>> getScans(String uid) async {
-    final page = await getScansPage(uid, limit: 8);
+    final page = await getScansPage(uid, limit: 20);
     return page.scans;
-    // final snapshot = await _firestore
-    //     .collection('users')
-    //     .doc(uid)
-    //     .collection('scans')
-    //     .orderBy('scannedAt', descending: true)
-    //     .limit(20)
-    //     .get();
-    // return snapshot.docs.map(ScanRecord.fromFirestore).toList();
   }
 
   Future<void> saveScan(String uid, ScanRecord scan) async {
@@ -63,5 +55,45 @@ class ScanRepository {
         .collection('scans')
         .doc(scan.barcode)
         .set(scan.toFirestore());
+  }
+
+    Future<ScanPage> searchScansPage(
+    String uid, {
+    required String queryText,
+    int limit = 8,
+    DocumentSnapshot<Map<String, dynamic>>? startAfterDocument,
+  }) async {
+    final normalizedQuery = queryText.toLowerCase().trim();
+
+    Query<Map<String, dynamic>> query = _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('scans')
+        .orderBy('productNameLower')
+        .startAt([normalizedQuery])
+        .endAt(['$normalizedQuery\uf8ff'])
+        .limit(limit);
+
+     if (startAfterDocument != null) {
+        query = _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('scans')
+          .orderBy('productNameLower')
+          .startAfterDocument(startAfterDocument)
+          .endAt(['$normalizedQuery\uf8ff'])
+          .limit(limit);
+      }
+
+    final snapshot = await query.get();
+
+    final scans = snapshot.docs.map(ScanRecord.fromFirestore).toList();
+
+    return ScanPage(
+      scans: scans,
+      lastDocument:
+          snapshot.docs.isEmpty ? startAfterDocument : snapshot.docs.last,
+      hasMore: snapshot.docs.length == limit,
+    );
   }
 }
