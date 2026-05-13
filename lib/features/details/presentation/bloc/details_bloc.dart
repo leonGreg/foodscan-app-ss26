@@ -30,7 +30,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       var product = await _cacheRepository.getProduct(event.barcode);
 
       if (product == null) {
-        product = await _productRepository.getProduct(event.barcode);
+        product = await _productRepository.getProduct(event.barcode, event.languageCode);
         if (product != null) {
           _cacheRepository.saveProduct(product);
         }
