@@ -18,9 +18,7 @@ class FoodScanApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ThemeBloc()),
-        BlocProvider(
-          create: (_) => AuthBloc()..add(const AuthStarted()),
-        ),
+        BlocProvider(create: (_) => AuthBloc()..add(const AuthStarted())),
         BlocProvider(
           create: (context) => HomeBloc(scanRepository: ScanRepository()),
         ),

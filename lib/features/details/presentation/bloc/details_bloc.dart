@@ -14,9 +14,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   DetailsBloc({
     ProductRepository? productRepository,
     ProductCacheRepository? cacheRepository,
-  })  : _productRepository = productRepository ?? ProductRepository(),
-        _cacheRepository = cacheRepository ?? ProductCacheRepository(),
-        super(const DetailsInitial()) {
+  }) : _productRepository = productRepository ?? ProductRepository(),
+       _cacheRepository = cacheRepository ?? ProductCacheRepository(),
+       super(const DetailsInitial()) {
     on<LoadProductDetailsEvent>(_onLoadProductDetails);
     on<ResetDetailsEvent>(_onReset);
   }

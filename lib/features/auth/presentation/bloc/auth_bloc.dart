@@ -28,7 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       onData: (User? user) => user != null
           ? AuthAuthenticated(user: AppUser.fromFirebaseUser(user))
           : const AuthUnauthenticated(),
-      onError: (_, __) => const AuthUnauthenticated(),
+      onError: (_, _) => const AuthUnauthenticated(),
     );
   }
 

@@ -28,3 +28,13 @@ class AddProductToHistoryEvent extends HomeEvent {
   @override
   List<Object?> get props => [product];
 }
+
+//added for search pagination
+class LoadMoreSearchResultsEvent extends HomeEvent {
+  const LoadMoreSearchResultsEvent();
+}
+
+//ADDED for home page pagination
+class LoadMoreRecentScansEvent extends HomeEvent {
+  const LoadMoreRecentScansEvent();
+}

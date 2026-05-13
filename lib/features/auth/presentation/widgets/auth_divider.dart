@@ -13,10 +13,7 @@ class AuthDivider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimensions.paddingMedium,
           ),
-          child: Text(
-            'oder',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          child: Text('oder', style: Theme.of(context).textTheme.bodyMedium),
         ),
         const Expanded(child: Divider()),
       ],

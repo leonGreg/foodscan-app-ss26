@@ -155,8 +155,50 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-class _RecentScansList extends StatelessWidget {
+class _RecentScansList extends StatefulWidget {
   const _RecentScansList();
+
+  @override
+  State<_RecentScansList> createState() => _RecentScansListState();
+}
+
+class _RecentScansListState extends State<_RecentScansList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    if (!mounted) return;
+
+    final position = _scrollController.position;
+
+    if (position.extentAfter < 300) {
+      final state = context.read<HomeBloc>().state;
+
+      if (state is! HomeLoaded) return;
+      if (state.isLoadingMoreVisible) return;
+      if (!state.hasMoreVisible) return;
+
+      if (state.isSearchMode) {
+        context.read<HomeBloc>().add(const LoadMoreSearchResultsEvent());
+      } else {
+        context.read<HomeBloc>().add(const LoadMoreRecentScansEvent());
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,14 +207,39 @@ class _RecentScansList extends StatelessWidget {
         if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (state is HomeError) return Text(state.message);
+
+        if (state is HomeError) {
+          return Center(child: Text(state.message));
+        }
+
         if (state is HomeLoaded) {
-          if (state.recentScans.isEmpty) return const NoScansWidget();
+          if (state.recentScans.isEmpty) {
+            if (state.isLoadingMoreSearchResults) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state.isSearchMode) {
+              return const Center(child: Text('No products found.'));
+            }
+            return const NoScansWidget();
+          }
+
+          final showFooter = state.isLoadingMoreVisible;
+
           return ListView.builder(
+            controller: _scrollController,
             padding: EdgeInsets.zero,
-            itemCount: state.recentScans.length,
+            itemCount: state.recentScans.length + (showFooter ? 1 : 0),
             itemBuilder: (context, index) {
+              if (index >= state.recentScans.length) {
+                return const Padding(
+                  padding: EdgeInsets.all(AppDimensions.paddingMedium),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
               final ScanRecord scan = state.recentScans[index];
+
               return GestureDetector(
                 onTap: () => context.pushNamed(
                   'details',
@@ -188,6 +255,7 @@ class _RecentScansList extends StatelessWidget {
             },
           );
         }
+
         return const NoScansWidget();
       },
     );
