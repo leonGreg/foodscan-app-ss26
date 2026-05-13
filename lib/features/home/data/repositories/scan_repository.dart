@@ -38,7 +38,9 @@ class ScanRepository {
 
     return ScanPage(
       scans: scans,
-      lastDocument: snapshot.docs.isEmpty ? startAfterDocument : snapshot.docs.last,
+      lastDocument: snapshot.docs.isEmpty
+          ? startAfterDocument
+          : snapshot.docs.last,
       hasMore: snapshot.docs.length == limit,
     );
   }
@@ -57,7 +59,7 @@ class ScanRepository {
         .set(scan.toFirestore());
   }
 
-    Future<ScanPage> searchScansPage(
+  Future<ScanPage> searchScansPage(
     String uid, {
     required String queryText,
     int limit = 8,
@@ -74,8 +76,8 @@ class ScanRepository {
         .endAt(['$normalizedQuery\uf8ff'])
         .limit(limit);
 
-     if (startAfterDocument != null) {
-        query = _firestore
+    if (startAfterDocument != null) {
+      query = _firestore
           .collection('users')
           .doc(uid)
           .collection('scans')
@@ -83,7 +85,7 @@ class ScanRepository {
           .startAfterDocument(startAfterDocument)
           .endAt(['$normalizedQuery\uf8ff'])
           .limit(limit);
-      }
+    }
 
     final snapshot = await query.get();
 
@@ -91,8 +93,9 @@ class ScanRepository {
 
     return ScanPage(
       scans: scans,
-      lastDocument:
-          snapshot.docs.isEmpty ? startAfterDocument : snapshot.docs.last,
+      lastDocument: snapshot.docs.isEmpty
+          ? startAfterDocument
+          : snapshot.docs.last,
       hasMore: snapshot.docs.length == limit,
     );
   }

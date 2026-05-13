@@ -26,13 +26,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   bool _hasMoreRecentScans = false;
   bool _hasMoreSearchResults = false;
 
-   String _currentSearchQuery = '';
+  String _currentSearchQuery = '';
 
   late final StreamSubscription<User?> _authSubscription;
 
   HomeBloc({required ScanRepository scanRepository})
-      : _scanRepository = scanRepository,
-        super(const HomeInitial()) {
+    : _scanRepository = scanRepository,
+      super(const HomeInitial()) {
     on<LoadRecentScansEvent>(_onLoadRecentScans);
     on<SearchProductEvent>(_onSearchProduct);
     on<AddProductToHistoryEvent>(_onAddProductToHistory);
@@ -65,7 +65,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _lastSearchDocument = null;
       _hasMoreRecentScans = false;
       _hasMoreSearchResults = false;
-      _currentSearchQuery = ''; 
+      _currentSearchQuery = '';
 
       emit(
         const HomeLoaded(
@@ -80,7 +80,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
     emit(const HomeLoading());
     try {
-      final page = await _scanRepository.getScansPage(uid, limit: _recentPageSize);
+      final page = await _scanRepository.getScansPage(
+        uid,
+        limit: _recentPageSize,
+      );
 
       _allScans = page.scans;
       _lastScanDocument = page.lastDocument;
@@ -90,7 +93,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _lastSearchDocument = null;
       _hasMoreSearchResults = false;
       _currentSearchQuery = '';
-      
+
       emit(
         HomeLoaded(
           recentScans: _allScans,
@@ -106,7 +109,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  Future<void> _onSearchProduct(SearchProductEvent event, Emitter<HomeState> emit) async{
+  Future<void> _onSearchProduct(
+    SearchProductEvent event,
+    Emitter<HomeState> emit,
+  ) async {
     final uid = _uid;
     final query = event.query.trim();
 
@@ -139,7 +145,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final currentState = state;
 
-     if (currentState is HomeLoaded) {
+    if (currentState is HomeLoaded) {
       emit(
         currentState.copyWith(
           recentScans: [],
@@ -196,10 +202,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final scan = ScanRecord.fromProduct(event.product);
     try {
       await _scanRepository.saveScan(uid, scan);
-      _allScans = [
-        scan,
-        ..._allScans.where((s) => s.barcode != scan.barcode),
-      ];
+      _allScans = [scan, ..._allScans.where((s) => s.barcode != scan.barcode)];
 
       final currentState = state;
       // final currentQuery = currentState is HomeLoaded ? currentState.query : '';
@@ -210,18 +213,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
 
       // if (currentQuery.trim().isEmpty) {
-        emit(
-          HomeLoaded(
-            recentScans: _allScans,
-            query: '',
-            hasMoreRecentScans: _hasMoreRecentScans,
-            isLoadingMoreRecentScans: false,
-            hasMoreSearchResults: false,
-            isLoadingMoreSearchResults: false,
-          ),
-        );
+      emit(
+        HomeLoaded(
+          recentScans: _allScans,
+          query: '',
+          hasMoreRecentScans: _hasMoreRecentScans,
+          isLoadingMoreRecentScans: false,
+          hasMoreSearchResults: false,
+          isLoadingMoreSearchResults: false,
+        ),
+      );
 
-        // return;
+      // return;
       // }
 
       // final filtered = _allScans
@@ -258,11 +261,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (currentState.isLoadingMoreRecentScans) return;
     if (!currentState.hasMoreRecentScans) return;
 
-    emit(
-      currentState.copyWith(
-        isLoadingMoreRecentScans: true,
-      ),
-    );
+    emit(currentState.copyWith(isLoadingMoreRecentScans: true));
 
     try {
       final page = await _scanRepository.getScansPage(
@@ -274,10 +273,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _lastScanDocument = page.lastDocument;
       _hasMoreRecentScans = page.hasMore;
 
-      final allItems = [
-        ..._allScans,
-        ...page.scans,
-      ];
+      final allItems = [..._allScans, ...page.scans];
 
       final uniqueItems = <String, ScanRecord>{};
 
@@ -295,11 +291,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } catch (e) {
-      emit(
-        currentState.copyWith(
-          isLoadingMoreRecentScans: false,
-        ),
-      );
+      emit(currentState.copyWith(isLoadingMoreRecentScans: false));
     }
   }
 
@@ -318,11 +310,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final query = _currentSearchQuery;
 
-    emit(
-      currentState.copyWith(
-        isLoadingMoreSearchResults: true,
-      ),
-    );
+    emit(currentState.copyWith(isLoadingMoreSearchResults: true));
 
     try {
       final page = await _scanRepository.searchScansPage(
@@ -337,10 +325,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _lastSearchDocument = page.lastDocument;
       _hasMoreSearchResults = page.hasMore;
 
-      final allItems = [
-        ..._searchScans,
-        ...page.scans,
-      ];
+      final allItems = [..._searchScans, ...page.scans];
 
       final uniqueItems = <String, ScanRecord>{};
 
@@ -358,11 +343,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } catch (e) {
-      emit(
-        currentState.copyWith(
-          isLoadingMoreSearchResults: false,
-        ),
-      );
+      emit(currentState.copyWith(isLoadingMoreSearchResults: false));
     }
   }
 }

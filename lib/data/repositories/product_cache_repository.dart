@@ -110,10 +110,8 @@ class ProductCacheRepository {
     'additiveRisks': p.additiveRisks.map((k, v) => MapEntry(k, v.name)),
   };
 
-  NutrientLevel _nutrientLevel(String? value) => NutrientLevel.values.firstWhere(
-    (e) => e.name == value,
-    orElse: () => NutrientLevel.unknown,
-  );
+  NutrientLevel _nutrientLevel(String? value) => NutrientLevel.values
+      .firstWhere((e) => e.name == value, orElse: () => NutrientLevel.unknown);
 
   AdditiveRisk _additiveRisk(String? value) => AdditiveRisk.values.firstWhere(
     (e) => e.name == value,

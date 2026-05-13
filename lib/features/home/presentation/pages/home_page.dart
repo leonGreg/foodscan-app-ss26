@@ -217,7 +217,7 @@ class _RecentScansListState extends State<_RecentScansList> {
             if (state.isLoadingMoreSearchResults) {
               return const Center(child: CircularProgressIndicator());
             }
-            
+
             if (state.isSearchMode) {
               return const Center(child: Text('No products found.'));
             }

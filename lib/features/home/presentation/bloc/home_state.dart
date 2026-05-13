@@ -17,10 +17,10 @@ class HomeLoading extends HomeState {
 
 class HomeLoaded extends HomeState {
   final List<ScanRecord> recentScans;
-  
+
   //query is needed to let the Bloc knows when the user is searching. while searching we stop infinite scrolling
   final String query;
-  
+
   //recentScan pagination
   final bool hasMoreRecentScans;
   final bool isLoadingMoreRecentScans;
@@ -40,9 +40,11 @@ class HomeLoaded extends HomeState {
 
   bool get isSearchMode => query.trim().isNotEmpty;
 
-  bool get isLoadingMoreVisible => isSearchMode ? isLoadingMoreSearchResults : isLoadingMoreRecentScans;
+  bool get isLoadingMoreVisible =>
+      isSearchMode ? isLoadingMoreSearchResults : isLoadingMoreRecentScans;
 
-  bool get hasMoreVisible => isSearchMode ? hasMoreSearchResults : hasMoreRecentScans;
+  bool get hasMoreVisible =>
+      isSearchMode ? hasMoreSearchResults : hasMoreRecentScans;
 
   HomeLoaded copyWith({
     List<ScanRecord>? recentScans,
@@ -56,21 +58,23 @@ class HomeLoaded extends HomeState {
       recentScans: recentScans ?? this.recentScans,
       query: query ?? this.query,
       hasMoreRecentScans: hasMoreRecentScans ?? this.hasMoreRecentScans,
-      isLoadingMoreRecentScans: isLoadingMoreRecentScans ?? this.isLoadingMoreRecentScans,
+      isLoadingMoreRecentScans:
+          isLoadingMoreRecentScans ?? this.isLoadingMoreRecentScans,
       hasMoreSearchResults: hasMoreSearchResults ?? this.hasMoreSearchResults,
-      isLoadingMoreSearchResults: isLoadingMoreSearchResults ?? this.isLoadingMoreSearchResults,
+      isLoadingMoreSearchResults:
+          isLoadingMoreSearchResults ?? this.isLoadingMoreSearchResults,
     );
   }
 
   @override
   List<Object?> get props => [
-        recentScans,
-        query,
-        hasMoreRecentScans,
-        isLoadingMoreRecentScans,
-        hasMoreSearchResults,
-        isLoadingMoreSearchResults,
-      ];
+    recentScans,
+    query,
+    hasMoreRecentScans,
+    isLoadingMoreRecentScans,
+    hasMoreSearchResults,
+    isLoadingMoreSearchResults,
+  ];
 }
 
 class HomeError extends HomeState {
