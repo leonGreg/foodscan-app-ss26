@@ -30,8 +30,8 @@ class AddProductToHistoryEvent extends HomeEvent {
 }
 
 //added for search pagination
-class LoadMoreProductsEvent extends HomeEvent {
-  const LoadMoreProductsEvent();
+class LoadMoreSearchResultsEvent extends HomeEvent {
+  const LoadMoreSearchResultsEvent();
 }
 
 //ADDED for home page pagination
