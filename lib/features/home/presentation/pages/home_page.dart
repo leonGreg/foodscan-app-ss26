@@ -155,45 +155,6 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-// class _RecentScansList extends StatelessWidget {
-//   const _RecentScansList();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         if (state is HomeLoading) {
-//           return const Center(child: CircularProgressIndicator());
-//         }
-//         if (state is HomeError) return Text(state.message);
-//         if (state is HomeLoaded) {
-//           if (state.recentScans.isEmpty) return const NoScansWidget();
-//           return ListView.builder(
-//             padding: EdgeInsets.zero,
-//             itemCount: state.recentScans.length,
-//             itemBuilder: (context, index) {
-//               final ScanRecord scan = state.recentScans[index];
-//               return GestureDetector(
-//                 onTap: () => context.pushNamed(
-//                   'details',
-//                   pathParameters: {'barcode': scan.barcode},
-//                 ),
-//                 child: RecentScanCard(
-//                   productName: scan.productName,
-//                   barcode: scan.barcode,
-//                   nutriScore: NutriScore.fromString(scan.nutritionGrade),
-//                   imageUrl: scan.imageFrontUrl,
-//                 ),
-//               );
-//             },
-//           );
-//         }
-//         return const NoScansWidget();
-//       },
-//     );
-//   }
-// }
-
 class _RecentScansList extends StatefulWidget {
   const _RecentScansList();
 
@@ -221,11 +182,14 @@ class _RecentScansListState extends State<_RecentScansList> {
       final state = context.read<HomeBloc>().state;
 
       if (state is! HomeLoaded) return;
-      if (state.isSearchMode) return;
-      if (state.isLoadingMoreRecentScans) return;
-      if (!state.hasMoreRecentScans) return;
+      if (state.isLoadingMoreVisible) return;
+      if (!state.hasMoreVisible) return;
 
-      context.read<HomeBloc>().add(const LoadMoreRecentScansEvent());
+      if (state.isSearchMode) {
+        context.read<HomeBloc>().add(const LoadMoreSearchResultsEvent());
+      } else {
+        context.read<HomeBloc>().add(const LoadMoreRecentScansEvent());
+      }
     }
   }
 
@@ -250,16 +214,22 @@ class _RecentScansListState extends State<_RecentScansList> {
 
         if (state is HomeLoaded) {
           if (state.recentScans.isEmpty) {
+            if (state.isLoadingMoreSearchResults) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            
+            if (state.isSearchMode) {
+              return const Center(child: Text('No products found.'));
+            }
             return const NoScansWidget();
           }
 
-          final itemCount = state.recentScans.length +
-              (state.isLoadingMoreRecentScans ? 1 : 0);
+          final showFooter = state.isLoadingMoreVisible;
 
           return ListView.builder(
             controller: _scrollController,
             padding: EdgeInsets.zero,
-            itemCount: itemCount,
+            itemCount: state.recentScans.length + (showFooter ? 1 : 0),
             itemBuilder: (context, index) {
               if (index >= state.recentScans.length) {
                 return const Padding(
