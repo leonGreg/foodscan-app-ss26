@@ -5,13 +5,29 @@ import 'package:food_scan/core/models/product_model.dart';
 class ProductCacheRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<Product?> getProduct(String barcode) async {
+  // Now accepts languageCode for the language preferences check
+  Future<Product?> getProduct(String barcode, String languageCode) async {
     final doc = await _firestore.collection('products').doc(barcode).get();
     if (!doc.exists) return null;
+
+    final data = doc.data() as Map<String, dynamic>;
+
+    // If the language of the saved product doesn't match 
+    // the current language of the user's phone, we ignore the cache
+    if (data['languageCode'] != languageCode) {
+      return null;
+    }
+
     return _fromFirestore(doc);
   }
 
-  Future<void> saveProduct(Product product) async {
+  // Now accepts languageCode for saving
+  Future<void> saveProduct(Product product, String languageCode) async {
+    final data = _toFirestore(product);
+    
+    // Add language code directly to Firebase document before saving
+    data['languageCode'] = languageCode;
+
     await _firestore
         .collection('products')
         .doc(product.code)
