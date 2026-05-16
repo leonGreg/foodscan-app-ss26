@@ -208,7 +208,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // final currentQuery = currentState is HomeLoaded ? currentState.query : '';
 
       if (currentState is HomeLoaded && currentState.isSearchMode) {
-        add(SearchProductEvent(currentState.query));
+        //add(SearchProductEvent(currentState.query));
+        //return;
+
+        final query = currentState.query.toLowerCase();
+
+        final matchSearch =
+            scan.productName.toLowerCase().contains(query) ||
+            scan.barcode.toLowerCase().contains(query);
+
+        if (matchSearch) {
+          _searchScans = [
+            scan,
+            ..._searchScans.where((s) => s.barcode != scan.barcode),
+          ];
+        }
+
+        emit(
+          currentState.copyWith(
+            recentScans: _searchScans,
+            hasMoreSearchResults: _hasMoreSearchResults,
+            isLoadingMoreSearchResults: false,
+          ),
+        );
+
         return;
       }
 

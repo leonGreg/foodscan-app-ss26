@@ -4,29 +4,37 @@ import 'package:food_scan/core/constants/additives.dart';
 
 class ProductRepository {
   Future<Product?> getProduct(String barcode) async {
-    final off.ProductQueryConfiguration configuration =
-        off.ProductQueryConfiguration(
-          barcode,
-          language: off.OpenFoodFactsLanguage.GERMAN,
-          fields: [
-            off.ProductField.BARCODE,
-            off.ProductField.NAME,
-            off.ProductField.BRANDS,
-            off.ProductField.IMAGE_FRONT_URL,
-            off.ProductField.NUTRISCORE,
-            off.ProductField.ECOSCORE_GRADE,
-            off.ProductField.NOVA_GROUP,
-            off.ProductField.INGREDIENTS_TEXT,
-            off.ProductField.ALLERGENS,
-            off.ProductField.CATEGORIES_TAGS,
-            off.ProductField.ADDITIVES,
-            off.ProductField.NUTRIMENTS,
-            off.ProductField.NUTRIENT_LEVELS,
-            off.ProductField.LABELS_TAGS,
-            off.ProductField.KNOWLEDGE_PANELS,
-          ],
-          version: off.ProductQueryVersion.v3,
-        );
+    final off.ProductQueryConfiguration
+    configuration = off.ProductQueryConfiguration(
+      barcode,
+      language: off.OpenFoodFactsLanguage.GERMAN,
+      fields: [
+        off.ProductField.BARCODE,
+        off.ProductField.NAME,
+        off.ProductField.BRANDS,
+        off
+            .ProductField
+            .IMAGE_FRONT_URL, //larger front image. For lists, we can use IMAGE_FRONT_SMALL_URL
+        off
+            .ProductField
+            .IMAGE_FRONT_SMALL_URL, // For better performance in lists
+        off.ProductField.NUTRISCORE,
+        off.ProductField.ECOSCORE_GRADE,
+        off.ProductField.NOVA_GROUP,
+        off.ProductField.INGREDIENTS_TEXT,
+        off.ProductField.ALLERGENS,
+        off.ProductField.CATEGORIES_TAGS,
+        off.ProductField.ADDITIVES,
+        off.ProductField.NUTRIMENTS,
+        off.ProductField.NUTRIENT_LEVELS,
+        off.ProductField.LABELS_TAGS,
+        off.ProductField.KNOWLEDGE_PANELS,
+      ],
+      version: off.ProductQueryVersion.v3,
+    );
+    /*
+        you should avoid fetching the full image when a smaller image is enough. Their image data supports smaller versions like 100, 200, 400, and full.
+        */
 
     try {
       final off.ProductResultV3 result =
@@ -45,7 +53,9 @@ class ProductRepository {
             code: apiProduct.barcode ?? barcode,
             productName: apiProduct.productName ?? 'Unknown Product',
             brands: apiProduct.brands,
-            imageFrontUrl: apiProduct.imageFrontUrl,
+            imageFrontUrl:
+                apiProduct.imageFrontSmallUrl ??
+                apiProduct.imageFrontUrl, //apiProduct.imageFrontUrl,
             nutritionGrade: apiProduct.nutriscore?.toUpperCase(),
             ecoScore: apiProduct.ecoscoreGrade?.toUpperCase(),
             novaGroup: apiProduct.novaGroup,

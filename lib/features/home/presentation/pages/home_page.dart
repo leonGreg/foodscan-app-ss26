@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_scan/config/router/app_router.dart';
@@ -246,6 +248,7 @@ class _RecentScansListState extends State<_RecentScansList> {
                   pathParameters: {'barcode': scan.barcode},
                 ),
                 child: RecentScanCard(
+                  key: ValueKey(scan.barcode),
                   productName: scan.productName,
                   barcode: scan.barcode,
                   nutriScore: NutriScore.fromString(scan.nutritionGrade),
@@ -290,18 +293,31 @@ class _SearchBarOverlay extends StatelessWidget {
   }
 }
 
-class _CustomSearchBar extends StatelessWidget {
+class _CustomSearchBar extends StatefulWidget {
   final String hint;
   final bool isDarkMode;
 
   const _CustomSearchBar({required this.hint, required this.isDarkMode});
 
   @override
+  State<_CustomSearchBar> createState() => _CustomSearchBarState();
+}
+
+class _CustomSearchBarState extends State<_CustomSearchBar> {
+  Timer? _searchDebounce;
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: AppDimensions.searchBarHeight,
       decoration: BoxDecoration(
-        color: isDarkMode
+        color: widget.isDarkMode
             ? const Color(AppColors.surfaceDark)
             : const Color(AppColors.white),
         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
@@ -314,10 +330,14 @@ class _CustomSearchBar extends StatelessWidget {
         ],
       ),
       child: TextField(
-        onChanged: (query) =>
-            context.read<HomeBloc>().add(SearchProductEvent(query)),
+        onChanged: (query) {
+          _searchDebounce?.cancel();
+          _searchDebounce = Timer(const Duration(milliseconds: 350), () {
+            context.read<HomeBloc>().add(SearchProductEvent(query));
+          });
+        },
         decoration: InputDecoration(
-          hintText: hint,
+          hintText: widget.hint,
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,

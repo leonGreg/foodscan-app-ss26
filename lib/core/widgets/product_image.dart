@@ -28,6 +28,10 @@ class ProductImage extends StatelessWidget {
       );
     }
 
+    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    final memCacheWidth = (width * devicePixelRatio).round();
+    final memCacheHeight = (height * devicePixelRatio).round();
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
       child: CachedNetworkImage(
@@ -35,6 +39,16 @@ class ProductImage extends StatelessWidget {
         width: width,
         height: height,
         fit: BoxFit.cover,
+
+        memCacheWidth: memCacheWidth,
+        memCacheHeight: memCacheHeight,
+
+        maxWidthDiskCache: 400,
+        maxHeightDiskCache: 400,
+
+        fadeInDuration: const Duration(milliseconds: 120),
+        fadeOutDuration: const Duration(milliseconds: 80),
+
         placeholder: (context, url) => _LoadingPlaceholder(
           width: width,
           height: height,
@@ -70,12 +84,17 @@ class _LoadingPlaceholder extends StatelessWidget {
         color: const Color(AppColors.lightGray),
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-      child: const Center(
-        child: SizedBox(
-          width: 24,
-          height: 24,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        ),
+      // child: const Center(
+      //   child: SizedBox(
+      //     width: 24,
+      //     height: 24,
+      //     child: CircularProgressIndicator(strokeWidth: 2),
+      //   ),
+      // ),
+      child: Icon(
+        Icons.image_outlined,
+        color: const Color(AppColors.mediumGray),
+        size: width < height ? width * 0.35 : height * 0.35,
       ),
     );
   }
