@@ -25,7 +25,12 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<DetailsBloc>().add(LoadProductDetailsEvent(widget.barcode));
+    // Using addPostFrameCallback to ensure the context is fully available for localization.
+    // This allows us to safely retrieve the languageCode and pass it to the BLoC event.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final languageCode = Localizations.localeOf(context).languageCode;
+      context.read<DetailsBloc>().add(LoadProductDetailsEvent(widget.barcode, languageCode));
+    });
   }
 
   @override

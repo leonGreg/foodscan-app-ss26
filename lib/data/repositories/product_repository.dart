@@ -3,38 +3,47 @@ import 'package:food_scan/core/models/product_model.dart';
 import 'package:food_scan/core/constants/additives.dart';
 
 class ProductRepository {
-  Future<Product?> getProduct(String barcode) async {
-    final off.ProductQueryConfiguration
-    configuration = off.ProductQueryConfiguration(
-      barcode,
-      language: off.OpenFoodFactsLanguage.GERMAN,
-      fields: [
-        off.ProductField.BARCODE,
-        off.ProductField.NAME,
-        off.ProductField.BRANDS,
-        off
-            .ProductField
-            .IMAGE_FRONT_URL, //larger front image. For lists, we can use IMAGE_FRONT_SMALL_URL
-        off
-            .ProductField
-            .IMAGE_FRONT_SMALL_URL, // For better performance in lists
-        off.ProductField.NUTRISCORE,
-        off.ProductField.ECOSCORE_GRADE,
-        off.ProductField.NOVA_GROUP,
-        off.ProductField.INGREDIENTS_TEXT,
-        off.ProductField.ALLERGENS,
-        off.ProductField.CATEGORIES_TAGS,
-        off.ProductField.ADDITIVES,
-        off.ProductField.NUTRIMENTS,
-        off.ProductField.NUTRIENT_LEVELS,
-        off.ProductField.LABELS_TAGS,
-        off.ProductField.KNOWLEDGE_PANELS,
-      ],
-      version: off.ProductQueryVersion.v3,
-    );
-    /*
-        you should avoid fetching the full image when a smaller image is enough. Their image data supports smaller versions like 100, 200, 400, and full.
-        */
+  // Helper method to map the app's language code to the Open Food Facts API language enum.
+  // This ensures we fetch localized data (like additive descriptions) based on the user's settings.
+  off.OpenFoodFactsLanguage _mapLanguage(String languageCode) {
+    switch (languageCode) {
+      case 'fi':
+        return off.OpenFoodFactsLanguage.FINNISH;
+      case 'de':
+        return off.OpenFoodFactsLanguage.GERMAN;
+      case 'en':
+      default:
+        return off.OpenFoodFactsLanguage.ENGLISH;
+    }
+  }
+
+  // Updated getProduct to accept languageCode so we can fetch localized content from the API.
+  Future<Product?> getProduct(String barcode, String languageCode) async {
+    final off.ProductQueryConfiguration configuration =
+        off.ProductQueryConfiguration(
+          barcode,
+          // Using the mapped language instead of hardcoded GERMAN to support multi-language data fetching.
+          language: _mapLanguage(languageCode),
+          fields: [
+            off.ProductField.BARCODE,
+            off.ProductField.NAME,
+            off.ProductField.BRANDS,
+            off.ProductField.IMAGE_FRONT_URL, // larger front image. For lists, we can use IMAGE_FRONT_SMALL_URL
+            off.ProductField.IMAGE_FRONT_SMALL_URL, // For better performance in lists (від напарника)
+            off.ProductField.NUTRISCORE,
+            off.ProductField.ECOSCORE_GRADE,
+            off.ProductField.NOVA_GROUP,
+            off.ProductField.INGREDIENTS_TEXT,
+            off.ProductField.ALLERGENS,
+            off.ProductField.CATEGORIES_TAGS,
+            off.ProductField.ADDITIVES,
+            off.ProductField.NUTRIMENTS,
+            off.ProductField.NUTRIENT_LEVELS,
+            off.ProductField.LABELS_TAGS,
+            off.ProductField.KNOWLEDGE_PANELS,
+          ],
+          version: off.ProductQueryVersion.v3,
+        );
 
     try {
       final off.ProductResultV3 result =
@@ -53,9 +62,7 @@ class ProductRepository {
             code: apiProduct.barcode ?? barcode,
             productName: apiProduct.productName ?? 'Unknown Product',
             brands: apiProduct.brands,
-            imageFrontUrl:
-                apiProduct.imageFrontSmallUrl ??
-                apiProduct.imageFrontUrl, //apiProduct.imageFrontUrl,
+            imageFrontUrl: apiProduct.imageFrontUrl,
             nutritionGrade: apiProduct.nutriscore?.toUpperCase(),
             ecoScore: apiProduct.ecoscoreGrade?.toUpperCase(),
             novaGroup: apiProduct.novaGroup,
@@ -77,12 +84,6 @@ class ProductRepository {
       rethrow;
     }
   }
-
-  ({
-    Map<String, String> names,
-    Map<String, String> descriptions,
-    Map<String, AdditiveRisk> risks,
-  })
   _fetchAdditiveData(List<String>? tags, off.KnowledgePanels? panels) {
     final Map<String, String> names = {};
     final Map<String, String> descriptions = {};
@@ -93,17 +94,14 @@ class ProductRepository {
     }
 
     for (final tag in tags) {
-      // 1. Try to get direct info from Knowledge Panels (additive_en:e322)
       final panelId = 'additive_$tag';
       final panel = panels?.panelIdToPanelMap[panelId];
 
       if (panel != null) {
-        // Name (e.g., "E322 - Lecithine")
         if (panel.titleElement?.title != null) {
           names[tag] = panel.titleElement!.title!;
         }
 
-        // Risk level from evaluation (GOOD/BAD/NEUTRAL)
         if (panel.evaluation != null) {
           switch (panel.evaluation!) {
             case off.Evaluation.GOOD:
@@ -117,7 +115,6 @@ class ProductRepository {
           }
         }
 
-        // Keep raw HTML for better rendering with flutter_widget_from_html
         final htmlParts = panel.elements
             ?.where((e) => e.elementType == off.KnowledgePanelElementType.TEXT)
             .map((e) => e.textElement?.html)
@@ -128,7 +125,6 @@ class ProductRepository {
         }
       }
 
-      // 2. Fallbacks for missing panel data
       names.putIfAbsent(tag, () => tag.replaceFirst('en:', '').toUpperCase());
       risks.putIfAbsent(tag, () => AdditiveRisk.getFromTag(tag));
     }

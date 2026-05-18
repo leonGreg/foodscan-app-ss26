@@ -9,11 +9,12 @@ abstract class DetailsEvent extends Equatable {
 
 class LoadProductDetailsEvent extends DetailsEvent {
   final String barcode;
+  final String languageCode; // Додали поле для мови
 
-  const LoadProductDetailsEvent(this.barcode);
+  const LoadProductDetailsEvent(this.barcode, this.languageCode);
 
   @override
-  List<Object?> get props => [barcode];
+  List<Object?> get props => [barcode, languageCode];
 }
 
 class ResetDetailsEvent extends DetailsEvent {
