@@ -34,6 +34,20 @@ class AppUser extends Equatable {
     );
   }
 
+  factory AppUser.fromMap(Map<String, dynamic> map) => AppUser(
+    uid: map['uid'] as String,
+    email: map['email'] as String,
+    displayName: map['displayName'] as String,
+    createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+  );
+
+  Map<String, dynamic> toMap() => {
+    'uid': uid,
+    'email': email,
+    'displayName': displayName,
+    'createdAt': createdAt.millisecondsSinceEpoch,
+  };
+
   Map<String, dynamic> toFirestore() => {
     'email': email,
     'displayName': displayName,

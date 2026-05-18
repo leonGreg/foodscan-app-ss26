@@ -10,6 +10,7 @@ import 'package:food_scan/features/auth/presentation/widgets/auth_error_message.
 import 'package:food_scan/features/auth/presentation/widgets/auth_header.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_switch_row.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:food_scan/features/auth/utils/auth_validators.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
@@ -74,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _emailController,
                           label: _l10n.emailLabel,
                           keyboardType: TextInputType.emailAddress,
-                          validator: _validateEmail,
+                          validator: validateEmail,
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
@@ -91,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                               () => _obscurePassword = !_obscurePassword,
                             ),
                           ),
-                          validator: _validatePassword,
+                          validator: validatePassword,
                         ),
                         Align(
                           alignment: Alignment.centerRight,
@@ -153,20 +154,6 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
     );
-  }
-
-  String? _validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return _l10n.emailRequired;
-    if (!RegExp(r'^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$').hasMatch(value.trim())) {
-      return _l10n.emailInvalid;
-    }
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return _l10n.passwordRequired;
-    if (value.length < 6) return _l10n.passwordTooShort;
-    return null;
   }
 
   void _openForgotPassword() {

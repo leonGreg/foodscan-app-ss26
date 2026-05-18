@@ -9,6 +9,7 @@ import 'package:food_scan/features/auth/presentation/widgets/auth_error_message.
 import 'package:food_scan/features/auth/presentation/widgets/auth_header.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_switch_row.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:food_scan/features/auth/utils/auth_validators.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -78,16 +79,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         AuthTextField(
                           controller: _nameController,
                           label: _l10n.nameLabel,
-                          validator: (v) => v == null || v.trim().isEmpty
-                              ? _l10n.nameRequired
-                              : null,
+                          validator: validateDisplayName,
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _emailController,
                           label: _l10n.emailLabel,
                           keyboardType: TextInputType.emailAddress,
-                          validator: _validateEmail,
+                          validator: validateEmail,
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
@@ -104,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               () => _obscurePassword = !_obscurePassword,
                             ),
                           ),
-                          validator: _validatePassword,
+                          validator: validatePassword,
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
@@ -121,15 +120,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               () => _obscureConfirm = !_obscureConfirm,
                             ),
                           ),
-                          validator: (v) {
-                            if (v == null || v.isEmpty) {
-                              return _l10n.confirmPasswordRequired;
-                            }
-                            if (v != _passwordController.text) {
-                              return _l10n.passwordsDoNotMatch;
-                            }
-                            return null;
-                          },
+                          validator: (v) =>
+                              validateConfirmPassword(v, _passwordController.text),
                         ),
                         if (state is AuthFailure) ...[
                           const SizedBox(height: AppDimensions.paddingMedium),
@@ -178,17 +170,4 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return _l10n.emailRequired;
-    if (!RegExp(r'^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$').hasMatch(value.trim())) {
-      return _l10n.emailInvalid;
-    }
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return _l10n.passwordRequired;
-    if (value.length < 6) return _l10n.passwordTooShort;
-    return null;
-  }
 }
