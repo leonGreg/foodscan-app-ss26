@@ -4,7 +4,7 @@ import 'package:food_scan/features/auth/data/models/user_model.dart';
 import 'package:food_scan/features/auth/data/services/auth_service_base.dart';
 import 'package:food_scan/features/auth/presentation/bloc/auth_bloc.dart';
 
-class FakeAuthService extends AuthServiceBase {
+class MockAuthService extends AuthServiceBase {
   bool shouldFailLogin = false;
   bool shouldFailRegister = false;
 
@@ -52,12 +52,12 @@ class FakeAuthService extends AuthServiceBase {
 }
 
 void main() {
-  late FakeAuthService fakeService;
+  late MockAuthService mockService;
   late AuthBloc bloc;
 
   setUp(() {
-    fakeService = FakeAuthService();
-    bloc = AuthBloc(authService: fakeService);
+    mockService = MockAuthService();
+    bloc = AuthBloc(authService: mockService);
   });
 
   tearDown(() async {
@@ -90,14 +90,12 @@ void main() {
 
     // A FirebaseAuthException from the service must surface as AuthFailure, not a crash.
     test('emits AuthLoading then AuthFailure on invalid credentials', () async {
-      fakeService.shouldFailLogin = true;
+      mockService.shouldFailLogin = true;
 
       final states = <AuthState>[];
       final sub = bloc.stream.listen(states.add);
 
-      bloc.add(
-        const LoginRequested(email: 'user@test.com', password: 'wrong'),
-      );
+      bloc.add(const LoginRequested(email: 'user@test.com', password: 'wrong'));
       await pumpEventQueue();
 
       expect(states.length, 2);
@@ -133,7 +131,7 @@ void main() {
 
     // A duplicate-email error from the service must result in AuthFailure.
     test('emits AuthFailure when email is already in use', () async {
-      fakeService.shouldFailRegister = true;
+      mockService.shouldFailRegister = true;
 
       final states = <AuthState>[];
       final sub = bloc.stream.listen(states.add);
