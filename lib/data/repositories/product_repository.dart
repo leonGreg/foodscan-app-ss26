@@ -89,7 +89,11 @@ class ProductRepository {
     }
   }
 
-  _fetchAdditiveData(List<String>? tags, off.KnowledgePanels? panels) {
+ ({
+    Map<String, String> names,
+    Map<String, String> descriptions,
+    Map<String, AdditiveRisk> risks,
+  }) _fetchAdditiveData(List<String>? tags, off.KnowledgePanels? panels) {
     final Map<String, String> names = {};
     final Map<String, String> descriptions = {};
     final Map<String, AdditiveRisk> risks = {};
