@@ -19,31 +19,35 @@ class ProductRepository {
 
   // Updated getProduct to accept languageCode so we can fetch localized content from the API.
   Future<Product?> getProduct(String barcode, String languageCode) async {
-    final off.ProductQueryConfiguration configuration =
-        off.ProductQueryConfiguration(
-          barcode,
-          // Using the mapped language instead of hardcoded GERMAN to support multi-language data fetching.
-          language: _mapLanguage(languageCode),
-          fields: [
-            off.ProductField.BARCODE,
-            off.ProductField.NAME,
-            off.ProductField.BRANDS,
-            off.ProductField.IMAGE_FRONT_URL, // larger front image. For lists, we can use IMAGE_FRONT_SMALL_URL
-            off.ProductField.IMAGE_FRONT_SMALL_URL, // For better performance in lists (від напарника)
-            off.ProductField.NUTRISCORE,
-            off.ProductField.ECOSCORE_GRADE,
-            off.ProductField.NOVA_GROUP,
-            off.ProductField.INGREDIENTS_TEXT,
-            off.ProductField.ALLERGENS,
-            off.ProductField.CATEGORIES_TAGS,
-            off.ProductField.ADDITIVES,
-            off.ProductField.NUTRIMENTS,
-            off.ProductField.NUTRIENT_LEVELS,
-            off.ProductField.LABELS_TAGS,
-            off.ProductField.KNOWLEDGE_PANELS,
-          ],
-          version: off.ProductQueryVersion.v3,
-        );
+    final off.ProductQueryConfiguration
+    configuration = off.ProductQueryConfiguration(
+      barcode,
+      // Using the mapped language instead of hardcoded GERMAN to support multi-language data fetching.
+      language: _mapLanguage(languageCode),
+      fields: [
+        off.ProductField.BARCODE,
+        off.ProductField.NAME,
+        off.ProductField.BRANDS,
+        off
+            .ProductField
+            .IMAGE_FRONT_URL, // larger front image. For lists, we can use IMAGE_FRONT_SMALL_URL
+        off
+            .ProductField
+            .IMAGE_FRONT_SMALL_URL, // For better performance in lists (від напарника)
+        off.ProductField.NUTRISCORE,
+        off.ProductField.ECOSCORE_GRADE,
+        off.ProductField.NOVA_GROUP,
+        off.ProductField.INGREDIENTS_TEXT,
+        off.ProductField.ALLERGENS,
+        off.ProductField.CATEGORIES_TAGS,
+        off.ProductField.ADDITIVES,
+        off.ProductField.NUTRIMENTS,
+        off.ProductField.NUTRIENT_LEVELS,
+        off.ProductField.LABELS_TAGS,
+        off.ProductField.KNOWLEDGE_PANELS,
+      ],
+      version: off.ProductQueryVersion.v3,
+    );
 
     try {
       final off.ProductResultV3 result =
@@ -84,6 +88,7 @@ class ProductRepository {
       rethrow;
     }
   }
+
   _fetchAdditiveData(List<String>? tags, off.KnowledgePanels? panels) {
     final Map<String, String> names = {};
     final Map<String, String> descriptions = {};

@@ -12,7 +12,7 @@ class ProductCacheRepository {
 
     final data = doc.data() as Map<String, dynamic>;
 
-    // If the language of the saved product doesn't match 
+    // If the language of the saved product doesn't match
     // the current language of the user's phone, we ignore the cache
     if (data['languageCode'] != languageCode) {
       return null;
@@ -24,7 +24,7 @@ class ProductCacheRepository {
   // Now accepts languageCode for saving
   Future<void> saveProduct(Product product, String languageCode) async {
     final data = _toFirestore(product);
-    
+
     // Add language code directly to Firebase document before saving
     data['languageCode'] = languageCode;
 

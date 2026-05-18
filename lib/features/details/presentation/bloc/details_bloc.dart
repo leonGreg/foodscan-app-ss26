@@ -28,11 +28,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     emit(const DetailsLoading());
     try {
       // Searching the cache WITH LANGUAGE IN MIND
-      var product = await _cacheRepository.getProduct(event.barcode, event.languageCode);
+      var product = await _cacheRepository.getProduct(
+        event.barcode,
+        event.languageCode,
+      );
 
       if (product == null) {
         // If the cache is empty (or the language is wrong) - download from the API
-        product = await _productRepository.getProduct(event.barcode, event.languageCode);
+        product = await _productRepository.getProduct(
+          event.barcode,
+          event.languageCode,
+        );
         if (product != null) {
           // Stores the new product in the cache WITH LANGUAGE IN MIND
           _cacheRepository.saveProduct(product, event.languageCode);

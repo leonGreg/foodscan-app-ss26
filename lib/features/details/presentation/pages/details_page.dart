@@ -29,7 +29,9 @@ class _DetailsPageState extends State<DetailsPage> {
     // This allows us to safely retrieve the languageCode and pass it to the BLoC event.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final languageCode = Localizations.localeOf(context).languageCode;
-      context.read<DetailsBloc>().add(LoadProductDetailsEvent(widget.barcode, languageCode));
+      context.read<DetailsBloc>().add(
+        LoadProductDetailsEvent(widget.barcode, languageCode),
+      );
     });
   }
 
