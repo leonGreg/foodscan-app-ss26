@@ -154,7 +154,7 @@ class _ProfileHeader extends StatelessWidget {
               if (!editMode)
                 IconButton(
                   icon: const Icon(Icons.edit_outlined, color: Colors.white),
-                  tooltip: 'Profil bearbeiten',
+                  tooltip: l10n.editProfileTooltip,
                   onPressed: onEditTap,
                 ),
             ],
@@ -218,6 +218,7 @@ class _NameEditField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Form(
       key: formKey,
       child: Column(
@@ -234,7 +235,7 @@ class _NameEditField extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white.withValues(alpha: 0.15),
-              hintText: 'Name',
+              hintText: l10n.nameLabel,
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: AppDimensions.paddingMedium,
@@ -264,7 +265,7 @@ class _NameEditField extends StatelessWidget {
               ),
             ),
             validator: (v) => (v == null || v.trim().isEmpty)
-                ? 'Name darf nicht leer sein'
+                ? l10n.nameRequired
                 : null,
           ),
           const SizedBox(height: AppDimensions.paddingMedium),
@@ -274,7 +275,7 @@ class _NameEditField extends StatelessWidget {
               TextButton(
                 onPressed: onCancel,
                 child: Text(
-                  'Abbrechen',
+                  l10n.cancel,
                   style: TextStyle(color: Colors.white.withValues(alpha: 0.85)),
                 ),
               ),
@@ -285,7 +286,7 @@ class _NameEditField extends StatelessWidget {
                   backgroundColor: Colors.white,
                   foregroundColor: const Color(AppColors.primaryGreen),
                 ),
-                child: const Text('Speichern'),
+                child: Text(l10n.save),
               ),
             ],
           ),

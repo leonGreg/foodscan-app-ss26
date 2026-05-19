@@ -53,7 +53,7 @@ class _HomeContent extends StatelessWidget {
                     final l10n = AppLocalizations.of(context)!;
                     
                     return _SectionHeader(
-                      title: isSearch ? 'Search Results' : l10n.recentScans,
+                      title: isSearch ? l10n.searchResults : l10n.recentScans,
                       icon: isSearch ? Icons.search : Icons.history,
                     );
                   },
@@ -319,7 +319,7 @@ class _RecentScansListState extends State<_RecentScansList> {
             }
 
             if (state.isSearchMode) {
-              return const Center(child: Text('No products found.'));
+              return Center(child: Text(AppLocalizations.of(context)!.noProductsFound));
             }
             return const NoScansWidget();
           }

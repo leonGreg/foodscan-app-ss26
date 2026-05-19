@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 
 class AuthDivider extends StatelessWidget {
   const AuthDivider({super.key});
@@ -13,7 +14,7 @@ class AuthDivider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimensions.paddingMedium,
           ),
-          child: Text('oder', style: Theme.of(context).textTheme.bodyMedium),
+          child: Text(AppLocalizations.of(context)!.or, style: Theme.of(context).textTheme.bodyMedium),
         ),
         const Expanded(child: Divider()),
       ],

@@ -46,9 +46,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthAuthenticated(user: user));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(message: _mapFirebaseError(e.code)));
-    } catch (e) {
-      emit(AuthFailure(message: e.toString()));
+      emit(AuthFailure(code: e.code));
+    } catch (_) {
+      emit(const AuthFailure(code: 'unknown'));
     }
   }
 
@@ -65,9 +65,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthAuthenticated(user: user));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(message: _mapFirebaseError(e.code)));
-    } catch (e) {
-      emit(AuthFailure(message: e.toString()));
+      emit(AuthFailure(code: e.code));
+    } catch (_) {
+      emit(const AuthFailure(code: 'unknown'));
     }
   }
 
@@ -95,31 +95,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           createdAt: current.user.createdAt,
         ),
       ));
-    } catch (e) {
-      emit(AuthFailure(message: e.toString()));
-    }
-  }
-
-  String _mapFirebaseError(String code) {
-    switch (code) {
-      case 'user-not-found':
-        return 'Kein Konto mit dieser E-Mail gefunden.';
-      case 'wrong-password':
-        return 'Falsches Passwort.';
-      case 'email-already-in-use':
-        return 'Diese E-Mail-Adresse wird bereits verwendet.';
-      case 'invalid-email':
-        return 'Ungültige E-Mail-Adresse.';
-      case 'weak-password':
-        return 'Das Passwort ist zu schwach.';
-      case 'network-request-failed':
-        return 'Netzwerkfehler. Bitte überprüfe deine Internetverbindung.';
-      case 'too-many-requests':
-        return 'Zu viele Versuche. Bitte versuche es später erneut.';
-      case 'invalid-credential':
-        return 'E-Mail oder Passwort ist falsch.';
-      default:
-        return 'Authentifizierungsfehler: $code';
+    } catch (_) {
+      emit(const AuthFailure(code: 'unknown'));
     }
   }
 }
