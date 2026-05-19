@@ -38,7 +38,7 @@ class _HomeContent extends StatelessWidget {
     return Column(
       children: [
         const _HomeHeader(),
-        const SizedBox(height: AppDimensions.paddingXLarge + 8),
+        const SizedBox(height: AppDimensions.paddingMedium), 
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -76,6 +76,8 @@ class _HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Container(
       width: double.infinity,
@@ -86,11 +88,11 @@ class _HomeHeader extends StatelessWidget {
           bottomRight: Radius.circular(AppDimensions.borderRadiusXLarge),
         ),
       ),
-      padding: const EdgeInsets.only(
-        top: AppDimensions.appBarTopPadding,
+      padding: EdgeInsets.only(
+        top: statusBarHeight + 12, 
         left: AppDimensions.paddingLarge,
         right: AppDimensions.paddingLarge,
-        bottom: AppDimensions.paddingLarge,
+        bottom: AppDimensions.paddingLarge, 
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +117,8 @@ class _HomeHeader extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
-          const SizedBox(height: AppDimensions.paddingLarge),
+          
+          const SizedBox(height: AppDimensions.paddingMedium),
           
           _CustomSearchBar(hint: l10n.searchHint, isDarkMode: isDark),
         ],
