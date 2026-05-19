@@ -51,6 +51,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
     return Scaffold(
       extendBody: true,
+      resizeToAvoidBottomInset: false,
       body: IndexedStack(index: _selectedIndex, children: _pages),
       
       floatingActionButton: SizedBox(
