@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
@@ -37,8 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void _saveEdit(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
     context.read<AuthBloc>().add(
-          UpdateProfileRequested(displayName: _nameController.text.trim()),
-        );
+      UpdateProfileRequested(displayName: _nameController.text.trim()),
+    );
     setState(() => _editMode = false);
   }
 
@@ -134,9 +133,15 @@ class _ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: const Color(AppColors.primaryGreen),
+      decoration: const BoxDecoration(
+        color: Color(AppColors.primaryGreen),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(AppDimensions.borderRadiusXLarge),
+          bottomRight: Radius.circular(AppDimensions.borderRadiusXLarge),
+        ),
+      ),
       padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + AppDimensions.paddingLarge,
+        top: MediaQuery.of(context).padding.top + 12,
         bottom: AppDimensions.paddingXLarge,
         left: AppDimensions.paddingLarge,
         right: AppDimensions.paddingLarge,
@@ -144,20 +149,8 @@ class _ProfileHeader extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => context.pop(),
-              ),
-              Expanded(
-                child: Text(
-                  l10n.profileTitle,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
               if (!editMode)
                 IconButton(
                   icon: const Icon(Icons.edit_outlined, color: Colors.white),
@@ -192,16 +185,16 @@ class _ProfileHeader extends StatelessWidget {
               Text(
                 displayName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             const SizedBox(height: AppDimensions.paddingXSmall),
             Text(
               email,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.85),
-                  ),
+                color: Colors.white.withValues(alpha: 0.85),
+              ),
             ),
           ],
         ],
@@ -248,20 +241,31 @@ class _NameEditField extends StatelessWidget {
                 vertical: AppDimensions.paddingSmall,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
-                borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
+                borderRadius: BorderRadius.circular(
+                  AppDimensions.borderRadiusMedium,
+                ),
+                borderSide: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.5),
+                ),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
-                borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
+                borderRadius: BorderRadius.circular(
+                  AppDimensions.borderRadiusMedium,
+                ),
+                borderSide: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.5),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
+                borderRadius: BorderRadius.circular(
+                  AppDimensions.borderRadiusMedium,
+                ),
                 borderSide: const BorderSide(color: Colors.white, width: 2),
               ),
             ),
-            validator: (v) =>
-                (v == null || v.trim().isEmpty) ? 'Name darf nicht leer sein' : null,
+            validator: (v) => (v == null || v.trim().isEmpty)
+                ? 'Name darf nicht leer sein'
+                : null,
           ),
           const SizedBox(height: AppDimensions.paddingMedium),
           Row(
@@ -300,10 +304,10 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       label.toUpperCase(),
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-          ),
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.2,
+        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+      ),
     );
   }
 }
@@ -346,7 +350,9 @@ class _InfoRow extends StatelessWidget {
           Icon(
             icon,
             size: 20,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.5),
           ),
           const SizedBox(width: AppDimensions.paddingMedium),
           Expanded(
@@ -357,11 +363,10 @@ class _InfoRow extends StatelessWidget {
                       Text(
                         label!,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withValues(alpha: 0.5),
-                            ),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.5),
+                        ),
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -414,7 +419,7 @@ class _LogoutButton extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.cancel),
+            child: Text(l10n.cancel, style: const TextStyle(color: Colors.black)),
           ),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
