@@ -220,7 +220,7 @@ class _RecentScansListState extends State<_RecentScansList> {
 
           return ListView.builder(
             controller: _scrollController,
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.only(bottom: 100),
             itemCount: state.recentScans.length + (showFooter ? 1 : 0),
             itemBuilder: (context, index) {
               if (index >= state.recentScans.length) {
