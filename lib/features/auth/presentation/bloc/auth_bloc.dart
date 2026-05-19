@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterRequested>(_onRegisterRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<UpdateProfileRequested>(_onUpdateProfileRequested);
+    on<AuthErrorCleared>((_, emit) => emit(const AuthUnauthenticated()));
   }
 
   Future<void> _onAuthStarted(

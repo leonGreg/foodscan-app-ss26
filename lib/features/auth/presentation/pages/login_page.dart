@@ -29,6 +29,12 @@ class _LoginPageState extends State<LoginPage> {
   late AppLocalizations _l10n;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(const AuthErrorCleared());
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();

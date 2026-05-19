@@ -48,3 +48,7 @@ class UpdateProfileRequested extends AuthEvent {
   @override
   List<Object?> get props => [displayName];
 }
+
+class AuthErrorCleared extends AuthEvent {
+  const AuthErrorCleared();
+}

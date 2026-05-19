@@ -199,4 +199,24 @@ void main() {
       await sub.cancel();
     });
   });
+
+  group('AuthErrorCleared', () {
+    // Navigating to an auth page must wipe any lingering AuthFailure state.
+    test('emits AuthUnauthenticated, clearing a prior AuthFailure', () async {
+      mockService.shouldFailLogin = true;
+      bloc.add(const LoginRequested(email: 'x@x.com', password: 'wrong'));
+      await pumpEventQueue();
+      expect(bloc.state, isA<AuthFailure>());
+
+      final states = <AuthState>[];
+      final sub = bloc.stream.listen(states.add);
+
+      bloc.add(const AuthErrorCleared());
+      await pumpEventQueue();
+
+      expect(states, [isA<AuthUnauthenticated>()]);
+
+      await sub.cancel();
+    });
+  });
 }
