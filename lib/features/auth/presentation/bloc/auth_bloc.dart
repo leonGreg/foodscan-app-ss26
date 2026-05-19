@@ -3,14 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_scan/features/auth/data/models/user_model.dart';
 import 'package:food_scan/features/auth/data/services/auth_service.dart';
+import 'package:food_scan/features/auth/data/services/auth_service_base.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService _authService;
+  final AuthServiceBase _authService;
 
-  AuthBloc({AuthService? authService})
+  AuthBloc({AuthServiceBase? authService})
     : _authService = authService ?? AuthService(),
       super(const AuthInitial()) {
     on<AuthStarted>(_onAuthStarted);
