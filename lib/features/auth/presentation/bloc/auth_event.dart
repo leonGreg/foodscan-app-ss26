@@ -39,3 +39,16 @@ class RegisterRequested extends AuthEvent {
 class LogoutRequested extends AuthEvent {
   const LogoutRequested();
 }
+
+class UpdateProfileRequested extends AuthEvent {
+  final String displayName;
+
+  const UpdateProfileRequested({required this.displayName});
+
+  @override
+  List<Object?> get props => [displayName];
+}
+
+class AuthErrorCleared extends AuthEvent {
+  const AuthErrorCleared();
+}

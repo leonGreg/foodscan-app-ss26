@@ -901,7 +901,7 @@ abstract class AppLocalizations {
   /// No description provided for @accountSection.
   ///
   /// In en, this message translates to:
-  /// **'Account'**
+  /// **'Personal Information'**
   String get accountSection;
 
   /// No description provided for @loginTitle.
@@ -1075,7 +1075,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Invalid email address'**
+  /// **'Enter a valid email address'**
   String get emailInvalid;
 
   /// No description provided for @passwordRequired.
@@ -1089,6 +1089,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password must be at least 6 characters'**
   String get passwordTooShort;
+
+  /// No description provided for @authErrorUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No account found for this email.'**
+  String get authErrorUserNotFound;
+
+  /// No description provided for @authErrorWrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password.'**
+  String get authErrorWrongPassword;
+
+  /// No description provided for @authErrorEmailAlreadyInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This email address is already in use.'**
+  String get authErrorEmailAlreadyInUse;
+
+  /// No description provided for @authErrorWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'The password is too weak.'**
+  String get authErrorWeakPassword;
+
+  /// No description provided for @authErrorNetworkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your internet connection.'**
+  String get authErrorNetworkFailed;
+
+  /// No description provided for @authErrorTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please try again later.'**
+  String get authErrorTooManyRequests;
+
+  /// No description provided for @authErrorInvalidCredential.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or password is incorrect.'**
+  String get authErrorInvalidCredential;
+
+  /// No description provided for @authErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred. Please try again.'**
+  String get authErrorGeneric;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
+  /// No description provided for @editProfileTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfileTooltip;
+
+  /// No description provided for @searchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchTitle;
+
+  /// No description provided for @searchSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search products from your scan history'**
+  String get searchSubtitle;
+
+  /// No description provided for @searchTypePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a product name or barcode...'**
+  String get searchTypePlaceholder;
+
+  /// No description provided for @noProductsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found.'**
+  String get noProductsFound;
+
+  /// No description provided for @searchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Results'**
+  String get searchResults;
 }
 
 class _AppLocalizationsDelegate

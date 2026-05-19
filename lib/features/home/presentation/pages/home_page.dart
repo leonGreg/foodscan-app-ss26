@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +23,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: _HomeContent());
+    return const Scaffold(
+      extendBody: true, 
+      body: _HomeContent(),
+    );
   }
 }
 
@@ -33,7 +38,7 @@ class _HomeContent extends StatelessWidget {
     return Column(
       children: [
         const _HomeHeader(),
-        const SizedBox(height: AppDimensions.paddingXLarge + 8),
+        const SizedBox(height: AppDimensions.paddingMedium), 
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -42,9 +47,16 @@ class _HomeContent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _SectionHeader(
-                  title: AppLocalizations.of(context)!.recentScans,
-                  icon: Icons.history,
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    final isSearch = state is HomeLoaded && state.isSearchMode;
+                    final l10n = AppLocalizations.of(context)!;
+                    
+                    return _SectionHeader(
+                      title: isSearch ? l10n.searchResults : l10n.recentScans,
+                      icon: isSearch ? Icons.search : Icons.history,
+                    );
+                  },
                 ),
                 const SizedBox(height: AppDimensions.paddingMedium),
                 const Expanded(child: _RecentScansList()),
@@ -63,14 +75,24 @@ class _HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+
     return Container(
-      height: AppDimensions.appBarExpandedHeight,
       width: double.infinity,
-      decoration: const BoxDecoration(color: Color(AppColors.primaryGreen)),
-      padding: const EdgeInsets.only(
-        top: AppDimensions.appBarTopPadding,
+      decoration: const BoxDecoration(
+        color: Color(AppColors.primaryGreen),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(AppDimensions.borderRadiusXLarge),
+          bottomRight: Radius.circular(AppDimensions.borderRadiusXLarge),
+        ),
+      ),
+      padding: EdgeInsets.only(
+        top: statusBarHeight + 12, 
         left: AppDimensions.paddingLarge,
         right: AppDimensions.paddingLarge,
+        bottom: AppDimensions.paddingLarge, 
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +117,96 @@ class _HomeHeader extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
+          
+          const SizedBox(height: AppDimensions.paddingMedium),
+          
+          _CustomSearchBar(hint: l10n.searchHint, isDarkMode: isDark),
         ],
+      ),
+    );
+  }
+}
+
+class _CustomSearchBar extends StatefulWidget {
+  final String hint;
+  final bool isDarkMode;
+
+  const _CustomSearchBar({required this.hint, required this.isDarkMode});
+
+  @override
+  State<_CustomSearchBar> createState() => _CustomSearchBarState();
+}
+
+class _CustomSearchBarState extends State<_CustomSearchBar> {
+  Timer? _searchDebounce;
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final state = context.read<HomeBloc>().state;
+    if (state is HomeLoaded && state.query.isNotEmpty) {
+      _controller.text = state.query;
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: AppDimensions.searchBarHeight,
+      clipBehavior: Clip.antiAlias, 
+      decoration: BoxDecoration(
+        color: widget.isDarkMode
+            ? const Color(AppColors.surfaceDark)
+            : const Color(AppColors.white),
+        borderRadius: BorderRadius.circular(AppDimensions.borderRadiusLarge),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: AppDimensions.shadowBlurRadius,
+            offset: const Offset(0, AppDimensions.shadowOffsetY),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: _controller,
+        onChanged: (query) {
+          _searchDebounce?.cancel();
+          _searchDebounce = Timer(const Duration(milliseconds: 350), () {
+            context.read<HomeBloc>().add(SearchProductEvent(query));
+          });
+        },
+        decoration: InputDecoration(
+          hintText: widget.hint,
+          filled: false, 
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          prefixIcon: Icon(
+            Icons.search,
+            color: Theme.of(context).iconTheme.color,
+          ),
+          suffixIcon: _controller.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear, size: 20),
+                  onPressed: () {
+                    _controller.clear();
+                    context.read<HomeBloc>().add(const SearchProductEvent(''));
+                    setState(() {});
+                  },
+                )
+              : null,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: AppDimensions.paddingMedium - 1,
+          ),
+        ),
       ),
     );
   }
@@ -138,9 +249,7 @@ class _SectionHeader extends StatelessWidget {
         const SizedBox(width: AppDimensions.paddingSmall),
         Text(
           title,
-          style: Theme.of(
-            context,
-          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -160,7 +269,6 @@ class _RecentScansListState extends State<_RecentScansList> {
   @override
   void initState() {
     super.initState();
-
     _scrollController.addListener(_onScroll);
   }
 
@@ -211,16 +319,16 @@ class _RecentScansListState extends State<_RecentScansList> {
             }
 
             if (state.isSearchMode) {
-              return const Center(child: Text('No products found.'));
+              return Center(child: Text(AppLocalizations.of(context)!.noProductsFound));
             }
             return const NoScansWidget();
           }
 
-          final showFooter = state.isLoadingMoreVisible;
+          final showFooter = state.isLoadingMoreVisible || state.isLoadingMoreSearchResults;
 
           return ListView.builder(
             controller: _scrollController,
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.only(bottom: 100, top: 0),
             itemCount: state.recentScans.length + (showFooter ? 1 : 0),
             itemBuilder: (context, index) {
               if (index >= state.recentScans.length) {

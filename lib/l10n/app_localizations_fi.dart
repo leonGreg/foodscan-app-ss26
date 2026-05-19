@@ -437,7 +437,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get memberSince => 'Jäsen vuodesta';
 
   @override
-  String get accountSection => 'Tili';
+  String get accountSection => 'Henkilötiedot';
 
   @override
   String get loginTitle => 'Kirjaudu sisään';
@@ -538,4 +538,57 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get passwordTooShort =>
       'Salasanan on oltava vähintään 6 merkkiä pitkä';
+
+  @override
+  String get authErrorUserNotFound =>
+      'Tälle sähköpostiosoitteelle ei löydy tiliä.';
+
+  @override
+  String get authErrorWrongPassword => 'Väärä salasana.';
+
+  @override
+  String get authErrorEmailAlreadyInUse =>
+      'Tämä sähköpostiosoite on jo käytössä.';
+
+  @override
+  String get authErrorWeakPassword => 'Salasana on liian heikko.';
+
+  @override
+  String get authErrorNetworkFailed =>
+      'Verkkovirhe. Tarkista internetyhteytesi.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Liian monta yritystä. Yritä myöhemmin uudelleen.';
+
+  @override
+  String get authErrorInvalidCredential => 'Sähköposti tai salasana on väärä.';
+
+  @override
+  String get authErrorGeneric => 'Tapahtui virhe. Yritä uudelleen.';
+
+  @override
+  String get save => 'Tallenna';
+
+  @override
+  String get or => 'tai';
+
+  @override
+  String get editProfileTooltip => 'Muokkaa profiilia';
+
+  @override
+  String get searchTitle => 'Haku';
+
+  @override
+  String get searchSubtitle => 'Etsi tuotteita skannauksistasi';
+
+  @override
+  String get searchTypePlaceholder =>
+      'Kirjoita tuotteen nimi tai viivakoodi...';
+
+  @override
+  String get noProductsFound => 'Tuotteita ei löytynyt.';
+
+  @override
+  String get searchResults => 'Hakutulokset';
 }

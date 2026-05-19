@@ -8,7 +8,7 @@ import 'package:food_scan/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:food_scan/features/auth/presentation/pages/login_page.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
-class FakeAuthService extends AuthServiceBase {
+class MockAuthService extends AuthServiceBase {
   @override
   Stream<User?> get authStateChanges => const Stream.empty();
 
@@ -41,11 +41,14 @@ class FakeAuthService extends AuthServiceBase {
 
   @override
   Future<void> sendPasswordResetEmail(String email) async {}
+
+  @override
+  Future<void> updateDisplayName(String displayName) async {}
 }
 
 Widget buildLoginPage() {
   return BlocProvider(
-    create: (_) => AuthBloc(authService: FakeAuthService()),
+    create: (_) => AuthBloc(authService: MockAuthService()),
     child: MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -84,7 +87,9 @@ void main() {
     });
 
     // Submitting with both fields empty must show the password-required error.
-    testWidgets('shows password validation error on empty submit', (tester) async {
+    testWidgets('shows password validation error on empty submit', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildLoginPage());
       await tester.pump();
 
@@ -107,7 +112,9 @@ void main() {
     });
 
     // A password below 6 characters must trigger the length error.
-    testWidgets('shows password length error for short password', (tester) async {
+    testWidgets('shows password length error for short password', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildLoginPage());
       await tester.pump();
 
@@ -116,11 +123,16 @@ void main() {
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
-      expect(find.text('Password must be at least 6 characters'), findsOneWidget);
+      expect(
+        find.text('Password must be at least 6 characters'),
+        findsOneWidget,
+      );
     });
 
     // A bad email with a valid password must show only the email error, not the password error.
-    testWidgets('shows only email error when password is valid', (tester) async {
+    testWidgets('shows only email error when password is valid', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildLoginPage());
       await tester.pump();
 
@@ -135,7 +147,9 @@ void main() {
     });
 
     // A valid email with a short password must show only the password error.
-    testWidgets('shows only password error when email is valid', (tester) async {
+    testWidgets('shows only password error when email is valid', (
+      tester,
+    ) async {
       await tester.pumpWidget(buildLoginPage());
       await tester.pump();
 
@@ -149,7 +163,10 @@ void main() {
 
       expect(find.text('Email is required'), findsNothing);
       expect(find.text('Enter a valid email address'), findsNothing);
-      expect(find.text('Password must be at least 6 characters'), findsOneWidget);
+      expect(
+        find.text('Password must be at least 6 characters'),
+        findsOneWidget,
+      );
     });
   });
 }

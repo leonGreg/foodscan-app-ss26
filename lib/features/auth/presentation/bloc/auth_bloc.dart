@@ -18,6 +18,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginRequested>(_onLoginRequested);
     on<RegisterRequested>(_onRegisterRequested);
     on<LogoutRequested>(_onLogoutRequested);
+    on<UpdateProfileRequested>(_onUpdateProfileRequested);
+    on<AuthErrorCleared>((_, emit) => emit(const AuthUnauthenticated()));
   }
 
   Future<void> _onAuthStarted(
@@ -45,9 +47,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthAuthenticated(user: user));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(message: _mapFirebaseError(e.code)));
-    } catch (e) {
-      emit(AuthFailure(message: e.toString()));
+      emit(AuthFailure(code: e.code));
+    } catch (_) {
+      emit(const AuthFailure(code: 'unknown'));
     }
   }
 
@@ -64,9 +66,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthAuthenticated(user: user));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(message: _mapFirebaseError(e.code)));
-    } catch (e) {
-      emit(AuthFailure(message: e.toString()));
+      emit(AuthFailure(code: e.code));
+    } catch (_) {
+      emit(const AuthFailure(code: 'unknown'));
     }
   }
 
@@ -78,26 +80,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthUnauthenticated());
   }
 
-  String _mapFirebaseError(String code) {
-    switch (code) {
-      case 'user-not-found':
-        return 'Kein Konto mit dieser E-Mail gefunden.';
-      case 'wrong-password':
-        return 'Falsches Passwort.';
-      case 'email-already-in-use':
-        return 'Diese E-Mail-Adresse wird bereits verwendet.';
-      case 'invalid-email':
-        return 'Ungültige E-Mail-Adresse.';
-      case 'weak-password':
-        return 'Das Passwort ist zu schwach.';
-      case 'network-request-failed':
-        return 'Netzwerkfehler. Bitte überprüfe deine Internetverbindung.';
-      case 'too-many-requests':
-        return 'Zu viele Versuche. Bitte versuche es später erneut.';
-      case 'invalid-credential':
-        return 'E-Mail oder Passwort ist falsch.';
-      default:
-        return 'Authentifizierungsfehler: $code';
+  Future<void> _onUpdateProfileRequested(
+    UpdateProfileRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    final current = state;
+    if (current is! AuthAuthenticated) return;
+    try {
+      await _authService.updateDisplayName(event.displayName);
+      emit(AuthAuthenticated(
+        user: AppUser(
+          uid: current.user.uid,
+          email: current.user.email,
+          displayName: event.displayName.trim(),
+          createdAt: current.user.createdAt,
+        ),
+      ));
+    } catch (_) {
+      emit(const AuthFailure(code: 'unknown'));
     }
   }
 }

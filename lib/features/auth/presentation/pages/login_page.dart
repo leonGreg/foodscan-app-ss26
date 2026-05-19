@@ -10,6 +10,7 @@ import 'package:food_scan/features/auth/presentation/widgets/auth_error_message.
 import 'package:food_scan/features/auth/presentation/widgets/auth_header.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_switch_row.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:food_scan/features/auth/utils/auth_error_mapper.dart';
 import 'package:food_scan/features/auth/utils/auth_validators.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
@@ -26,6 +27,12 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   late AppLocalizations _l10n;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(const AuthErrorCleared());
+  }
 
   @override
   void dispose() {
@@ -75,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _emailController,
                           label: _l10n.emailLabel,
                           keyboardType: TextInputType.emailAddress,
-                          validator: validateEmail,
+                          validator: emailValidator(_l10n),
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
@@ -92,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                               () => _obscurePassword = !_obscurePassword,
                             ),
                           ),
-                          validator: validatePassword,
+                          validator: passwordValidator(_l10n),
                         ),
                         Align(
                           alignment: Alignment.centerRight,
@@ -111,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         if (state is AuthFailure) ...[
                           const SizedBox(height: AppDimensions.paddingMedium),
-                          AuthErrorMessage(message: state.message),
+                          AuthErrorMessage(message: mapAuthErrorCode(state.code, _l10n)),
                         ],
                         const SizedBox(height: AppDimensions.paddingXLarge),
                         SizedBox(

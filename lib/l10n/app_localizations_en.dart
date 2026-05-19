@@ -435,7 +435,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get memberSince => 'Member since';
 
   @override
-  String get accountSection => 'Account';
+  String get accountSection => 'Personal Information';
 
   @override
   String get loginTitle => 'Log in';
@@ -528,11 +528,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailRequired => 'Email is required';
 
   @override
-  String get emailInvalid => 'Invalid email address';
+  String get emailInvalid => 'Enter a valid email address';
 
   @override
   String get passwordRequired => 'Password is required';
 
   @override
   String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get authErrorUserNotFound => 'No account found for this email.';
+
+  @override
+  String get authErrorWrongPassword => 'Incorrect password.';
+
+  @override
+  String get authErrorEmailAlreadyInUse =>
+      'This email address is already in use.';
+
+  @override
+  String get authErrorWeakPassword => 'The password is too weak.';
+
+  @override
+  String get authErrorNetworkFailed =>
+      'Network error. Please check your internet connection.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get authErrorInvalidCredential => 'Email or password is incorrect.';
+
+  @override
+  String get authErrorGeneric => 'An error occurred. Please try again.';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get or => 'or';
+
+  @override
+  String get editProfileTooltip => 'Edit profile';
+
+  @override
+  String get searchTitle => 'Search';
+
+  @override
+  String get searchSubtitle => 'Search products from your scan history';
+
+  @override
+  String get searchTypePlaceholder => 'Type a product name or barcode...';
+
+  @override
+  String get noProductsFound => 'No products found.';
+
+  @override
+  String get searchResults => 'Search Results';
 }

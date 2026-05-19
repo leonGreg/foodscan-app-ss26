@@ -7,6 +7,17 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Color(AppColors.primaryGreen),
+      ).copyWith(
+        surface: Color(AppColors.backgroundLight),
+        surfaceContainerLowest: Color(0xFFFFFFFF),
+        surfaceContainerLow: Color(0xFFF9F9F9),
+        surfaceContainer: Color(AppColors.surfaceLight),
+        surfaceContainerHigh: Color(0xFFEEEEEE),
+        surfaceContainerHighest: Color(AppColors.borderGray),
+        surfaceTint: Colors.transparent,
+      ),
       primaryColor: Color(AppColors.primaryGreen),
       scaffoldBackgroundColor: Color(AppColors.backgroundLight),
       appBarTheme: AppBarTheme(
@@ -110,6 +121,18 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Color(AppColors.primaryGreen),
+        brightness: Brightness.dark,
+      ).copyWith(
+        surface: Color(AppColors.backgroundDark),
+        surfaceContainerLowest: Color(0xFF141414),
+        surfaceContainerLow: Color(AppColors.backgroundDark),
+        surfaceContainer: Color(0xFF242424),
+        surfaceContainerHigh: Color(AppColors.surfaceDark),
+        surfaceContainerHighest: Color(0xFF3A3A3A),
+        surfaceTint: Colors.transparent,
+      ),
       primaryColor: Color(AppColors.primaryGreen),
       scaffoldBackgroundColor: Color(AppColors.backgroundDark),
       appBarTheme: AppBarTheme(

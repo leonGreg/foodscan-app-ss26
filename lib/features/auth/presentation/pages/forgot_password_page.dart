@@ -8,6 +8,8 @@ import 'package:food_scan/features/auth/data/services/auth_service.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_error_message.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_header.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:food_scan/features/auth/utils/auth_error_mapper.dart';
+import 'package:food_scan/features/auth/utils/auth_validators.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -65,7 +67,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _errorMessage = _mapFirebaseError(e.code);
+        _errorMessage = mapAuthErrorCode(e.code, _l10n);
       });
     } catch (_) {
       if (!mounted) return;
@@ -108,7 +110,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       controller: _emailController,
                       label: _l10n.emailLabel,
                       keyboardType: TextInputType.emailAddress,
-                      validator: _validateEmail,
+                      validator: emailValidator(_l10n),
                     ),
                     if (_errorMessage != null) ...[
                       const SizedBox(height: AppDimensions.paddingMedium),
@@ -156,28 +158,4 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
   }
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return _l10n.emailRequired;
-    if (!RegExp(r'^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$').hasMatch(value.trim())) {
-      return _l10n.emailInvalid;
-    }
-    return null;
-  }
-
-  String _mapFirebaseError(String code) {
-    switch (code) {
-      case 'user-not-found':
-        return _l10n.forgotPasswordErrorUserNotFound;
-      case 'invalid-email':
-        return _l10n.emailInvalid;
-      case 'missing-email':
-        return _l10n.emailRequired;
-      case 'network-request-failed':
-        return _l10n.forgotPasswordErrorNetwork;
-      case 'too-many-requests':
-        return _l10n.forgotPasswordErrorRateLimited;
-      default:
-        return _l10n.forgotPasswordErrorGeneric;
-    }
-  }
 }

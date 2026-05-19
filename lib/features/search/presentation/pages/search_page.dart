@@ -49,6 +49,7 @@ class _SearchHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       height: AppDimensions.appBarExpandedHeight,
       width: double.infinity,
@@ -62,7 +63,7 @@ class _SearchHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Search',
+            l10n.searchTitle,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -70,7 +71,7 @@ class _SearchHeader extends StatelessWidget {
           ),
           const SizedBox(height: AppDimensions.paddingXSmall),
           Text(
-            'Search products from your scan history',
+            l10n.searchSubtitle,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Colors.white.withValues(alpha: 0.9),
             ),
@@ -225,10 +226,10 @@ class _SearchResultsListState extends State<_SearchResultsList> {
           return Center(child: Text(state.message));
         }
 
+        final l10n = AppLocalizations.of(context)!;
+
         if (state is! HomeLoaded || !state.isSearchMode) {
-          return const Center(
-            child: Text('Type a product name or barcode to search.'),
-          );
+          return Center(child: Text(l10n.searchTypePlaceholder));
         }
 
         if (state.recentScans.isEmpty) {
@@ -236,7 +237,7 @@ class _SearchResultsListState extends State<_SearchResultsList> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return const Center(child: Text('No products found.'));
+          return Center(child: Text(l10n.noProductsFound));
         }
 
         final showFooter = state.isLoadingMoreSearchResults;

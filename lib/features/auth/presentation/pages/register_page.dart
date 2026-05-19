@@ -9,6 +9,7 @@ import 'package:food_scan/features/auth/presentation/widgets/auth_error_message.
 import 'package:food_scan/features/auth/presentation/widgets/auth_header.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_switch_row.dart';
 import 'package:food_scan/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:food_scan/features/auth/utils/auth_error_mapper.dart';
 import 'package:food_scan/features/auth/utils/auth_validators.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
@@ -28,6 +29,12 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _obscurePassword = true;
   bool _obscureConfirm = true;
   late AppLocalizations _l10n;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(const AuthErrorCleared());
+  }
 
   @override
   void dispose() {
@@ -79,14 +86,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         AuthTextField(
                           controller: _nameController,
                           label: _l10n.nameLabel,
-                          validator: validateDisplayName,
+                          validator: displayNameValidator(_l10n),
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
                           controller: _emailController,
                           label: _l10n.emailLabel,
                           keyboardType: TextInputType.emailAddress,
-                          validator: validateEmail,
+                          validator: emailValidator(_l10n),
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
@@ -103,7 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               () => _obscurePassword = !_obscurePassword,
                             ),
                           ),
-                          validator: validatePassword,
+                          validator: passwordValidator(_l10n),
                         ),
                         const SizedBox(height: AppDimensions.paddingMedium),
                         AuthTextField(
@@ -120,12 +127,11 @@ class _RegisterPageState extends State<RegisterPage> {
                               () => _obscureConfirm = !_obscureConfirm,
                             ),
                           ),
-                          validator: (v) =>
-                              validateConfirmPassword(v, _passwordController.text),
+                          validator: confirmPasswordValidator(_l10n, _passwordController.text),
                         ),
                         if (state is AuthFailure) ...[
                           const SizedBox(height: AppDimensions.paddingMedium),
-                          AuthErrorMessage(message: state.message),
+                          AuthErrorMessage(message: mapAuthErrorCode(state.code, _l10n)),
                         ],
                         const SizedBox(height: AppDimensions.paddingXLarge),
                         SizedBox(

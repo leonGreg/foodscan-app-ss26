@@ -49,6 +49,9 @@ class MockAuthService extends AuthServiceBase {
 
   @override
   Future<void> sendPasswordResetEmail(String email) async {}
+
+  @override
+  Future<void> updateDisplayName(String displayName) async {}
 }
 
 void main() {
@@ -152,6 +155,36 @@ void main() {
     });
   });
 
+  group('UpdateProfileRequested', () {
+    test('updates displayName in AuthAuthenticated state', () async {
+      bloc.add(const LoginRequested(email: 'user@test.com', password: 'pass'));
+      await pumpEventQueue();
+
+      final states = <AuthState>[];
+      final sub = bloc.stream.listen(states.add);
+
+      bloc.add(const UpdateProfileRequested(displayName: 'Updated Name'));
+      await pumpEventQueue();
+
+      expect(states, [isA<AuthAuthenticated>()]);
+      expect((states[0] as AuthAuthenticated).user.displayName, 'Updated Name');
+
+      await sub.cancel();
+    });
+
+    test('does nothing when not authenticated', () async {
+      final states = <AuthState>[];
+      final sub = bloc.stream.listen(states.add);
+
+      bloc.add(const UpdateProfileRequested(displayName: 'Name'));
+      await pumpEventQueue();
+
+      expect(states, isEmpty);
+
+      await sub.cancel();
+    });
+  });
+
   group('LogoutRequested', () {
     // Logout must always result in the unauthenticated state, regardless of prior state.
     test('emits AuthUnauthenticated', () async {
@@ -159,6 +192,26 @@ void main() {
       final sub = bloc.stream.listen(states.add);
 
       bloc.add(const LogoutRequested());
+      await pumpEventQueue();
+
+      expect(states, [isA<AuthUnauthenticated>()]);
+
+      await sub.cancel();
+    });
+  });
+
+  group('AuthErrorCleared', () {
+    // Navigating to an auth page must wipe any lingering AuthFailure state.
+    test('emits AuthUnauthenticated, clearing a prior AuthFailure', () async {
+      mockService.shouldFailLogin = true;
+      bloc.add(const LoginRequested(email: 'x@x.com', password: 'wrong'));
+      await pumpEventQueue();
+      expect(bloc.state, isA<AuthFailure>());
+
+      final states = <AuthState>[];
+      final sub = bloc.stream.listen(states.add);
+
+      bloc.add(const AuthErrorCleared());
       await pumpEventQueue();
 
       expect(states, [isA<AuthUnauthenticated>()]);
