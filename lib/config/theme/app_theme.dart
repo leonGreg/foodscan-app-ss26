@@ -7,6 +7,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      colorScheme: ColorScheme.fromSeed(seedColor: Color(AppColors.primaryGreen)),
       primaryColor: Color(AppColors.primaryGreen),
       scaffoldBackgroundColor: Color(AppColors.backgroundLight),
       appBarTheme: AppBarTheme(
@@ -110,6 +111,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      colorScheme: ColorScheme.fromSeed(seedColor: Color(AppColors.primaryGreen), brightness: Brightness.dark),
       primaryColor: Color(AppColors.primaryGreen),
       scaffoldBackgroundColor: Color(AppColors.backgroundDark),
       appBarTheme: AppBarTheme(
