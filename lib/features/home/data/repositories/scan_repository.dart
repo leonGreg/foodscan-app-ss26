@@ -62,41 +62,45 @@ class ScanRepository {
   Future<ScanPage> searchScansPage(
     String uid, {
     required String queryText,
-    int limit = 8,
+    int limit = 20,
     DocumentSnapshot<Map<String, dynamic>>? startAfterDocument,
   }) async {
     final normalizedQuery = queryText.toLowerCase().trim();
+    final isBarcodeQuery = RegExp(r'^\d+$').hasMatch(normalizedQuery);
 
     Query<Map<String, dynamic>> query = _firestore
         .collection('users')
         .doc(uid)
-        .collection('scans')
-        .orderBy('productNameLower')
-        .startAt([normalizedQuery])
-        .endAt(['$normalizedQuery\uf8ff'])
-        .limit(limit);
+        .collection('scans');
 
-    if (startAfterDocument != null) {
-      query = _firestore
-          .collection('users')
-          .doc(uid)
-          .collection('scans')
+    if (isBarcodeQuery) {
+      query = query
+          .orderBy(FieldPath.documentId)
+          .startAt([normalizedQuery])
+          .endAt(['$normalizedQuery\uf8ff']);
+    } else {
+      query = query
           .orderBy('productNameLower')
-          .startAfterDocument(startAfterDocument)
-          .endAt(['$normalizedQuery\uf8ff'])
-          .limit(limit);
+          .startAt([normalizedQuery])
+          .endAt(['$normalizedQuery\uf8ff']);
     }
 
-    final snapshot = await query.get();
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument);
+    }
 
-    final scans = snapshot.docs.map(ScanRecord.fromFirestore).toList();
+    final snapshot = await query.limit(limit + 1).get();
+
+    final docs = snapshot.docs;
+    final hasMore = docs.length > limit;
+    final visibleDocs = hasMore ? docs.take(limit).toList() : docs;
+
+    final scans = visibleDocs.map(ScanRecord.fromFirestore).toList();
 
     return ScanPage(
       scans: scans,
-      lastDocument: snapshot.docs.isEmpty
-          ? startAfterDocument
-          : snapshot.docs.last,
-      hasMore: snapshot.docs.length == limit,
+      lastDocument: visibleDocs.isEmpty ? startAfterDocument : visibleDocs.last,
+      hasMore: hasMore,
     );
   }
 }
