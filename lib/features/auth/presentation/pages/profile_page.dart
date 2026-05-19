@@ -15,6 +15,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool _editMode = false;
+  bool _isUpdating = false;
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -35,10 +36,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _saveEdit(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
+    setState(() => _isUpdating = true);
     context.read<AuthBloc>().add(
       UpdateProfileRequested(displayName: _nameController.text.trim()),
     );
-    setState(() => _editMode = false);
   }
 
   @override
@@ -47,7 +48,19 @@ class _ProfilePageState extends State<ProfilePage> {
     final authState = context.watch<AuthBloc>().state;
     final user = authState is AuthAuthenticated ? authState.user : null;
 
-    return Scaffold(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (!_isUpdating) return;
+        if (state is AuthAuthenticated) {
+          setState(() {
+            _isUpdating = false;
+            _editMode = false;
+          });
+        } else if (state is AuthFailure) {
+          setState(() => _isUpdating = false);
+        }
+      },
+      child: Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
@@ -55,6 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
             displayName: user?.displayName ?? '',
             email: user?.email ?? '',
             editMode: _editMode,
+            isUpdating: _isUpdating,
             nameController: _nameController,
             formKey: _formKey,
             l10n: l10n,
@@ -95,6 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+    ),
     );
   }
 }
@@ -103,6 +118,7 @@ class _ProfileHeader extends StatelessWidget {
   final String displayName;
   final String email;
   final bool editMode;
+  final bool isUpdating;
   final TextEditingController nameController;
   final GlobalKey<FormState> formKey;
   final AppLocalizations l10n;
@@ -114,6 +130,7 @@ class _ProfileHeader extends StatelessWidget {
     required this.displayName,
     required this.email,
     required this.editMode,
+    required this.isUpdating,
     required this.nameController,
     required this.formKey,
     required this.l10n,
@@ -177,6 +194,7 @@ class _ProfileHeader extends StatelessWidget {
             _NameEditField(
               controller: nameController,
               formKey: formKey,
+              isUpdating: isUpdating,
               onSave: onSave,
               onCancel: onCancel,
             )
@@ -206,12 +224,14 @@ class _ProfileHeader extends StatelessWidget {
 class _NameEditField extends StatelessWidget {
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
+  final bool isUpdating;
   final VoidCallback onSave;
   final VoidCallback onCancel;
 
   const _NameEditField({
     required this.controller,
     required this.formKey,
+    required this.isUpdating,
     required this.onSave,
     required this.onCancel,
   });
@@ -269,27 +289,37 @@ class _NameEditField extends StatelessWidget {
                 : null,
           ),
           const SizedBox(height: AppDimensions.paddingMedium),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: onCancel,
-                child: Text(
-                  l10n.cancel,
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.85)),
-                ),
+          if (isUpdating)
+            const SizedBox(
+              height: 36,
+              width: 36,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 3,
               ),
-              const SizedBox(width: AppDimensions.paddingMedium),
-              ElevatedButton(
-                onPressed: onSave,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(AppColors.primaryGreen),
+            )
+          else
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: onCancel,
+                  child: Text(
+                    l10n.cancel,
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.85)),
+                  ),
                 ),
-                child: Text(l10n.save),
-              ),
-            ],
-          ),
+                const SizedBox(width: AppDimensions.paddingMedium),
+                ElevatedButton(
+                  onPressed: onSave,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(AppColors.primaryGreen),
+                  ),
+                  child: Text(l10n.save),
+                ),
+              ],
+            ),
         ],
       ),
     );
