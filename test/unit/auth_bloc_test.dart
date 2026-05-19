@@ -49,6 +49,9 @@ class MockAuthService extends AuthServiceBase {
 
   @override
   Future<void> sendPasswordResetEmail(String email) async {}
+
+  @override
+  Future<void> updateDisplayName(String displayName) async {}
 }
 
 void main() {
@@ -147,6 +150,36 @@ void main() {
 
       expect(states[0], isA<AuthLoading>());
       expect(states[1], isA<AuthFailure>());
+
+      await sub.cancel();
+    });
+  });
+
+  group('UpdateProfileRequested', () {
+    test('updates displayName in AuthAuthenticated state', () async {
+      bloc.add(const LoginRequested(email: 'user@test.com', password: 'pass'));
+      await pumpEventQueue();
+
+      final states = <AuthState>[];
+      final sub = bloc.stream.listen(states.add);
+
+      bloc.add(const UpdateProfileRequested(displayName: 'Updated Name'));
+      await pumpEventQueue();
+
+      expect(states, [isA<AuthAuthenticated>()]);
+      expect((states[0] as AuthAuthenticated).user.displayName, 'Updated Name');
+
+      await sub.cancel();
+    });
+
+    test('does nothing when not authenticated', () async {
+      final states = <AuthState>[];
+      final sub = bloc.stream.listen(states.add);
+
+      bloc.add(const UpdateProfileRequested(displayName: 'Name'));
+      await pumpEventQueue();
+
+      expect(states, isEmpty);
 
       await sub.cancel();
     });

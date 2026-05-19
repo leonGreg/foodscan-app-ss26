@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginRequested>(_onLoginRequested);
     on<RegisterRequested>(_onRegisterRequested);
     on<LogoutRequested>(_onLogoutRequested);
+    on<UpdateProfileRequested>(_onUpdateProfileRequested);
   }
 
   Future<void> _onAuthStarted(
@@ -76,6 +77,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     await _authService.signOut();
     emit(const AuthUnauthenticated());
+  }
+
+  Future<void> _onUpdateProfileRequested(
+    UpdateProfileRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    final current = state;
+    if (current is! AuthAuthenticated) return;
+    try {
+      await _authService.updateDisplayName(event.displayName);
+      emit(AuthAuthenticated(
+        user: AppUser(
+          uid: current.user.uid,
+          email: current.user.email,
+          displayName: event.displayName.trim(),
+          createdAt: current.user.createdAt,
+        ),
+      ));
+    } catch (e) {
+      emit(AuthFailure(message: e.toString()));
+    }
   }
 
   String _mapFirebaseError(String code) {

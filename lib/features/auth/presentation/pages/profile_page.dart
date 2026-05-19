@@ -7,8 +7,40 @@ import 'package:food_scan/config/constants/dimensions.dart';
 import 'package:food_scan/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:food_scan/l10n/app_localizations.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool _editMode = false;
+  final _nameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  void _enterEdit(String currentName) {
+    _nameController.text = currentName;
+    setState(() => _editMode = true);
+  }
+
+  void _cancelEdit() {
+    setState(() => _editMode = false);
+  }
+
+  void _saveEdit(BuildContext context) {
+    if (!_formKey.currentState!.validate()) return;
+    context.read<AuthBloc>().add(
+          UpdateProfileRequested(displayName: _nameController.text.trim()),
+        );
+    setState(() => _editMode = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +55,13 @@ class ProfilePage extends StatelessWidget {
           _ProfileHeader(
             displayName: user?.displayName ?? '',
             email: user?.email ?? '',
+            editMode: _editMode,
+            nameController: _nameController,
+            formKey: _formKey,
             l10n: l10n,
+            onEditTap: () => _enterEdit(user?.displayName ?? ''),
+            onSave: () => _saveEdit(context),
+            onCancel: _cancelEdit,
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -65,12 +103,24 @@ class ProfilePage extends StatelessWidget {
 class _ProfileHeader extends StatelessWidget {
   final String displayName;
   final String email;
+  final bool editMode;
+  final TextEditingController nameController;
+  final GlobalKey<FormState> formKey;
   final AppLocalizations l10n;
+  final VoidCallback onEditTap;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
 
   const _ProfileHeader({
     required this.displayName,
     required this.email,
+    required this.editMode,
+    required this.nameController,
+    required this.formKey,
     required this.l10n,
+    required this.onEditTap,
+    required this.onSave,
+    required this.onCancel,
   });
 
   String get _initials {
@@ -99,13 +149,21 @@ class _ProfileHeader extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () => context.pop(),
               ),
-              Text(
-                l10n.profileTitle,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  l10n.profileTitle,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
+              if (!editMode)
+                IconButton(
+                  icon: const Icon(Icons.edit_outlined, color: Colors.white),
+                  tooltip: 'Profil bearbeiten',
+                  onPressed: onEditTap,
+                ),
             ],
           ),
           const SizedBox(height: AppDimensions.paddingLarge),
@@ -122,20 +180,110 @@ class _ProfileHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppDimensions.paddingMedium),
-          if (displayName.isNotEmpty)
+          if (editMode)
+            _NameEditField(
+              controller: nameController,
+              formKey: formKey,
+              onSave: onSave,
+              onCancel: onCancel,
+            )
+          else ...[
+            if (displayName.isNotEmpty)
+              Text(
+                displayName,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            const SizedBox(height: AppDimensions.paddingXSmall),
             Text(
-              displayName,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+              email,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.85),
+                  ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _NameEditField extends StatelessWidget {
+  final TextEditingController controller;
+  final GlobalKey<FormState> formKey;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
+
+  const _NameEditField({
+    required this.controller,
+    required this.formKey,
+    required this.onSave,
+    required this.onCancel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: controller,
+            autofocus: true,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white.withValues(alpha: 0.15),
+              hintText: 'Name',
+              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: AppDimensions.paddingMedium,
+                vertical: AppDimensions.paddingSmall,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
+                borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
+                borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
+                borderSide: const BorderSide(color: Colors.white, width: 2),
               ),
             ),
-          const SizedBox(height: AppDimensions.paddingXSmall),
-          Text(
-            email,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.85),
-            ),
+            validator: (v) =>
+                (v == null || v.trim().isEmpty) ? 'Name darf nicht leer sein' : null,
+          ),
+          const SizedBox(height: AppDimensions.paddingMedium),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: onCancel,
+                child: Text(
+                  'Abbrechen',
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.85)),
+                ),
+              ),
+              const SizedBox(width: AppDimensions.paddingMedium),
+              ElevatedButton(
+                onPressed: onSave,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(AppColors.primaryGreen),
+                ),
+                child: const Text('Speichern'),
+              ),
+            ],
           ),
         ],
       ),
@@ -152,10 +300,10 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       label.toUpperCase(),
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-        fontWeight: FontWeight.bold,
-        letterSpacing: 1.2,
-        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-      ),
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+          ),
     );
   }
 }
@@ -198,9 +346,7 @@ class _InfoRow extends StatelessWidget {
           Icon(
             icon,
             size: 20,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.5),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
           ),
           const SizedBox(width: AppDimensions.paddingMedium),
           Expanded(
@@ -211,10 +357,11 @@ class _InfoRow extends StatelessWidget {
                       Text(
                         label!,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.5),
-                        ),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.5),
+                            ),
                       ),
                       const SizedBox(height: 2),
                       Text(

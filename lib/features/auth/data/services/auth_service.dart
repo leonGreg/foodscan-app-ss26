@@ -7,10 +7,13 @@ class AuthService extends AuthServiceBase {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  @override
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
+  @override
   User? get currentFirebaseUser => _auth.currentUser;
 
+  @override
   Future<AppUser> signInWithEmail(String email, String password) async {
     final credential = await _auth.signInWithEmailAndPassword(
       email: email.trim(),
@@ -21,10 +24,12 @@ class AuthService extends AuthServiceBase {
     return profile ?? AppUser.fromFirebaseUser(user);
   }
 
+  @override
   Future<void> sendPasswordResetEmail(String email) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
   }
 
+  @override
   Future<AppUser> registerWithEmail({
     required String email,
     required String password,
@@ -53,8 +58,20 @@ class AuthService extends AuthServiceBase {
     return appUser;
   }
 
+  @override
   Future<void> signOut() async {
     await _auth.signOut();
+  }
+
+  @override
+  Future<void> updateDisplayName(String displayName) async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+    await user.updateDisplayName(displayName.trim());
+    await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .update({'displayName': displayName.trim()});
   }
 
   Future<AppUser?> _getUserProfile(String uid) async {
