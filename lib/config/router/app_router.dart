@@ -7,9 +7,10 @@ import 'package:food_scan/features/auth/presentation/pages/forgot_password_page.
 import 'package:food_scan/features/auth/presentation/pages/login_page.dart';
 import 'package:food_scan/features/auth/presentation/pages/profile_page.dart';
 import 'package:food_scan/features/auth/presentation/pages/register_page.dart';
-import 'package:food_scan/features/home/presentation/pages/home_page.dart';
 import 'package:food_scan/features/scanner/presentation/pages/scanner_page.dart';
 import 'package:food_scan/features/details/presentation/pages/details_page.dart';
+
+import 'package:food_scan/app/main_navigation_page.dart';
 
 class AppRouter {
   static const String login = '/login';
@@ -63,7 +64,7 @@ class AppRouter {
       GoRoute(
         path: home,
         name: 'home',
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) => const MainNavigationPage(),
       ),
       GoRoute(
         path: scanner,

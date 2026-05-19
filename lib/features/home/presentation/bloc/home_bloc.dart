@@ -38,6 +38,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<AddProductToHistoryEvent>(_onAddProductToHistory);
     on<LoadMoreRecentScansEvent>(_onLoadMoreRecentScans);
     on<LoadMoreSearchResultsEvent>(_onLoadMoreSearchResults);
+    on<ShowRecentScansEvent>(_onShowRecentScans);
+    on<ShowSearchResultsEvent>(_onShowSearchResults);
 
     _authSubscription = FirebaseAuth.instance.authStateChanges().listen((_) {
       add(const LoadRecentScansEvent());
@@ -75,7 +77,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
 
-      // emit(const HomeLoaded(recentScans: []));
       return;
     }
     emit(const HomeLoading());
@@ -235,7 +236,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         return;
       }
 
-      // if (currentQuery.trim().isEmpty) {
       emit(
         HomeLoaded(
           recentScans: _allScans,
@@ -246,26 +246,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           isLoadingMoreSearchResults: false,
         ),
       );
-
-      // return;
-      // }
-
-      // final filtered = _allScans
-      //     .where(
-      //       (scan) => scan.productName.toLowerCase().contains(
-      //             currentQuery.toLowerCase(),
-      //           ),
-      //     )
-      //     .toList();
-
-      // emit(
-      //   HomeLoaded(
-      //     recentScans: filtered,
-      //     query: currentQuery,
-      //     hasMoreRecentScans: false,
-      //     isLoadingMoreRecentScans: false,
-      //   ),
-      // );
     } catch (e) {
       emit(HomeError(message: e.toString()));
     }
@@ -368,5 +348,49 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       emit(currentState.copyWith(isLoadingMoreSearchResults: false));
     }
+  }
+
+  void _onShowRecentScans(ShowRecentScansEvent event, Emitter<HomeState> emit) {
+    emit(
+      HomeLoaded(
+        recentScans: _allScans,
+        query: '',
+        hasMoreRecentScans: _hasMoreRecentScans,
+        isLoadingMoreRecentScans: false,
+        hasMoreSearchResults: _hasMoreSearchResults,
+        isLoadingMoreSearchResults: false,
+      ),
+    );
+  }
+
+  void _onShowSearchResults(
+    ShowSearchResultsEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    if (_currentSearchQuery.isEmpty) {
+      emit(
+        HomeLoaded(
+          recentScans: const [],
+          query: '',
+          hasMoreRecentScans: _hasMoreRecentScans,
+          isLoadingMoreRecentScans: false,
+          hasMoreSearchResults: false,
+          isLoadingMoreSearchResults: false,
+        ),
+      );
+
+      return;
+    }
+
+    emit(
+      HomeLoaded(
+        recentScans: _searchScans,
+        query: _currentSearchQuery,
+        hasMoreRecentScans: false,
+        isLoadingMoreRecentScans: false,
+        hasMoreSearchResults: _hasMoreSearchResults,
+        isLoadingMoreSearchResults: false,
+      ),
+    );
   }
 }

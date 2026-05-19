@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_scan/config/router/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_scan/config/constants/colors.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
@@ -12,7 +9,6 @@ import 'package:food_scan/features/home/data/models/scan_record.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
 import 'package:food_scan/features/home/presentation/widgets/no_scans_widget.dart';
 import 'package:food_scan/features/home/presentation/widgets/recent_scan_card.dart';
-import 'package:food_scan/features/scanner/presentation/bloc/scanner_bloc.dart';
 import 'package:food_scan/config/constants/nutrition.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,9 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Stack(children: [_HomeContent(), _SearchBarOverlay()]),
-    );
+    return const Scaffold(body: _HomeContent());
   }
 }
 
@@ -124,10 +118,6 @@ class _HeaderActions extends StatelessWidget {
             ),
           ),
           onPressed: () => context.read<ThemeBloc>().add(ToggleThemeEvent()),
-        ),
-        IconButton(
-          icon: const Icon(Icons.account_circle_outlined, color: Colors.white),
-          onPressed: () => context.push(AppRouter.profile),
         ),
       ],
     );
@@ -261,134 +251,6 @@ class _RecentScansListState extends State<_RecentScansList> {
 
         return const NoScansWidget();
       },
-    );
-  }
-}
-
-class _SearchBarOverlay extends StatelessWidget {
-  const _SearchBarOverlay();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    return Positioned(
-      top: AppDimensions.searchBarTopOffset,
-      left: AppDimensions.paddingLarge,
-      right: AppDimensions.paddingLarge,
-      child: Row(
-        children: [
-          Expanded(
-            child: _CustomSearchBar(
-              hint: l10n.searchHint,
-              isDarkMode: isDarkMode,
-            ),
-          ),
-          const SizedBox(width: AppDimensions.paddingSmall),
-          const _ScanButton(),
-        ],
-      ),
-    );
-  }
-}
-
-class _CustomSearchBar extends StatefulWidget {
-  final String hint;
-  final bool isDarkMode;
-
-  const _CustomSearchBar({required this.hint, required this.isDarkMode});
-
-  @override
-  State<_CustomSearchBar> createState() => _CustomSearchBarState();
-}
-
-class _CustomSearchBarState extends State<_CustomSearchBar> {
-  Timer? _searchDebounce;
-
-  @override
-  void dispose() {
-    _searchDebounce?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: AppDimensions.searchBarHeight,
-      decoration: BoxDecoration(
-        color: widget.isDarkMode
-            ? const Color(AppColors.surfaceDark)
-            : const Color(AppColors.white),
-        borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: AppDimensions.shadowBlurRadius,
-            offset: const Offset(0, AppDimensions.shadowOffsetY),
-          ),
-        ],
-      ),
-      child: TextField(
-        onChanged: (query) {
-          _searchDebounce?.cancel();
-          _searchDebounce = Timer(const Duration(milliseconds: 350), () {
-            context.read<HomeBloc>().add(SearchProductEvent(query));
-          });
-        },
-        decoration: InputDecoration(
-          hintText: widget.hint,
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          prefixIcon: Icon(
-            Icons.search,
-            color: Theme.of(context).iconTheme.color,
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: AppDimensions.paddingMedium - 1,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ScanButton extends StatelessWidget {
-  const _ScanButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        final scannerBloc = context.read<ScannerBloc>();
-        final router = GoRouter.of(context);
-        final result = await router.push('/scanner');
-
-        if (result != null && result is String) {
-          await router.pushNamed(
-            'details',
-            pathParameters: {'barcode': result},
-          );
-          scannerBloc.add(const ScannerResetEvent());
-        }
-      },
-      child: Container(
-        width: AppDimensions.searchBarHeight,
-        height: AppDimensions.searchBarHeight,
-        decoration: BoxDecoration(
-          color: const Color(AppColors.primaryGreen),
-          borderRadius: BorderRadius.circular(AppDimensions.borderRadiusMedium),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: AppDimensions.shadowBlurRadius,
-              offset: const Offset(0, AppDimensions.shadowOffsetY),
-            ),
-          ],
-        ),
-        child: const Icon(Icons.qr_code_scanner, color: Color(AppColors.white)),
-      ),
     );
   }
 }

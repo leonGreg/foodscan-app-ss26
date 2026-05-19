@@ -34,7 +34,23 @@ class LoadMoreSearchResultsEvent extends HomeEvent {
   const LoadMoreSearchResultsEvent();
 }
 
-//ADDED for home page pagination
+//ADDED for home page pagination - fetches data from Firestore
 class LoadMoreRecentScansEvent extends HomeEvent {
   const LoadMoreRecentScansEvent();
+}
+
+//only switches the displayed state back to the cached recent scans. Does not fetch from Firestore again.
+class ShowRecentScansEvent extends HomeEvent {
+  const ShowRecentScansEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+//It does not start a new search. It only says: “show the cached _searchScans again when I go back to Search“. It does not fetch from Firestore again.
+class ShowSearchResultsEvent extends HomeEvent {
+  const ShowSearchResultsEvent();
+
+  @override
+  List<Object?> get props => [];
 }
