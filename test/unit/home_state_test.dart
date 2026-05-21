@@ -52,4 +52,34 @@ void main() {
       expect(state.isLoadingMoreVisible, isTrue);
     });
   });
+
+  test('copyWith changes only provided values', () {
+      const original = HomeLoaded(
+        recentScans: [],
+        query: '',
+        hasMoreRecentScans: true,
+        isLoadingMoreRecentScans: false,
+        hasMoreSearchResults: false,
+        isLoadingMoreSearchResults: false,
+      );
+
+      final copy = original.copyWith(
+        query: 'apple',
+        hasMoreSearchResults: true,
+      );
+
+      expect(copy.query, 'apple');
+      expect(copy.hasMoreSearchResults, isTrue);
+
+      expect(copy.recentScans, original.recentScans);
+      expect(copy.hasMoreRecentScans, original.hasMoreRecentScans);
+      expect(
+        copy.isLoadingMoreRecentScans,
+        original.isLoadingMoreRecentScans,
+      );
+      expect(
+        copy.isLoadingMoreSearchResults,
+        original.isLoadingMoreSearchResults,
+      );
+    });
 }
