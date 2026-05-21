@@ -11,5 +11,14 @@ void main() {
 
       expect(state.isSearchMode, isFalse);
     });
+
+    test('isSearchMode is true when query has text', () {
+      const state = HomeLoaded(
+        recentScans: [],
+        query: 'milk',
+      );
+
+      expect(state.isSearchMode, isTrue);
+    });
   });
 }
