@@ -40,7 +40,7 @@ TODO
 **Clone & install dependencies**
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/leonGreg/mobile_applications_project_ss26.git
 cd mobile_applications_project_ss26
 flutter pub get
 ```
