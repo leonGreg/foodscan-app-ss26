@@ -320,6 +320,81 @@ void main() {
       expect(repository.searchScansPageCallCount, 1);
     });
 
+     test('LoadMoreSearchResultsEvent is ignored in recent mode', () async {
+      final repository = FakeScanRepository(
+        recentPages: [
+          page(
+            [
+              scan('111', 'Apple'),
+            ],
+            hasMore: true,
+          ),
+        ],
+        searchPages: [
+          page(
+            [
+              scan('444', 'Oat Milk'),
+            ],
+            hasMore: true,
+          ),
+        ],
+      );
+
+      final bloc = createBloc(repository);
+      addTearDown(bloc.close);
+
+      bloc.add(const LoadRecentScansEvent());
+      await pumpEventQueue();
+
+      bloc.add(const LoadMoreSearchResultsEvent());
+      await pumpEventQueue();
+
+      expect(repository.getScansPageCallCount, 1);
+      expect(repository.searchScansPageCallCount, 0);
+    });
+
+    test('empty search query returns to cached recent scans', () async {
+      final repository = FakeScanRepository(
+        recentPages: [
+          page(
+            [
+              scan('111', 'Apple'),
+              scan('222', 'Milk'),
+            ],
+            hasMore: true,
+          ),
+        ],
+        searchPages: [
+          page(
+            [
+              scan('222', 'Milk'),
+            ],
+            hasMore: false,
+          ),
+        ],
+      );
+
+      final bloc = createBloc(repository);
+      addTearDown(bloc.close);
+
+      bloc.add(const LoadRecentScansEvent());
+      await pumpEventQueue();
+
+      bloc.add(const SearchProductEvent('milk'));
+      await pumpEventQueue();
+
+      expect((bloc.state as HomeLoaded).query, 'milk');
+      expect((bloc.state as HomeLoaded).recentScans.length, 1);
+
+      bloc.add(const SearchProductEvent(''));
+      await pumpEventQueue();
+
+      final loaded = bloc.state as HomeLoaded;
+      expect(loaded.isSearchMode, isFalse);
+      expect(loaded.query, '');
+      expect(loaded.recentScans.map((s) => s.barcode), ['111', '222']);
+      expect(loaded.hasMoreRecentScans, isTrue);
+    });
 
   });
 }
