@@ -124,5 +124,53 @@ void main() {
       expect(loaded.hasMoreRecentScans, isTrue);
       expect(loaded.isLoadingMoreRecentScans, isFalse);
     });
+
+    test('LoadMoreRecentScansEvent appends next recent page', () async {
+      final repository = FakeScanRepository(
+        recentPages: [
+          page(
+            [
+              scan('111', 'Apple'),
+              scan('222', 'Milk'),
+            ],
+            hasMore: true,
+          ),
+          page(
+            [
+              scan('333', 'Bread'),
+            ],
+            hasMore: false,
+          ),
+        ],
+      );
+
+      final bloc = createBloc(repository);
+      addTearDown(bloc.close);
+
+      bloc.add(const LoadRecentScansEvent());
+      await pumpEventQueue();
+
+      final emittedStates = <HomeState>[];
+      final subscription = bloc.stream.listen(emittedStates.add);
+
+      bloc.add(const LoadMoreRecentScansEvent());
+      await pumpEventQueue();
+
+      expect(repository.getScansPageCallCount, 2);
+      expect(emittedStates.length, 2);
+
+      expect(
+        (emittedStates[0] as HomeLoaded).isLoadingMoreRecentScans,
+        isTrue,
+      );
+
+      final loaded = emittedStates[1] as HomeLoaded;
+      expect(loaded.isLoadingMoreRecentScans, isFalse);
+      expect(loaded.hasMoreRecentScans, isFalse);
+      expect(loaded.recentScans.map((s) => s.barcode), ['111', '222', '333']);
+
+      await subscription.cancel();
+    });
+
   });
 }
