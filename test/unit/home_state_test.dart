@@ -36,5 +36,20 @@ void main() {
       expect(state.hasMoreVisible, isTrue);
       expect(state.isLoadingMoreVisible, isTrue);
     });
+
+       test('search mode uses search pagination flags', () {
+      const state = HomeLoaded(
+        recentScans: [],
+        query: 'milk',
+        hasMoreRecentScans: false,
+        isLoadingMoreRecentScans: false,
+        hasMoreSearchResults: true,
+        isLoadingMoreSearchResults: true,
+      );
+
+      expect(state.isSearchMode, isTrue);
+      expect(state.hasMoreVisible, isTrue);
+      expect(state.isLoadingMoreVisible, isTrue);
+    });
   });
 }
