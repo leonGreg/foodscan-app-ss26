@@ -16,23 +16,14 @@ ScanRecord scan(String barcode, String name) {
   return ScanRecord.fromProduct(product);
 }
 
-ScanPage page(
-  List<ScanRecord> scans, {
-  required bool hasMore,
-}) {
-  return ScanPage(
-    scans: scans,
-    lastDocument: null,
-    hasMore: hasMore,
-  );
+ScanPage page(List<ScanRecord> scans, {required bool hasMore}) {
+  return ScanPage(scans: scans, lastDocument: null, hasMore: hasMore);
 }
 
 class FakeScanRepository implements ScanRepository {
-  FakeScanRepository({
-    List<ScanPage>? recentPages,
-    List<ScanPage>? searchPages,
-  })  : recentPages = recentPages ?? [],
-        searchPages = searchPages ?? [];
+  FakeScanRepository({List<ScanPage>? recentPages, List<ScanPage>? searchPages})
+    : recentPages = recentPages ?? [],
+      searchPages = searchPages ?? [];
 
   final List<ScanPage> recentPages;
   final List<ScanPage> searchPages;
@@ -43,6 +34,7 @@ class FakeScanRepository implements ScanRepository {
 
   final List<String> searchedQueries = [];
 
+  @override
   Future<ScanPage> getScansPage(
     String uid, {
     int limit = 20,
@@ -57,6 +49,7 @@ class FakeScanRepository implements ScanRepository {
     return recentPages.removeAt(0);
   }
 
+  @override
   Future<ScanPage> searchScansPage(
     String uid, {
     required String queryText,
@@ -73,10 +66,12 @@ class FakeScanRepository implements ScanRepository {
     return searchPages.removeAt(0);
   }
 
+  @override
   Future<void> saveScan(String uid, ScanRecord scan) async {
     saveScanCallCount++;
   }
 
+  @override
   Future<List<ScanRecord>> getScans(String uid) async {
     // Delegate to getScansPage to mimic real repository behavior
     final page = await getScansPage(uid, limit: 20);
@@ -97,13 +92,7 @@ void main() {
     test('LoadRecentScansEvent loads first recent scans page', () async {
       final repository = FakeScanRepository(
         recentPages: [
-          page(
-            [
-              scan('111', 'Apple'),
-              scan('222', 'Milk'),
-            ],
-            hasMore: true,
-          ),
+          page([scan('111', 'Apple'), scan('222', 'Milk')], hasMore: true),
         ],
       );
 
@@ -128,19 +117,8 @@ void main() {
     test('LoadMoreRecentScansEvent appends next recent page', () async {
       final repository = FakeScanRepository(
         recentPages: [
-          page(
-            [
-              scan('111', 'Apple'),
-              scan('222', 'Milk'),
-            ],
-            hasMore: true,
-          ),
-          page(
-            [
-              scan('333', 'Bread'),
-            ],
-            hasMore: false,
-          ),
+          page([scan('111', 'Apple'), scan('222', 'Milk')], hasMore: true),
+          page([scan('333', 'Bread')], hasMore: false),
         ],
       );
 
@@ -159,10 +137,7 @@ void main() {
       expect(repository.getScansPageCallCount, 2);
       expect(emittedStates.length, 2);
 
-      expect(
-        (emittedStates[0] as HomeLoaded).isLoadingMoreRecentScans,
-        isTrue,
-      );
+      expect((emittedStates[0] as HomeLoaded).isLoadingMoreRecentScans, isTrue);
 
       final loaded = emittedStates[1] as HomeLoaded;
       expect(loaded.isLoadingMoreRecentScans, isFalse);
@@ -175,20 +150,11 @@ void main() {
     test('LoadMoreRecentScansEvent removes duplicate barcodes', () async {
       final repository = FakeScanRepository(
         recentPages: [
-          page(
-            [
-              scan('111', 'Apple'),
-              scan('222', 'Milk'),
-            ],
-            hasMore: true,
-          ),
-          page(
-            [
-              scan('222', 'Milk Duplicate'),
-              scan('333', 'Bread'),
-            ],
-            hasMore: false,
-          ),
+          page([scan('111', 'Apple'), scan('222', 'Milk')], hasMore: true),
+          page([
+            scan('222', 'Milk Duplicate'),
+            scan('333', 'Bread'),
+          ], hasMore: false),
         ],
       );
 
@@ -210,13 +176,10 @@ void main() {
     test('SearchProductEvent loads first search page', () async {
       final repository = FakeScanRepository(
         searchPages: [
-          page(
-            [
-              scan('444', 'Oat Milk'),
-              scan('555', 'Almond Milk'),
-            ],
-            hasMore: true,
-          ),
+          page([
+            scan('444', 'Oat Milk'),
+            scan('555', 'Almond Milk'),
+          ], hasMore: true),
         ],
       );
 
@@ -243,18 +206,8 @@ void main() {
     test('LoadMoreSearchResultsEvent appends next search page', () async {
       final repository = FakeScanRepository(
         searchPages: [
-          page(
-            [
-              scan('444', 'Oat Milk'),
-            ],
-            hasMore: true,
-          ),
-          page(
-            [
-              scan('555', 'Almond Milk'),
-            ],
-            hasMore: false,
-          ),
+          page([scan('444', 'Oat Milk')], hasMore: true),
+          page([scan('555', 'Almond Milk')], hasMore: false),
         ],
       );
 
@@ -290,20 +243,10 @@ void main() {
     test('LoadMoreRecentScansEvent is ignored in search mode', () async {
       final repository = FakeScanRepository(
         searchPages: [
-          page(
-            [
-              scan('444', 'Oat Milk'),
-            ],
-            hasMore: true,
-          ),
+          page([scan('444', 'Oat Milk')], hasMore: true),
         ],
         recentPages: [
-          page(
-            [
-              scan('111', 'Apple'),
-            ],
-            hasMore: true,
-          ),
+          page([scan('111', 'Apple')], hasMore: true),
         ],
       );
 
@@ -320,23 +263,13 @@ void main() {
       expect(repository.searchScansPageCallCount, 1);
     });
 
-     test('LoadMoreSearchResultsEvent is ignored in recent mode', () async {
+    test('LoadMoreSearchResultsEvent is ignored in recent mode', () async {
       final repository = FakeScanRepository(
         recentPages: [
-          page(
-            [
-              scan('111', 'Apple'),
-            ],
-            hasMore: true,
-          ),
+          page([scan('111', 'Apple')], hasMore: true),
         ],
         searchPages: [
-          page(
-            [
-              scan('444', 'Oat Milk'),
-            ],
-            hasMore: true,
-          ),
+          page([scan('444', 'Oat Milk')], hasMore: true),
         ],
       );
 
@@ -356,21 +289,10 @@ void main() {
     test('empty search query returns to cached recent scans', () async {
       final repository = FakeScanRepository(
         recentPages: [
-          page(
-            [
-              scan('111', 'Apple'),
-              scan('222', 'Milk'),
-            ],
-            hasMore: true,
-          ),
+          page([scan('111', 'Apple'), scan('222', 'Milk')], hasMore: true),
         ],
         searchPages: [
-          page(
-            [
-              scan('222', 'Milk'),
-            ],
-            hasMore: false,
-          ),
+          page([scan('222', 'Milk')], hasMore: false),
         ],
       );
 
@@ -395,6 +317,5 @@ void main() {
       expect(loaded.recentScans.map((s) => s.barcode), ['111', '222']);
       expect(loaded.hasMoreRecentScans, isTrue);
     });
-
   });
 }

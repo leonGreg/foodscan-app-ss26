@@ -118,7 +118,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         if (state is AuthFailure) ...[
                           const SizedBox(height: AppDimensions.paddingMedium),
-                          AuthErrorMessage(message: mapAuthErrorCode(state.code, _l10n)),
+                          AuthErrorMessage(
+                            message: mapAuthErrorCode(state.code, _l10n),
+                          ),
                         ],
                         const SizedBox(height: AppDimensions.paddingXLarge),
                         SizedBox(

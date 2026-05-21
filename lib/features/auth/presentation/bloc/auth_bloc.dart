@@ -88,14 +88,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (current is! AuthAuthenticated) return;
     try {
       await _authService.updateDisplayName(event.displayName);
-      emit(AuthAuthenticated(
-        user: AppUser(
-          uid: current.user.uid,
-          email: current.user.email,
-          displayName: event.displayName.trim(),
-          createdAt: current.user.createdAt,
+      emit(
+        AuthAuthenticated(
+          user: AppUser(
+            uid: current.user.uid,
+            email: current.user.email,
+            displayName: event.displayName.trim(),
+            createdAt: current.user.createdAt,
+          ),
         ),
-      ));
+      );
     } catch (_) {
       emit(const AuthFailure(code: 'unknown'));
     }

@@ -16,18 +16,14 @@ void main() {
     testWidgets('shows empty recent scans message', (tester) async {
       final l10n = await AppLocalizations.delegate.load(const Locale('en'));
 
-      await tester.pumpWidget(
-        buildTestApp(const NoScansWidget()),
-      );
+      await tester.pumpWidget(buildTestApp(const NoScansWidget()));
 
       expect(find.text(l10n.noScansYet), findsOneWidget);
       expect(find.text(l10n.tapScanButtonToGetStarted), findsOneWidget);
     });
 
     testWidgets('shows scanner icon', (tester) async {
-      await tester.pumpWidget(
-        buildTestApp(const NoScansWidget()),
-      );
+      await tester.pumpWidget(buildTestApp(const NoScansWidget()));
 
       expect(find.byIcon(Icons.qr_code_scanner_outlined), findsOneWidget);
     });

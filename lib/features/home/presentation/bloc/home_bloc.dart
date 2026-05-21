@@ -34,12 +34,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   late final StreamSubscription<User?> _authSubscription;
 
-  HomeBloc({required ScanRepository scanRepository, CurrentUidProvider? currentUidProvider,
-    Stream<User?>? authStateChanges})
-    : _scanRepository = scanRepository,
-      _currentUidProvider = currentUidProvider ?? (() => FirebaseAuth.instance.currentUser?.uid),
-      _authStateChanges = authStateChanges ?? FirebaseAuth.instance.authStateChanges(),
-      super(const HomeInitial()) {
+  HomeBloc({
+    required ScanRepository scanRepository,
+    CurrentUidProvider? currentUidProvider,
+    Stream<User?>? authStateChanges,
+  }) : _scanRepository = scanRepository,
+       _currentUidProvider =
+           currentUidProvider ?? (() => FirebaseAuth.instance.currentUser?.uid),
+       _authStateChanges =
+           authStateChanges ?? FirebaseAuth.instance.authStateChanges(),
+       super(const HomeInitial()) {
     on<LoadRecentScansEvent>(_onLoadRecentScans);
     on<SearchProductEvent>(_onSearchProduct);
     on<AddProductToHistoryEvent>(_onAddProductToHistory);
@@ -64,7 +68,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   // String? get _uid => FirebaseAuth.instance.currentUser?.uid;
-    String? get _uid => _currentUidProvider();
+  String? get _uid => _currentUidProvider();
 
   Future<void> _onLoadRecentScans(
     LoadRecentScansEvent event,
