@@ -207,5 +207,38 @@ void main() {
       expect(loaded.recentScans.map((s) => s.barcode), ['111', '222', '333']);
     });
 
+    test('SearchProductEvent loads first search page', () async {
+      final repository = FakeScanRepository(
+        searchPages: [
+          page(
+            [
+              scan('444', 'Oat Milk'),
+              scan('555', 'Almond Milk'),
+            ],
+            hasMore: true,
+          ),
+        ],
+      );
+
+      final bloc = createBloc(repository);
+      addTearDown(bloc.close);
+
+      bloc.add(const SearchProductEvent('milk'));
+      await pumpEventQueue();
+
+      expect(repository.searchScansPageCallCount, 1);
+      expect(repository.searchedQueries, ['milk']);
+
+      final state = bloc.state;
+      expect(state, isA<HomeLoaded>());
+
+      final loaded = state as HomeLoaded;
+      expect(loaded.isSearchMode, isTrue);
+      expect(loaded.query, 'milk');
+      expect(loaded.recentScans.length, 2);
+      expect(loaded.hasMoreSearchResults, isTrue);
+      expect(loaded.isLoadingMoreSearchResults, isFalse);
+    });
+
   });
 }
