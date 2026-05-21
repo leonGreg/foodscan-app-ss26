@@ -240,5 +240,86 @@ void main() {
       expect(loaded.isLoadingMoreSearchResults, isFalse);
     });
 
+    test('LoadMoreSearchResultsEvent appends next search page', () async {
+      final repository = FakeScanRepository(
+        searchPages: [
+          page(
+            [
+              scan('444', 'Oat Milk'),
+            ],
+            hasMore: true,
+          ),
+          page(
+            [
+              scan('555', 'Almond Milk'),
+            ],
+            hasMore: false,
+          ),
+        ],
+      );
+
+      final bloc = createBloc(repository);
+      addTearDown(bloc.close);
+
+      bloc.add(const SearchProductEvent('milk'));
+      await pumpEventQueue();
+
+      final emittedStates = <HomeState>[];
+      final subscription = bloc.stream.listen(emittedStates.add);
+
+      bloc.add(const LoadMoreSearchResultsEvent());
+      await pumpEventQueue();
+
+      expect(repository.searchScansPageCallCount, 2);
+      expect(emittedStates.length, 2);
+
+      expect(
+        (emittedStates[0] as HomeLoaded).isLoadingMoreSearchResults,
+        isTrue,
+      );
+
+      final loaded = emittedStates[1] as HomeLoaded;
+      expect(loaded.query, 'milk');
+      expect(loaded.isLoadingMoreSearchResults, isFalse);
+      expect(loaded.hasMoreSearchResults, isFalse);
+      expect(loaded.recentScans.map((s) => s.barcode), ['444', '555']);
+
+      await subscription.cancel();
+    });
+
+    test('LoadMoreRecentScansEvent is ignored in search mode', () async {
+      final repository = FakeScanRepository(
+        searchPages: [
+          page(
+            [
+              scan('444', 'Oat Milk'),
+            ],
+            hasMore: true,
+          ),
+        ],
+        recentPages: [
+          page(
+            [
+              scan('111', 'Apple'),
+            ],
+            hasMore: true,
+          ),
+        ],
+      );
+
+      final bloc = createBloc(repository);
+      addTearDown(bloc.close);
+
+      bloc.add(const SearchProductEvent('milk'));
+      await pumpEventQueue();
+
+      bloc.add(const LoadMoreRecentScansEvent());
+      await pumpEventQueue();
+
+      expect(repository.getScansPageCallCount, 0);
+      expect(repository.searchScansPageCallCount, 1);
+    });
+
+
   });
 }
