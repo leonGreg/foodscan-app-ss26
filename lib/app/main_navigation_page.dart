@@ -18,10 +18,7 @@ class MainNavigationPage extends StatefulWidget {
 class _MainNavigationPageState extends State<MainNavigationPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [
-    HomePage(),
-    ProfilePage(),
-  ];
+  final List<Widget> _pages = const [HomePage(), ProfilePage()];
 
   void _selectPage(int index) {
     setState(() {
@@ -53,7 +50,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       extendBody: true,
       resizeToAvoidBottomInset: false,
       body: IndexedStack(index: _selectedIndex, children: _pages),
-      
+
       floatingActionButton: SizedBox(
         width: 68,
         height: 68,
@@ -71,17 +68,17 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           ),
         ),
       ),
-      
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      
+
       bottomNavigationBar: BottomAppBar(
-        color: isDark 
-            ? const Color(AppColors.surfaceDark) 
+        color: isDark
+            ? const Color(AppColors.surfaceDark)
             : const Color(AppColors.surfaceLight),
-        
-        shape: const SmoothSquareNotch(), 
+
+        shape: const SmoothSquareNotch(),
         notchMargin: 12.0,
-        
+
         clipBehavior: Clip.antiAlias,
         elevation: 24,
         shadowColor: Colors.black.withValues(alpha: 0.15),
@@ -98,9 +95,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
                   onTap: () => _selectPage(0),
                 ),
               ),
-              
-              const SizedBox(width: 72), 
-              
+
+              const SizedBox(width: 72),
+
               Expanded(
                 child: _BottomNavItem(
                   icon: Icons.person_rounded,
@@ -186,35 +183,43 @@ class SmoothSquareNotch extends NotchedShape {
 
     final Path path = Path();
     path.moveTo(host.left, host.top);
-    
+
     path.lineTo(guest.left - smoothing, host.top);
-    
+
     path.quadraticBezierTo(
-      guest.left, host.top, 
-      guest.left, host.top + smoothing,
+      guest.left,
+      host.top,
+      guest.left,
+      host.top + smoothing,
     );
-    
+
     path.lineTo(guest.left, guest.bottom - radius);
-    
+
     path.quadraticBezierTo(
-      guest.left, guest.bottom, 
-      guest.left + radius, guest.bottom,
+      guest.left,
+      guest.bottom,
+      guest.left + radius,
+      guest.bottom,
     );
-    
+
     path.lineTo(guest.right - radius, guest.bottom);
-    
+
     path.quadraticBezierTo(
-      guest.right, guest.bottom, 
-      guest.right, guest.bottom - radius,
+      guest.right,
+      guest.bottom,
+      guest.right,
+      guest.bottom - radius,
     );
-    
+
     path.lineTo(guest.right, host.top + smoothing);
-    
+
     path.quadraticBezierTo(
-      guest.right, host.top, 
-      guest.right + smoothing, host.top,
+      guest.right,
+      host.top,
+      guest.right + smoothing,
+      host.top,
     );
-    
+
     path.lineTo(host.right, host.top);
     path.lineTo(host.right, host.bottom);
     path.lineTo(host.left, host.bottom);

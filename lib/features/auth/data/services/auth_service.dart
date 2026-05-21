@@ -68,10 +68,9 @@ class AuthService extends AuthServiceBase {
     final user = _auth.currentUser;
     if (user == null) return;
     await user.updateDisplayName(displayName.trim());
-    await _firestore
-        .collection('users')
-        .doc(user.uid)
-        .update({'displayName': displayName.trim()});
+    await _firestore.collection('users').doc(user.uid).update({
+      'displayName': displayName.trim(),
+    });
   }
 
   Future<AppUser?> _getUserProfile(String uid) async {

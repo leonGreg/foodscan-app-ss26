@@ -127,11 +127,16 @@ class _RegisterPageState extends State<RegisterPage> {
                               () => _obscureConfirm = !_obscureConfirm,
                             ),
                           ),
-                          validator: confirmPasswordValidator(_l10n, _passwordController.text),
+                          validator: confirmPasswordValidator(
+                            _l10n,
+                            _passwordController.text,
+                          ),
                         ),
                         if (state is AuthFailure) ...[
                           const SizedBox(height: AppDimensions.paddingMedium),
-                          AuthErrorMessage(message: mapAuthErrorCode(state.code, _l10n)),
+                          AuthErrorMessage(
+                            message: mapAuthErrorCode(state.code, _l10n),
+                          ),
                         ],
                         const SizedBox(height: AppDimensions.paddingXLarge),
                         SizedBox(
@@ -175,5 +180,4 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-
 }

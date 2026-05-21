@@ -23,10 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      extendBody: true, 
-      body: _HomeContent(),
-    );
+    return const Scaffold(extendBody: true, body: _HomeContent());
   }
 }
 
@@ -38,7 +35,7 @@ class _HomeContent extends StatelessWidget {
     return Column(
       children: [
         const _HomeHeader(),
-        const SizedBox(height: AppDimensions.paddingMedium), 
+        const SizedBox(height: AppDimensions.paddingMedium),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -51,7 +48,7 @@ class _HomeContent extends StatelessWidget {
                   builder: (context, state) {
                     final isSearch = state is HomeLoaded && state.isSearchMode;
                     final l10n = AppLocalizations.of(context)!;
-                    
+
                     return _SectionHeader(
                       title: isSearch ? l10n.searchResults : l10n.recentScans,
                       icon: isSearch ? Icons.search : Icons.history,
@@ -76,7 +73,7 @@ class _HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Container(
@@ -89,10 +86,10 @@ class _HomeHeader extends StatelessWidget {
         ),
       ),
       padding: EdgeInsets.only(
-        top: statusBarHeight + 12, 
+        top: statusBarHeight + 12,
         left: AppDimensions.paddingLarge,
         right: AppDimensions.paddingLarge,
-        bottom: AppDimensions.paddingLarge, 
+        bottom: AppDimensions.paddingLarge,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,9 +114,9 @@ class _HomeHeader extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.9),
             ),
           ),
-          
+
           const SizedBox(height: AppDimensions.paddingMedium),
-          
+
           _CustomSearchBar(hint: l10n.searchHint, isDarkMode: isDark),
         ],
       ),
@@ -161,7 +158,7 @@ class _CustomSearchBarState extends State<_CustomSearchBar> {
   Widget build(BuildContext context) {
     return Container(
       height: AppDimensions.searchBarHeight,
-      clipBehavior: Clip.antiAlias, 
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: widget.isDarkMode
             ? const Color(AppColors.surfaceDark)
@@ -185,7 +182,7 @@ class _CustomSearchBarState extends State<_CustomSearchBar> {
         },
         decoration: InputDecoration(
           hintText: widget.hint,
-          filled: false, 
+          filled: false,
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
@@ -249,7 +246,9 @@ class _SectionHeader extends StatelessWidget {
         const SizedBox(width: AppDimensions.paddingSmall),
         Text(
           title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -319,12 +318,15 @@ class _RecentScansListState extends State<_RecentScansList> {
             }
 
             if (state.isSearchMode) {
-              return Center(child: Text(AppLocalizations.of(context)!.noProductsFound));
+              return Center(
+                child: Text(AppLocalizations.of(context)!.noProductsFound),
+              );
             }
             return const NoScansWidget();
           }
 
-          final showFooter = state.isLoadingMoreVisible || state.isLoadingMoreSearchResults;
+          final showFooter =
+              state.isLoadingMoreVisible || state.isLoadingMoreSearchResults;
 
           return ListView.builder(
             controller: _scrollController,

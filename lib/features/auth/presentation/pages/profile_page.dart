@@ -61,55 +61,55 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       },
       child: Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          _ProfileHeader(
-            displayName: user?.displayName ?? '',
-            email: user?.email ?? '',
-            editMode: _editMode,
-            isUpdating: _isUpdating,
-            nameController: _nameController,
-            formKey: _formKey,
-            l10n: l10n,
-            onEditTap: () => _enterEdit(user?.displayName ?? ''),
-            onSave: () => _saveEdit(context),
-            onCancel: _cancelEdit,
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppDimensions.paddingLarge),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: AppDimensions.paddingMedium),
-                  _SectionLabel(label: l10n.accountSection),
-                  const SizedBox(height: AppDimensions.paddingSmall),
-                  _InfoCard(
-                    children: [
-                      _InfoRow(
-                        icon: Icons.email_outlined,
-                        value: user?.email ?? '',
-                      ),
-                      const Divider(height: 1),
-                      _InfoRow(
-                        icon: Icons.calendar_today_outlined,
-                        label: l10n.memberSince,
-                        value: user != null
-                            ? DateFormat.yMMMMd().format(user.createdAt)
-                            : '',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppDimensions.paddingXLarge),
-                  _LogoutButton(l10n: l10n),
-                ],
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: Column(
+          children: [
+            _ProfileHeader(
+              displayName: user?.displayName ?? '',
+              email: user?.email ?? '',
+              editMode: _editMode,
+              isUpdating: _isUpdating,
+              nameController: _nameController,
+              formKey: _formKey,
+              l10n: l10n,
+              onEditTap: () => _enterEdit(user?.displayName ?? ''),
+              onSave: () => _saveEdit(context),
+              onCancel: _cancelEdit,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(AppDimensions.paddingLarge),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: AppDimensions.paddingMedium),
+                    _SectionLabel(label: l10n.accountSection),
+                    const SizedBox(height: AppDimensions.paddingSmall),
+                    _InfoCard(
+                      children: [
+                        _InfoRow(
+                          icon: Icons.email_outlined,
+                          value: user?.email ?? '',
+                        ),
+                        const Divider(height: 1),
+                        _InfoRow(
+                          icon: Icons.calendar_today_outlined,
+                          label: l10n.memberSince,
+                          value: user != null
+                              ? DateFormat.yMMMMd().format(user.createdAt)
+                              : '',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppDimensions.paddingXLarge),
+                    _LogoutButton(l10n: l10n),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 }
@@ -284,9 +284,8 @@ class _NameEditField extends StatelessWidget {
                 borderSide: const BorderSide(color: Colors.white, width: 2),
               ),
             ),
-            validator: (v) => (v == null || v.trim().isEmpty)
-                ? l10n.nameRequired
-                : null,
+            validator: (v) =>
+                (v == null || v.trim().isEmpty) ? l10n.nameRequired : null,
           ),
           const SizedBox(height: AppDimensions.paddingMedium),
           if (isUpdating)
@@ -306,7 +305,9 @@ class _NameEditField extends StatelessWidget {
                   onPressed: onCancel,
                   child: Text(
                     l10n.cancel,
-                    style: TextStyle(color: Colors.white.withValues(alpha: 0.85)),
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.85),
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppDimensions.paddingMedium),
@@ -450,7 +451,10 @@ class _LogoutButton extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.cancel, style: const TextStyle(color: Colors.black)),
+            child: Text(
+              l10n.cancel,
+              style: const TextStyle(color: Colors.black),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
