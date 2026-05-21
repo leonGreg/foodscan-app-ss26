@@ -20,5 +20,21 @@ void main() {
 
       expect(state.isSearchMode, isTrue);
     });
+
+
+    test('recent mode uses recent pagination flags', () {
+      const state = HomeLoaded(
+        recentScans: [],
+        query: '',
+        hasMoreRecentScans: true,
+        isLoadingMoreRecentScans: true,
+        hasMoreSearchResults: false,
+        isLoadingMoreSearchResults: false,
+      );
+
+      expect(state.isSearchMode, isFalse);
+      expect(state.hasMoreVisible, isTrue);
+      expect(state.isLoadingMoreVisible, isTrue);
+    });
   });
 }
