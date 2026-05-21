@@ -172,5 +172,40 @@ void main() {
       await subscription.cancel();
     });
 
+    test('LoadMoreRecentScansEvent removes duplicate barcodes', () async {
+      final repository = FakeScanRepository(
+        recentPages: [
+          page(
+            [
+              scan('111', 'Apple'),
+              scan('222', 'Milk'),
+            ],
+            hasMore: true,
+          ),
+          page(
+            [
+              scan('222', 'Milk Duplicate'),
+              scan('333', 'Bread'),
+            ],
+            hasMore: false,
+          ),
+        ],
+      );
+
+      final bloc = createBloc(repository);
+      addTearDown(bloc.close);
+
+      bloc.add(const LoadRecentScansEvent());
+      await pumpEventQueue();
+
+      bloc.add(const LoadMoreRecentScansEvent());
+      await pumpEventQueue();
+
+      final loaded = bloc.state as HomeLoaded;
+
+      expect(loaded.recentScans.length, 3);
+      expect(loaded.recentScans.map((s) => s.barcode), ['111', '222', '333']);
+    });
+
   });
 }
