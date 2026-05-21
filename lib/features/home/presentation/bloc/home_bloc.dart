@@ -11,11 +11,15 @@ import 'package:food_scan/features/home/data/repositories/scan_repository.dart';
 part 'home_event.dart';
 part 'home_state.dart';
 
+typedef CurrentUidProvider = String? Function();
+
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   static const int _recentPageSize = 8;
   static const int _searchPageSize = 8;
 
   final ScanRepository _scanRepository;
+  final CurrentUidProvider _currentUidProvider;
+  final Stream<User?> _authStateChanges;
 
   List<ScanRecord> _allScans = [];
   List<ScanRecord> _searchScans = [];
@@ -30,8 +34,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   late final StreamSubscription<User?> _authSubscription;
 
-  HomeBloc({required ScanRepository scanRepository})
+  HomeBloc({required ScanRepository scanRepository, CurrentUidProvider? currentUidProvider,
+    Stream<User?>? authStateChanges})
     : _scanRepository = scanRepository,
+      _currentUidProvider = currentUidProvider ?? (() => FirebaseAuth.instance.currentUser?.uid),
+      _authStateChanges = authStateChanges ?? FirebaseAuth.instance.authStateChanges(),
       super(const HomeInitial()) {
     on<LoadRecentScansEvent>(_onLoadRecentScans);
     on<SearchProductEvent>(_onSearchProduct);
@@ -41,7 +48,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<ShowRecentScansEvent>(_onShowRecentScans);
     on<ShowSearchResultsEvent>(_onShowSearchResults);
 
-    _authSubscription = FirebaseAuth.instance.authStateChanges().listen((_) {
+    // _authSubscription = FirebaseAuth.instance.authStateChanges().listen((_) {
+    //   add(const LoadRecentScansEvent());
+    // });
+
+    _authSubscription = _authStateChanges.listen((_) {
       add(const LoadRecentScansEvent());
     });
   }
@@ -52,7 +63,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return super.close();
   }
 
-  String? get _uid => FirebaseAuth.instance.currentUser?.uid;
+  // String? get _uid => FirebaseAuth.instance.currentUser?.uid;
+    String? get _uid => _currentUidProvider();
 
   Future<void> _onLoadRecentScans(
     LoadRecentScansEvent event,
