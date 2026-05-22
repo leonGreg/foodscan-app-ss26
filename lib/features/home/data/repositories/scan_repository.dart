@@ -59,6 +59,15 @@ class ScanRepository {
         .set(scan.toFirestore());
   }
 
+  Future<void> deleteScan(String uid, String barcode) async {
+    await _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('scans')
+        .doc(barcode)
+        .delete();
+  }
+
   Future<ScanPage> searchScansPage(
     String uid, {
     required String queryText,

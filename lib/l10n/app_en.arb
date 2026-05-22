@@ -179,5 +179,6 @@
   "searchSubtitle": "Search products from your scan history",
   "searchTypePlaceholder": "Type a product name or barcode...",
   "noProductsFound": "No products found.",
-  "searchResults": "Search Results"
+  "searchResults": "Search Results",
+  "scanDeleted": "Scan deleted"
 }

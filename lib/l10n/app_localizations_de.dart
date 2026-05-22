@@ -589,4 +589,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get searchResults => 'Suchergebnisse';
+
+  @override
+  String get scanDeleted => 'Scan gelöscht';
 }

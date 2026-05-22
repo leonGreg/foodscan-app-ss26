@@ -39,6 +39,15 @@ class LoadMoreRecentScansEvent extends HomeEvent {
   const LoadMoreRecentScansEvent();
 }
 
+class DeleteScanEvent extends HomeEvent {
+  final String barcode;
+
+  const DeleteScanEvent(this.barcode);
+
+  @override
+  List<Object?> get props => [barcode];
+}
+
 //only switches the displayed state back to the cached recent scans. Does not fetch from Firestore again.
 class ShowRecentScansEvent extends HomeEvent {
   const ShowRecentScansEvent();

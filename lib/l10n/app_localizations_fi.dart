@@ -591,4 +591,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get searchResults => 'Hakutulokset';
+
+  @override
+  String get scanDeleted => 'Skannaus poistettu';
 }

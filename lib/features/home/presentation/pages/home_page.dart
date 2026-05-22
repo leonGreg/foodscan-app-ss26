@@ -342,17 +342,55 @@ class _RecentScansListState extends State<_RecentScansList> {
 
               final ScanRecord scan = state.recentScans[index];
 
-              return GestureDetector(
-                onTap: () => context.pushNamed(
-                  'details',
-                  pathParameters: {'barcode': scan.barcode},
+              return Dismissible(
+                key: ValueKey(scan.barcode),
+                direction: DismissDirection.endToStart,
+                background: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: AppDimensions.paddingMedium,
+                  ),
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(
+                      right: AppDimensions.paddingLarge,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.borderRadiusLarge,
+                      ),
+                    ),
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
                 ),
-                child: RecentScanCard(
-                  key: ValueKey(scan.barcode),
-                  productName: scan.productName,
-                  barcode: scan.barcode,
-                  nutriScore: NutriScore.fromString(scan.nutritionGrade),
-                  imageUrl: scan.imageFrontUrl,
+                onDismissed: (_) {
+                  context.read<HomeBloc>().add(DeleteScanEvent(scan.barcode));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.scanDeleted),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                },
+                child: GestureDetector(
+                  onTap: () => context.pushNamed(
+                    'details',
+                    pathParameters: {'barcode': scan.barcode},
+                  ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(AppDimensions.borderRadiusLarge),
+                      bottomLeft: Radius.circular(
+                        AppDimensions.borderRadiusLarge,
+                      ),
+                    ),
+                    child: RecentScanCard(
+                      productName: scan.productName,
+                      barcode: scan.barcode,
+                      nutriScore: NutriScore.fromString(scan.nutritionGrade),
+                      imageUrl: scan.imageFrontUrl,
+                    ),
+                  ),
                 ),
               );
             },

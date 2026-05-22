@@ -72,6 +72,11 @@ class FakeScanRepository implements ScanRepository {
   }
 
   @override
+  Future<void> deleteScan(String uid, String barcode) async {
+    // TODO
+  }
+
+  @override
   Future<List<ScanRecord>> getScans(String uid) async {
     // Delegate to getScansPage to mimic real repository behavior
     final page = await getScansPage(uid, limit: 20);

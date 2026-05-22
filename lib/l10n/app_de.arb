@@ -180,5 +180,6 @@
   "searchSubtitle": "Produkte aus deiner Scan-Historie durchsuchen",
   "searchTypePlaceholder": "Produktnamen oder Barcode eingeben...",
   "noProductsFound": "Keine Produkte gefunden.",
-  "searchResults": "Suchergebnisse"
+  "searchResults": "Suchergebnisse",
+  "scanDeleted": "Scan gelöscht"
 }

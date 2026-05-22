@@ -1185,6 +1185,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search Results'**
   String get searchResults;
+
+  /// No description provided for @scanDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan deleted'**
+  String get scanDeleted;
 }
 
 class _AppLocalizationsDelegate

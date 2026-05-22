@@ -179,5 +179,6 @@
   "searchSubtitle": "Etsi tuotteita skannauksistasi",
   "searchTypePlaceholder": "Kirjoita tuotteen nimi tai viivakoodi...",
   "noProductsFound": "Tuotteita ei löytynyt.",
-  "searchResults": "Hakutulokset"
+  "searchResults": "Hakutulokset",
+  "scanDeleted": "Skannaus poistettu"
 }

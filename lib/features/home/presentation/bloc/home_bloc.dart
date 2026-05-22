@@ -51,6 +51,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LoadMoreSearchResultsEvent>(_onLoadMoreSearchResults);
     on<ShowRecentScansEvent>(_onShowRecentScans);
     on<ShowSearchResultsEvent>(_onShowSearchResults);
+    on<DeleteScanEvent>(_onDeleteScan);
 
     // _authSubscription = FirebaseAuth.instance.authStateChanges().listen((_) {
     //   add(const LoadRecentScansEvent());
@@ -363,6 +364,48 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
     } catch (e) {
       emit(currentState.copyWith(isLoadingMoreSearchResults: false));
+    }
+  }
+
+  Future<void> _onDeleteScan(
+    DeleteScanEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    final uid = _uid;
+    if (uid == null) return;
+
+    final previousAllScans = List<ScanRecord>.from(_allScans);
+    final previousSearchScans = List<ScanRecord>.from(_searchScans);
+
+    _allScans = _allScans.where((s) => s.barcode != event.barcode).toList();
+    _searchScans =
+        _searchScans.where((s) => s.barcode != event.barcode).toList();
+
+    final currentState = state;
+    if (currentState is HomeLoaded) {
+      emit(
+        currentState.copyWith(
+          recentScans: currentState.isSearchMode ? _searchScans : _allScans,
+        ),
+      );
+    }
+
+    try {
+      await _scanRepository.deleteScan(uid, event.barcode);
+    } catch (e) {
+      _allScans = previousAllScans;
+      _searchScans = previousSearchScans;
+
+      final currentState = state;
+      if (currentState is HomeLoaded) {
+        emit(
+          currentState.copyWith(
+            recentScans:
+                currentState.isSearchMode ? _searchScans : _allScans,
+          ),
+        );
+      }
+      emit(HomeError(message: e.toString()));
     }
   }
 
