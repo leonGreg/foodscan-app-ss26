@@ -31,7 +31,7 @@ class ProductCacheRepository {
     await _firestore
         .collection('products')
         .doc(product.code)
-        .set(_toFirestore(product));
+        .set(data);
   }
 
   Product _fromFirestore(DocumentSnapshot doc) {
