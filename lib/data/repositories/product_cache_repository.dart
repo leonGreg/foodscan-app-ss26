@@ -28,10 +28,7 @@ class ProductCacheRepository {
     // Add language code directly to Firebase document before saving
     data['languageCode'] = languageCode;
 
-    await _firestore
-        .collection('products')
-        .doc(product.code)
-        .set(data);
+    await _firestore.collection('products').doc(product.code).set(data);
   }
 
   Product _fromFirestore(DocumentSnapshot doc) {

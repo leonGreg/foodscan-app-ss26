@@ -378,8 +378,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final previousSearchScans = List<ScanRecord>.from(_searchScans);
 
     _allScans = _allScans.where((s) => s.barcode != event.barcode).toList();
-    _searchScans =
-        _searchScans.where((s) => s.barcode != event.barcode).toList();
+    _searchScans = _searchScans
+        .where((s) => s.barcode != event.barcode)
+        .toList();
 
     final currentState = state;
     if (currentState is HomeLoaded) {
@@ -400,8 +401,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (currentState is HomeLoaded) {
         emit(
           currentState.copyWith(
-            recentScans:
-                currentState.isSearchMode ? _searchScans : _allScans,
+            recentScans: currentState.isSearchMode ? _searchScans : _allScans,
           ),
         );
       }

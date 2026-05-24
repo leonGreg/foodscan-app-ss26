@@ -231,8 +231,9 @@ class _SearchResultsListState extends State<_SearchResultsList> {
                 Text(l10n.errorNetwork, textAlign: TextAlign.center),
                 const SizedBox(height: AppDimensions.paddingMedium),
                 ElevatedButton(
-                  onPressed: () =>
-                      context.read<HomeBloc>().add(const LoadRecentScansEvent()),
+                  onPressed: () => context.read<HomeBloc>().add(
+                    const LoadRecentScansEvent(),
+                  ),
                   child: Text(l10n.retry),
                 ),
               ],

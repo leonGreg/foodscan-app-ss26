@@ -58,9 +58,9 @@ class _ScannerPageState extends State<ScannerPage> {
           if (state is ScannerBarcodeDetected) {
             context.pop(state.barcode);
           } else if (state is ScannerError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         child: Stack(

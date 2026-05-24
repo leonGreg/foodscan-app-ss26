@@ -74,8 +74,9 @@ class _DetailsPageState extends State<DetailsPage> {
                     const SizedBox(height: AppDimensions.paddingMedium),
                     ElevatedButton(
                       onPressed: () {
-                        final languageCode =
-                            Localizations.localeOf(context).languageCode;
+                        final languageCode = Localizations.localeOf(
+                          context,
+                        ).languageCode;
                         context.read<DetailsBloc>().add(
                           LoadProductDetailsEvent(widget.barcode, languageCode),
                         );

@@ -30,8 +30,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     ToggleThemeEvent event,
     Emitter<ThemeState> emit,
   ) async {
-    final newMode =
-        state.themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    final newMode = state.themeMode == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_themeKey, newMode == ThemeMode.dark);
     emit(ThemeState(newMode));
