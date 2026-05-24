@@ -13,9 +13,9 @@ A Flutter mobile application for scanning food product barcodes and analysing th
 
 ## Screenshots
 
-| Login | Register | Home |
-|---|---|---|
-| <img src="assets/screenshots/login_page.png" width="200"/> | <img src="assets/screenshots/register_page.png" width="200"/> | <img src="assets/screenshots/home_page.png" width="200"/> |
+| Login & Register | Home |
+|---|---|
+| <img src="assets/screenshots/login_page.png" width="200"/> | <img src="assets/screenshots/home_page.png" width="200"/> |
 
 | Scanner | Search | Profile |
 |---|---|---|
