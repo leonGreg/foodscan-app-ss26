@@ -13,17 +13,17 @@ A Flutter mobile application for scanning food product barcodes and analysing th
 
 ## Screenshots
 
-| Login & Register | Home |
-|---|---|
-| <img src="assets/screenshots/login_page.png" width="200"/> | <img src="assets/screenshots/home_page.png" width="200"/> |
-
-| Scanner | Search | Profile |
+| Login & Register | Home | Scanner |
 |---|---|---|
-| <img src="assets/screenshots/scan_feature.png" width="200"/> | <img src="assets/screenshots/search_feature.png" width="200"/> | <img src="assets/screenshots/profile_page.png" width="200"/> |
+| <img src="assets/screenshots/login_page.png" width="100%"/> | <img src="assets/screenshots/home_page.png" width="100%"/> | <img src="assets/screenshots/scan_feature.png" width="100%"/> |
 
-| Product Details | Nutrition Info | Additives | FoodScan Score |
-|---|---|---|---|
-| <img src="assets/screenshots/product_detail_page.png" width="200"/> | <img src="assets/screenshots/nutrition_information.png" width="200"/> | <img src="assets/screenshots/additives_information.png" width="200"/> | <img src="assets/screenshots/calculated_score.png" width="200"/> |
+| Search | Profile | Product Details |
+|---|---|---|
+| <img src="assets/screenshots/search_feature.png" width="100%"/> | <img src="assets/screenshots/profile_page.png" width="100%"/> | <img src="assets/screenshots/product_detail_page.png" width="100%"/> |
+
+| Nutrition Info | Additives | FoodScan Score |
+|---|---|---|
+| <img src="assets/screenshots/nutrition_information.png" width="100%"/> | <img src="assets/screenshots/additives_information.png" width="100%"/> | <img src="assets/screenshots/calculated_score.png" width="100%"/> |
 
 ---
 
