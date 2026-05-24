@@ -13,7 +13,17 @@ A Flutter mobile application for scanning food product barcodes and analysing th
 
 ## Screenshots
 
-TODO
+| Login | Register | Home |
+|---|---|---|
+| ![Login](assets/screenshots/login_page.png) | ![Register](assets/screenshots/register_page.png) | ![Home](assets/screenshots/home_page.png) |
+
+| Scanner | Search | Profile |
+|---|---|---|
+| ![Scanner](assets/screenshots/scan_feature.png) | ![Search](assets/screenshots/search_feature.png) | ![Profile](assets/screenshots/profile_page.png) |
+
+| Product Details | Nutrition Info | Additives | FoodScan Score |
+|---|---|---|---|
+| ![Product Details](assets/screenshots/product_detail_page.png) | ![Nutrition](assets/screenshots/nutrition_information.png) | ![Additives](assets/screenshots/additives_information.png) | ![Score](assets/screenshots/calculated_score.png) |
 
 ---
 
