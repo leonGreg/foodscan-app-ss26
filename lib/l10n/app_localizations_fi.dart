@@ -594,4 +594,14 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get scanDeleted => 'Skannaus poistettu';
+
+  @override
+  String get retry => 'Yritä uudelleen';
+
+  @override
+  String get errorProductNotFound => 'Tuotetta ei löytynyt.';
+
+  @override
+  String get errorNetwork =>
+      'Tietojen lataaminen epäonnistui. Tarkista yhteys.';
 }

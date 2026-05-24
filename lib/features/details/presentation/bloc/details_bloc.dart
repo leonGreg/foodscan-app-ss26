@@ -48,10 +48,10 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       if (product != null) {
         emit(DetailsLoaded(product: product));
       } else {
-        emit(const DetailsError(message: 'Product not found'));
+        emit(const DetailsError(type: DetailsErrorType.productNotFound));
       }
     } catch (e) {
-      emit(DetailsError(message: 'Error fetching product: ${e.toString()}'));
+      emit(const DetailsError(type: DetailsErrorType.networkError));
     }
   }
 

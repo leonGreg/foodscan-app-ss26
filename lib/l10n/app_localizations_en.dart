@@ -589,4 +589,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scanDeleted => 'Scan deleted';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get errorProductNotFound => 'Product not found.';
+
+  @override
+  String get errorNetwork =>
+      'Could not load data. Please check your connection.';
 }

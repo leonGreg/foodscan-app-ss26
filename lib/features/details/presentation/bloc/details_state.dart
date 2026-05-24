@@ -24,11 +24,13 @@ class DetailsLoaded extends DetailsState {
   List<Object?> get props => [product];
 }
 
-class DetailsError extends DetailsState {
-  final String message;
+enum DetailsErrorType { productNotFound, networkError }
 
-  const DetailsError({required this.message});
+class DetailsError extends DetailsState {
+  final DetailsErrorType type;
+
+  const DetailsError({required this.type});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [type];
 }

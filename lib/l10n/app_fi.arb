@@ -180,5 +180,8 @@
   "searchTypePlaceholder": "Kirjoita tuotteen nimi tai viivakoodi...",
   "noProductsFound": "Tuotteita ei löytynyt.",
   "searchResults": "Hakutulokset",
-  "scanDeleted": "Skannaus poistettu"
+  "scanDeleted": "Skannaus poistettu",
+  "retry": "Yritä uudelleen",
+  "errorProductNotFound": "Tuotetta ei löytynyt.",
+  "errorNetwork": "Tietojen lataaminen epäonnistui. Tarkista yhteys."
 }

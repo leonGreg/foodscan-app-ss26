@@ -592,4 +592,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get scanDeleted => 'Scan gelöscht';
+
+  @override
+  String get retry => 'Erneut versuchen';
+
+  @override
+  String get errorProductNotFound => 'Produkt nicht gefunden.';
+
+  @override
+  String get errorNetwork =>
+      'Daten konnten nicht geladen werden. Bitte Verbindung prüfen.';
 }

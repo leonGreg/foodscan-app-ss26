@@ -1191,6 +1191,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scan deleted'**
   String get scanDeleted;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @errorProductNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Product not found.'**
+  String get errorProductNotFound;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load data. Please check your connection.'**
+  String get errorNetwork;
 }
 
 class _AppLocalizationsDelegate

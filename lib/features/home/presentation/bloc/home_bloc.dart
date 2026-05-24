@@ -123,7 +123,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } catch (e) {
-      emit(HomeError(message: e.toString()));
+      emit(const HomeError(type: HomeErrorType.networkError));
     }
   }
 
@@ -206,7 +206,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } catch (e) {
-      emit(HomeError(message: e.toString()));
+      emit(const HomeError(type: HomeErrorType.networkError));
     }
   }
 
@@ -264,7 +264,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } catch (e) {
-      emit(HomeError(message: e.toString()));
+      emit(const HomeError(type: HomeErrorType.networkError));
     }
   }
 
@@ -405,7 +405,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           ),
         );
       }
-      emit(HomeError(message: e.toString()));
+      emit(const HomeError(type: HomeErrorType.networkError));
     }
   }
 

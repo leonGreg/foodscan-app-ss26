@@ -180,5 +180,8 @@
   "searchTypePlaceholder": "Type a product name or barcode...",
   "noProductsFound": "No products found.",
   "searchResults": "Search Results",
-  "scanDeleted": "Scan deleted"
+  "scanDeleted": "Scan deleted",
+  "retry": "Retry",
+  "errorProductNotFound": "Product not found.",
+  "errorNetwork": "Could not load data. Please check your connection."
 }

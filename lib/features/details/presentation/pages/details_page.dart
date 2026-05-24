@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:food_scan/config/constants/dimensions.dart';
+import 'package:food_scan/l10n/app_localizations.dart';
 import 'package:food_scan/core/models/product_model.dart';
 import 'package:food_scan/features/details/presentation/bloc/details_bloc.dart';
 import 'package:food_scan/features/home/presentation/bloc/home_bloc.dart';
@@ -61,7 +62,29 @@ class _DetailsPageState extends State<DetailsPage> {
             if (state is DetailsLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is DetailsError) {
-              return Center(child: Text(state.message));
+              final l10n = AppLocalizations.of(context)!;
+              final message = state.type == DetailsErrorType.productNotFound
+                  ? l10n.errorProductNotFound
+                  : l10n.errorNetwork;
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(message, textAlign: TextAlign.center),
+                    const SizedBox(height: AppDimensions.paddingMedium),
+                    ElevatedButton(
+                      onPressed: () {
+                        final languageCode =
+                            Localizations.localeOf(context).languageCode;
+                        context.read<DetailsBloc>().add(
+                          LoadProductDetailsEvent(widget.barcode, languageCode),
+                        );
+                      },
+                      child: Text(l10n.retry),
+                    ),
+                  ],
+                ),
+              );
             } else if (state is DetailsLoaded) {
               return _ProductDetails(product: state.product);
             }

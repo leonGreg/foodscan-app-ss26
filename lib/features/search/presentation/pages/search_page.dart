@@ -223,7 +223,21 @@ class _SearchResultsListState extends State<_SearchResultsList> {
         }
 
         if (state is HomeError) {
-          return Center(child: Text(state.message));
+          final l10n = AppLocalizations.of(context)!;
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(l10n.errorNetwork, textAlign: TextAlign.center),
+                const SizedBox(height: AppDimensions.paddingMedium),
+                ElevatedButton(
+                  onPressed: () =>
+                      context.read<HomeBloc>().add(const LoadRecentScansEvent()),
+                  child: Text(l10n.retry),
+                ),
+              ],
+            ),
+          );
         }
 
         final l10n = AppLocalizations.of(context)!;

@@ -77,11 +77,13 @@ class HomeLoaded extends HomeState {
   ];
 }
 
-class HomeError extends HomeState {
-  final String message;
+enum HomeErrorType { networkError }
 
-  const HomeError({required this.message});
+class HomeError extends HomeState {
+  final HomeErrorType type;
+
+  const HomeError({required this.type});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [type];
 }
