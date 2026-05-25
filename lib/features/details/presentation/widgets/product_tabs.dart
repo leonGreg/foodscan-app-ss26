@@ -287,10 +287,7 @@ class _NutritionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: AppDimensions.paddingSmall,
-        left: isIndented ? AppDimensions.paddingMedium : 0,
-      ),
+      padding: const EdgeInsets.only(bottom: AppDimensions.paddingSmall),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

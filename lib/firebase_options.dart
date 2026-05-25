@@ -6,8 +6,8 @@ class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       throw UnsupportedError(
-        'DefaultFirebaseOptions wurden nicht für Web konfiguriert. '
-        'Führe "flutterfire configure" aus.',
+        'DefaultFirebaseOptions have not been configured for Web. '
+        'Run "flutterfire configure".',
       );
     }
     switch (defaultTargetPlatform) {
@@ -17,8 +17,8 @@ class DefaultFirebaseOptions {
         return ios;
       default:
         throw UnsupportedError(
-          'DefaultFirebaseOptions für ${defaultTargetPlatform.name} nicht konfiguriert. '
-          'Führe "flutterfire configure" aus.',
+          'DefaultFirebaseOptions for ${defaultTargetPlatform.name} are not configured. '
+          'Run "flutterfire configure".',
         );
     }
   }
