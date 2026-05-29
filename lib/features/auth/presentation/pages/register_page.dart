@@ -129,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           validator: confirmPasswordValidator(
                             _l10n,
-                            _passwordController.text,
+                            () => _passwordController.text,
                           ),
                         ),
                         if (state is AuthFailure) ...[

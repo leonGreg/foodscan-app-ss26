@@ -57,10 +57,10 @@ String? Function(String?) displayNameValidator(AppLocalizations l10n) {
 
 String? Function(String?) confirmPasswordValidator(
   AppLocalizations l10n,
-  String password,
+  String Function() getPassword,
 ) {
   return (value) {
-    final err = validateConfirmPassword(value, password);
+    final err = validateConfirmPassword(value, getPassword());
     if (err == 'required') return l10n.confirmPasswordRequired;
     if (err == 'mismatch') return l10n.passwordsDoNotMatch;
     return null;
