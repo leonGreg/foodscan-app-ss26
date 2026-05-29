@@ -220,7 +220,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final currentState = state;
 
       if (currentState is HomeLoaded && currentState.isSearchMode) {
-
         final query = currentState.query.toLowerCase();
 
         final matchSearch =
