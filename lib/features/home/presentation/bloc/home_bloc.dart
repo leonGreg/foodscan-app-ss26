@@ -14,8 +14,8 @@ part 'home_state.dart';
 typedef CurrentUidProvider = String? Function();
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  static const int _recentPageSize = 8;
-  static const int _searchPageSize = 8;
+  static const int _recentPageSize = 20;
+  static const int _searchPageSize = 20;
 
   final ScanRepository _scanRepository;
   final CurrentUidProvider _currentUidProvider;
@@ -53,10 +53,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<ShowSearchResultsEvent>(_onShowSearchResults);
     on<DeleteScanEvent>(_onDeleteScan);
 
-    // _authSubscription = FirebaseAuth.instance.authStateChanges().listen((_) {
-    //   add(const LoadRecentScansEvent());
-    // });
-
     _authSubscription = _authStateChanges.listen((_) {
       add(const LoadRecentScansEvent());
     });
@@ -68,7 +64,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return super.close();
   }
 
-  // String? get _uid => FirebaseAuth.instance.currentUser?.uid;
   String? get _uid => _currentUidProvider();
 
   Future<void> _onLoadRecentScans(
@@ -223,11 +218,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _allScans = [scan, ..._allScans.where((s) => s.barcode != scan.barcode)];
 
       final currentState = state;
-      // final currentQuery = currentState is HomeLoaded ? currentState.query : '';
 
       if (currentState is HomeLoaded && currentState.isSearchMode) {
-        //add(SearchProductEvent(currentState.query));
-        //return;
 
         final query = currentState.query.toLowerCase();
 
