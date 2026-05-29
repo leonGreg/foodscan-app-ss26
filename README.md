@@ -85,7 +85,6 @@ flutter test
 | `openfoodfacts ^3.30.2` | Open Food Facts API client (product data, nutrition, scores) |
 | `flutter_zxing ^2.3.0` | Camera-based EAN-13 / EAN-8 barcode scanning |
 | `cached_network_image ^3.4.1` | Efficient loading and caching of product images from URLs |
-| `skeletonizer ^2.1.3` | Skeleton loading placeholders while data is fetched |
 | `shared_preferences ^2.3.3` | Persists the user's light/dark theme preference across sessions |
 | `intl ^0.20.2` | Internationalisation (English, German, Finnish) |
 | `equatable ^2.0.8` | Value equality for BLoC states and models |
