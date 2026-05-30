@@ -52,7 +52,6 @@ class Product {
   ScoreBreakdown calculateScoreBreakdown(AppLocalizations l10n) {
     final components = <ScoreComponent>[];
 
-    // 1. Base Score
     components.add(
       ScoreComponent(
         title: l10n.baseScore,
@@ -61,7 +60,6 @@ class Product {
       ),
     );
 
-    // 2. Nutri-Score
     int nutriPoints = switch (nutriScoreEnum) {
       NutriScore.a => 30,
       NutriScore.b => 20,
@@ -80,7 +78,6 @@ class Product {
       ),
     );
 
-    // 3. Eco-Score
     int ecoPoints = switch (ecoScoreEnum) {
       EcoScore.a => 15,
       EcoScore.b => 10,
@@ -99,7 +96,6 @@ class Product {
       ),
     );
 
-    // 4. Additives
     int highRisk = 0;
     int moderateRisk = 0;
     for (final tag in additivesTags) {
@@ -119,7 +115,6 @@ class Product {
       );
     }
 
-    // 5. NOVA Group
     int novaDeduction = switch (novaGroup) {
       4 => 10,
       3 => 5,
@@ -139,7 +134,6 @@ class Product {
       );
     }
 
-    // 6. Bio Bonus
     if (isOrganic) {
       components.add(
         ScoreComponent(
@@ -158,7 +152,7 @@ class Product {
   }
 
   int get overallScore {
-    int total = 50; // Base
+    int total = 50;
 
     total += switch (nutriScoreEnum) {
       NutriScore.a => 30,

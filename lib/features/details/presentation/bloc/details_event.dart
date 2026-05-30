@@ -9,7 +9,7 @@ abstract class DetailsEvent extends Equatable {
 
 class LoadProductDetailsEvent extends DetailsEvent {
   final String barcode;
-  final String languageCode; // Додали поле для мови
+  final String languageCode;
 
   const LoadProductDetailsEvent(this.barcode, this.languageCode);
 

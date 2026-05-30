@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../config/constants/colors.dart';
+import 'package:food_scan/config/constants/colors.dart';
 
 enum AdditiveRisk {
   low(Color(AppColors.successGreen)),
