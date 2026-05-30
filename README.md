@@ -55,7 +55,7 @@ A Flutter mobile application for scanning food product barcodes and analysing th
 
 ```bash
 git clone https://github.com/leonGreg/foodscan-app-ss26.git
-cd mobile_applications_project_ss26
+cd foodscan-app-ss26
 flutter pub get
 ```
 
