@@ -9,6 +9,10 @@ A Flutter mobile application for scanning food product barcodes and analysing th
 - Denys Khlystun – 2507543
 - Islam Elsayed – 5122132
 
+## Presentation
+
+[presentation.pdf](presentation.pdf)
+
 ---
 
 ## Screenshots
@@ -32,7 +36,7 @@ A Flutter mobile application for scanning food product barcodes and analysing th
 - **Barcode scanning** — camera-based EAN-13 / EAN-8 detection via `flutter_zxing`, with a manual entry fallback
 - **Product details** — NutriScore, Eco-Score, NOVA group, ingredients, allergens, additives with risk levels, full nutrient table
 - **FoodScan Score** — custom 0–100 score combining NutriScore, Eco-Score, NOVA group, additive risk, and organic certification (see below)
-- **Scan history** — every scanned product is saved per-user in Firestore; the home screen shows a paginated, infinite-scrolling history list
+- **Scan history** — every scanned product is saved per-user in Firestore; the home screen shows a paginated, infinite-scrolling history list; individual entries can be removed by swiping left (red delete action with a confirmation snackbar)
 - **Search** — debounced full-text product search with separate pagination
 - **Authentication** — email/password sign-up, login, password reset, and profile editing via Firebase Auth
 - **Light / Dark theme** — toggle in the app header; preference is persisted across sessions via SharedPreferences
